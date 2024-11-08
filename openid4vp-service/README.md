@@ -33,6 +33,7 @@ node app.js // execute this command in the openid4vp-service folder
     &redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
     &presentation_definition=...
     &nonce=n-0S6_WzA2Mj
+    &response_uri=ngrokUrl+"/verifier/vp-response"
     &client_metadata=%7B%22vp_formats%22:%7B%22jwt_vp_json%22:%
     7B%22alg%22:%5B%22EdDSA%22,%22ES256K%22%5D%7D,%22ldp
     _vp%22:%7B%22proof_type%22:%5B%22Ed25519Signature201
