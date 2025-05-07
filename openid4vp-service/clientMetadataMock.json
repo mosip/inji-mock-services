@@ -18,8 +18,7 @@
   "vp_formats": {
     "mso_mdoc": {
       "alg": [
-        "ES256",
-        "EdDSA"
+        "ES256"
       ]
     },
     "ldp_vp": {

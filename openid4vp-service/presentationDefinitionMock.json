@@ -30,7 +30,23 @@
           }
         ]
       }
+    },
+    {
+      "id": "docType",
+      "format": {
+        "mso_mdoc": {
+          "alg": ["ES256"]
+        },
+        "constraints": {
+          "fields" : [
+            {
+              "path": [
+                "$['docType']['claim']"
+              ]
+            }
+          ]
+        }
+      }
     }
-
   ]
 }

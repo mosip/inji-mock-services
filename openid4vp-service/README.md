@@ -10,6 +10,10 @@ openID4VP specification draft 23 ([link](https://openid.net/specs/openid-4-verif
 
 ### Start the service
 
+#### Pre-requisites before starting the service
+1. In case of testing out mso_mdoc VP share, ensure the mso_mdoc presentation definition's docType and claim is updated in presentationDefinitionMock.json file
+
+#### Steps to start service
 1. Install the dependencies
    - Change directory to openid4vp-service
 ```bash
@@ -27,17 +31,29 @@ openID4VP specification draft 23 ([link](https://openid.net/specs/openid-4-verif
   node app.js 
 ```
 
+To simplify the process, script is also exposed 
+
+#### start up script
+
+Post performing the pre-requisites, you can run the below command to start the service.
+
+```shell
+npm install # install the dependencies
+npm start # asks base url (ngrok url or any remote url) and starts the service
+```
+
 # Supported features
 
 | Feature                                                   | Supported values                                                                                                                                                                                                                                                                                                                                                   |
 |-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Device flow                                               | cross device flow (QR code generated for the authorization request)                                                                                                                                                                                                                                                                                                |
+| Device flow                                               | cross device flow (QR code generated for the authorization request), Same device flow (Generated QR code with authorization request is clickable)                                                                                                                                                                                                                  |
 | Client id scheme                                          | `pre-registered`, `redirect_uri`, `did`                                                                                                                                                                                                                                                                                                                            |
 | Signed authorization request algorithms                   | Ed25519                                                                                                                                                                                                                                                                                                                                                            |
 | Creating authorization request                            | By value, By reference ( via `request_uri` method) <br> _[Note: Authorization request by value is not supported for the did client ID scheme, as it requires a signed request. Instead, a Request URI should be used to fetch the signed authorization request ([reference](https://openid.net/specs/openid-4-verifiable-presentations-1_0-23.html#section-3.2))]_ |
 | Creating presentation definition in authorization request | By value, By reference (via `presentation_definition_uri`)                                                                                                                                                                                                                                                                                                         |
 | Authorization Response mode                               | `direct_post`, `direct_post.jwt` (with encrypted & unsigned responses)                                                                                                                                                                                                                                                                                             |
 | Authorization Response type                               | `vp_token`                                                                                                                                                                                                                                                                                                                                                         |
+| Supported Credential formats                              | `ldp_vc`, `mso_mdoc`                                                                                                                                                                                                                                                                                                                                               |
 
 
 ### This exposes five end-points:
