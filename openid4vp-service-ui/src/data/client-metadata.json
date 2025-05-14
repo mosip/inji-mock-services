@@ -1,0 +1,33 @@
+{
+  "client_name": "Requester name",
+  "logo_uri": "<logo_uri>",
+  "authorization_encrypted_response_alg": "ECDH-ES",
+  "authorization_encrypted_response_enc": "A256GCM",
+  "jwks": {
+    "keys": [
+      {
+        "kty": "OKP",
+        "crv": "X25519",
+        "use": "enc",
+        "x": "BVNVdqorpxCCnTOkkw8S2NAYXvfEvkC-8RDObhrAUA4",
+        "alg": "ECDH-ES",
+        "kid": "verifier-key-id"
+      }
+    ]
+  },
+  "vp_formats": {
+    "mso_mdoc": {
+      "alg": [
+        "ES256",
+        "EdDSA"
+      ]
+    },
+    "ldp_vp": {
+      "proof_type": [
+        "Ed25519Signature2018",
+        "Ed25519Signature2020",
+        "RsaSignature2018"
+      ]
+    }
+  }
+}
