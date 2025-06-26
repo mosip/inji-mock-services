@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import user_photo from "../../assets/user_photo.png";
 import help_icon from "../../assets/help_icon.png";
 import registering_process from "../../assets/registering_process.gif";
-import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
+//import { QRCodeVerification } from "@mosip/react-inji-verify-sdk";
 import poweredby_inji_icon from "../../assets/poweredby_inji_icon.png";
 import { CertificateUploadingSection } from '../../components/CertificateUploadSection';
 import { useTranslation } from 'react-i18next';

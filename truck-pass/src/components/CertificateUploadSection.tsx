@@ -173,7 +173,7 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
               <div className='flex flex-col h-7 w-7 gap-2 items-center'>
                 <img
                   src={trash_icon}
-                  className="h-4 w-4 cursor-pointer "
+                  className="h-4 w-4 opacity-50 cursor-default"
                   onClick={cancelUpload}
                 />
                 <p className="text-[#344054] self-center text-[0.7rem] bg-white">100%</p>

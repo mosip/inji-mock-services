@@ -4,12 +4,13 @@ import DriverRegistrationProcess from './pages/driverRegistration/DriverRegistra
 import DriverRegistrationMainLayout from './shared/DriverRegistrationMainLayout';
 import './styles/main.css';
 import './i18';
-import { VerifyUIN } from './pages/driverRegistration/VerifyUIN';
+
 import { ConsentAndAgreementPage } from './pages/driverRegistration/ConsentAndAgreementPage';
 import { SelectCompany } from './pages/driverRegistration/SelectCompany';
 import { Registration } from './pages/driverRegistration/Registration';
 import { ConfirmationPage } from './pages/driverRegistration/ConfirmationPage';
 import { DriverRegistrationFlow } from './shared/DriverRegistrationFlow';
+import { VerifyUIN } from './pages/driverRegistration/VerifyUIN';
 
 function App() {
   

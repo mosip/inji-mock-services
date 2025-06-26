@@ -59,7 +59,9 @@
         "verifiedSuccessFully": "Verified SuccessFully",
         "verificationReadyInfo": "Click the button below to verify your UIN using eSignet. This will automatically fetch and fill your personal details.",
         "verifiedInfo": "Your details have been verified. Please proceed to the next step.",
-        "verifyBtn": "Verify"
+        "verifyBtn": "Verify",
+        "uinAlreadyRegistered": "UIN Already Registered",
+        "alreadyRegisteredInfo": "A driver with this UIN is already registered in the Truckpass system"
     },
     "registration": {
         "personalInformation": "Personal Information",
@@ -118,7 +120,8 @@
         "completed": "Completed",
         "continue": "Continue",
         "goBack": "Go Back",
-        "submit": "Submit"
+        "submit": "Submit",
+        "tryAgain": "Try Again"
     },
     "errors": {}
 }
