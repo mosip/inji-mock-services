@@ -12,6 +12,10 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [uinVerificationContinueBtn, setUinVerificationContinueBtn] = useState(false);
+  const [showUIN, setShowUIN] = useState(false); //
+  const eyeIconClass = "h-3 cursor-pointer";
+  const eyeOffIconClass = "h-4 cursor-pointer";
+
 
   const moveToSelectCompanyPage = () => {
     navigate('/driverRegistrationProcessPage/selectCompanyPage');
@@ -22,6 +26,14 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
     navigate('/driverRegistrationProcessPage/registrationPage');
     setUinVerificationContinueBtn(true);
   };
+
+  const displayValue = (value: string, showDetails: boolean, alwaysVisible = false) =>
+    showDetails || alwaysVisible
+      ? value
+      : value.length <= 4
+        ? '*'.repeat(value.length)
+        : value.slice(0, 2) + '*'.repeat(value.length - 4) + value.slice(-2);
+
 
   const LoadingIndicator: React.FC = () => {
     return (
@@ -61,14 +73,34 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
           </div>
         );
       case 'verified':
+        const uin = "276301076687";
+        const toggleUIN = () => {
+          setShowUIN(prev => !prev);
+        };
+
         return (
           <div className="flex flex-col bg-[#EFFDF5] border border-[#B3F6D2] space-y-2 rounded-lg p-4">
-            <h2 className="text-sm font-semibold text-[#007F41]">{t('uinVerification.verifiedSuccessFully')}</h2>
-            <div className="bg-white border border-[#C9EFCF] rounded-md px-3 py-2 flex justify-between items-center text-sm text-[#007F41] font-semibold">
-              {t('')} <span className=" text-[#0059D4]">UIN Fetched: &lt;UIN Number&gt;</span>
-              <span className="text-[#007F41] text-base"><img src={eye_icon} alt='eye_icon' className='h-3 cursor-pointer' /></span>
+            <h2 className="text-sm font-semibold text-[#007F41]">
+              {t('uinVerification.verifiedSuccessFully')}
+            </h2>
+
+            <div className="bg-[#EEF7FF] border border-[#B9DDFD] rounded-md px-3 py-2 flex items-center text-sm text-[#007F41] font-semibold">
+              <span className="text-[#0059D4] flex items-center">
+                UIN Fetched:&nbsp;{displayValue(uin, showUIN)}
+                <img
+                  src={showUIN ? eye_off : eye_icon}
+                  alt={showUIN ? "Hide UIN" : "Show UIN"}
+                  className={`ml-2 ${showUIN ? eyeOffIconClass : eyeIconClass}`}
+                  onClick={toggleUIN}
+                />
+              </span>
             </div>
-            <p className="text-[12px] text-[#007F41] font-[500]">{t('uinVerification.verifiedInfo')}</p>
+
+
+            <p className="text-[12px] text-[#007F41] font-[500]">
+              {t('uinVerification.verifiedInfo')}
+            </p>
+
             <img src={poweredBy_logo} alt="poweredBy_logo" className="h-7 w-[20%] pt-1" />
           </div>
         );
@@ -77,10 +109,11 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
           <div className="flex flex-col bg-[#FFF7E8] border border-[#FFE7B7] space-y-2 rounded-lg p-4">
             <h2 className="text-sm font-semibold text-[#C4320A]">{t('uinVerification.uinAlreadyRegistered')}</h2>
             <div className="bg-white border border-[#FFE7B7] rounded-md px-3 py-2 flex justify-between items-center text-sm text-[#C4320A] font-semibold">
-              {t('')} <span className=" text-[#0059D4]">UIN Fetched: &lt;UIN Number&gt;</span>
-              <span className="text-[#C4320A] text-base"><img src={eye_off} alt='eye_off' className='h-4 cursor-pointer' /></span>
+              {t('')} <span className=" text-[#0059D4]">UIN Fetched: 276301076687</span>
+              <span className="text-[#C4320A] text-base"><img src={eye_icon} alt='eye_icon' className='h-3' /></span>
             </div>
-            <p className="text-[12px] text-[#C4320A] font-[500]">{t('uinVerification.alreadyRegisteredInfo')}</p>
+            <p className="text-[12px] text-[#C4320A] font-[500]">{t('uinVerification.alreadyRegisteredInfo',)}</p>
+            {/* <p className="text-[12px] text-[#ff0004] font-[500]">{t('uinVerification.alreadyRegisteredInfoTryAgain',)}</p> */}
             <img src={poweredBy_logo} alt="poweredBy_logo" className="h-7 w-[20%] pt-1" />
           </div>
         );

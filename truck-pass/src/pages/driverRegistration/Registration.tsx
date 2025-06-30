@@ -164,13 +164,14 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                         <div className='flex items-center'>
                                             <input
                                                 id="shareViaInjiVerify"
+                                                disabled
                                                 type="radio"
                                                 value="shareViaInjiVerify"
                                                 checked={selectedOpt === 'shareViaInjiVerify'}
-                                                className='cursor-pointer'
+                                                className='opacity-80'
                                                 onChange={handleEntryOptionChange}
                                             />
-                                            <label htmlFor='shareViaInjiVerify' className={`px-1 text-sm`}>{t('registration.shareViaInjiVerify')}</label>
+                                            <label htmlFor='shareViaInjiVerify' className={`px-1 text-sm opacity-50`}>{t('registration.shareViaInjiVerify')}</label>
                                         </div>
                                     </div>
                                     <input
