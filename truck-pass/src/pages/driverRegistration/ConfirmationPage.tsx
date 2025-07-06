@@ -45,7 +45,7 @@ export const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ }) => {
     };
 
     return (
-        <div className="flex max-w-[950px] w-full shadow-lg rounded-2xl place-self-center">
+        <div className="flex max-w-[1100px] w-full shadow-lg rounded-2xl place-self-center">
             {showSuccessPopup && (
                 <SuccessPopup showSuccessPopup={showSuccessPopup} setShowSuccessPopup={setShowSuccessPopup} />
             )}
@@ -62,7 +62,7 @@ export const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ }) => {
                 <div className="flex flex-col items-center space-y-4">
                     <img src={confirmation_icon} alt="confirmation_icon" className="h-14" />
                     <h1 className="font-semibold text-[20px]">{t('confirmationPage.registrationCompleted')}</h1>
-                    <p className="text-[13px]">{t('confirmationPage.SuccessFullySubmitText')}</p>
+                    <p className="text-[18px] text-center">{t('confirmationPage.SuccessFullySubmitText')}</p>
 
                     <div className="w-[90%] border border-[#E2E8F0] rounded-lg p-6">
                         <div className="flex gap-x-3 items-center">
@@ -108,7 +108,7 @@ export const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ }) => {
 
                     <button
                         onClick={onStartNewRegistration}
-                        className="bg-[#006DE7] w-[31%] text-xs font-[600] py-2.5 px-2.5 mt-6 mr-9 place-self-end text-center rounded-[5px] text-[#FFFFFF]"
+                        className="bg-[#006DE7] w-[31%] text-xs font-[600] py-2.5 px-2.5 mt-6 mr-9 place-self-end text-center rounded-[5px] text-[#FFFFFF] cursor-pointer   "
                     >
                         {t('confirmationPage.startNewRegistrationBtn')}
                     </button>

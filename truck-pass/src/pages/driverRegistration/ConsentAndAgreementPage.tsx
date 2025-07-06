@@ -52,7 +52,7 @@ export const ConsentAndAgreementPage: React.FC<ConsentAndAgreementPageProps> = (
                     </div>
                 </div>
                 <button disabled={!checkBox} onClick={movetoSelectCompany}
-                    className={`${checkBox ? "bg-[#006DE7] cursor-pointer" : "bg-[#B0B0B0] cursor-default"} w-[54%] text-sm font-[600] place-self-end align-bottom py-2 text-center rounded-[5px] text-[#FFFFFF] cursor-pointer`}>
+                    className={`${checkBox ? "bg-[#006DE7] cursor-pointer" : "bg-[#B0B0B0] cursor-default"} w-[54%] text-sm font-[600] place-self-end align-bottom py-2 text-center rounded-[5px] text-[#FFFFFF] `}>
                     {t('consentAndAgreementPage.getStarted')}
                 </button>
             </div>

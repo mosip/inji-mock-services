@@ -89,14 +89,14 @@
     "certificationUploadSec": {
         "cpc": "Certificate of Professional Competence (CPC)",
         "clickToBrowse": " or click to browse",
-        "uploadManualCertificateInfo": "Please upload document with the file format as PNG or PDF and Size should be maximum of 5MB",
+        "uploadCertificateInfo": "Please upload document with the file format as PNG or PDF and Size should be maximum of 5MB",
         "uploadViaInjiVerifyCertificateInfo": "PNG or PDF (max size. 1mb)",
         "failed": "Failed",
         "changeFile": "Change File"
     },
     "confirmationPage": {
         "registrationCompleted": "Registration Completed!",
-        "SuccessFullySubmitText": "Your application has been successFully submitted.",
+        "SuccessFullySubmitText": "You're all set! Your registration was successful, and a confirmation email is on its way to your inbox.",
         "driverSummary": "Driver Summary",
         "registrationDetailsInfo": "Registration details for {{driverName}}",
         "fullName": "Full Name:",
@@ -122,6 +122,17 @@
         "goBack": "Go Back",
         "submit": "Submit",
         "tryAgain": "Try Again"
+    },
+    "upload": {
+        "error": {
+            "unsupportedFileType": "Unsupported file type. Please upload only PDF or PNG files.",
+            "fileSizeExceeded": "File size exceeds 5MB limit."
+        }
+    },
+    "form": {
+        "error": {
+            "requiredFields": "Please fill all required fields correctly before submitting."
+        }
     },
     "errors": {}
 }

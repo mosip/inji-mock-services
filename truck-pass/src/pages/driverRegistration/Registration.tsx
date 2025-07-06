@@ -101,12 +101,14 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                 </label>
                                 <input disabled value={'Rajesh Singh'} className='bg-[#FAFAFA] text-[15px] text-[#717680] p-1.5 w-full border border-[#D5D7DA] rounded-md' />
                             </div>
-                            <div className='space-y-1'>
-                                <label className='flex items-center'>
-                                    <p className='text-sm'>{t('registration.uin')}<span className='text-[#006DE7]'>*</span> </p>
-                                    <img src={help_icon} alt='help_icon' className='h-3 cursor-pointer' />
+                            <div className="space-y-1">
+                                <label className="flex items-center">
+                                    <p className="text-sm">{t('registration.uin')} <span className="text-[#006DE7] ">*</span> </p>
+                                    <img src={help_icon} alt="help_icon" className="h-3 cursor-pointer ml-1" />
                                 </label>
-                                <input disabled value={'198765432123'} className='bg-[#FAFAFA] text-[15px] text-[#717680] p-1.5 w-full border border-[#D5D7DA] rounded-md' />
+                                <input
+                                    disabled value="198765432123" className="bg-[#FAFAFA] text-[15px] text-[#717680] p-1.5 w-full border border-[#D5D7DA] rounded-md"
+                                />
                             </div>
                             <div className='space-y-1'>
                                 <label className='flex items-center'>
@@ -116,9 +118,9 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                 <input disabled value={'Male'} className='bg-[#FAFAFA] text-[15px] text-[#717680] p-1.5 w-full border border-[#D5D7DA] rounded-md' />
                             </div>
                             <div className='space-y-1'>
-                                <label className='flex items-center'>
-                                    <p className='text-sm'>{t('registration.eMailId')}<span className='text-[#006DE7]'>*</span> </p>
-                                    <img src={help_icon} alt='help_icon' className='h-3 cursor-pointer' />
+                                <label className="flex items-center">
+                                    <p className="text-sm">{t('registration.eMailId')} <span className="text-[#006DE7]">*</span> </p>
+                                    <img src={help_icon} alt="help_icon" className="h-3 cursor-pointer ml-1" />
                                 </label>
                                 <input disabled value={'myemail@gmail.com'} className='bg-[#FAFAFA] text-[15px] text-[#717680] p-1.5 w-full border border-[#D5D7DA] rounded-md' />
                             </div>
@@ -145,7 +147,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
 
                                 <div className='space-y-3'>
                                     <label className='flex items-center'>
-                                        <p className='text-xs text-[#414651]'>{t('registration.driverLicenseNum')}<span className='text-[#006DE7]'>*</span> </p>
+                                        <p className='text-xs text-[#414651]'>{t('registration.driverLicenseNum')}<span className='text-[#0077ff]'>*</span> </p>
                                         <img src={help_icon} alt='help_icon' className='h-3 cursor-pointer' />
                                     </label>
 
@@ -180,7 +182,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                         onChange={handleLicenceNumChange}
                                         className={`${!driverLicenceNum ? 'bg-[#FAFAFA] text-[#717680]' : 'bg-[#FFFFFF]'} text-[15px] p-1.5 w-full border ${errorMsg ? 'border-[#FDA29B]' : 'border-[#D5D7DA]'} rounded-md outline-none`}
                                     />
-                                    {errorMsg && <p className='text-xs text-[#D92D20]'>Please fill all required fields correctly before submitting.</p>}
+                                    {errorMsg && <p className='text-xs text-[#D92D20]'>{t('form.error.requiredFields')}</p>}
 
                                     {/* Share through Inji-Verify block*/}
                                     {selectedOpt === 'shareViaInjiVerify' &&
@@ -214,7 +216,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
 
                                     <div className='space-y-1 py-4'>
                                         <label className='flex items-center'>
-                                            <p className='text-sm'>{t('registration.passportNum')}</p>
+                                            <p className='text-sm'>{t('registration.passportNum')}<span className='text-[#006DE7]'>*</span></p>
                                             <img src={help_icon} alt='help_icon' className='h-3.5 cursor-pointer' />
                                         </label>
                                         <input
@@ -223,10 +225,10 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                             onChange={handlePassportNumChange}
                                             className={`${!passportNum ? 'bg-[#FAFAFA] text-[#717680]' : 'bg-[#FFFFFF]'} text-[15px]  p-1.5 w-full border ${errorMsg ? 'border-[#FDA29B]' : 'border-[#D5D7DA]'} rounded-md outline-none`}
                                         />
-                                        {errorMsg && <p className='text-xs text-[#D92D20]'>Please fill all required fields correctly before submitting.</p>}
+                                        {errorMsg && <p className='text-xs text-[#D92D20]'>{t('form.error.requiredFields')}</p>}
                                     </div>
                                     <label className='flex items-center'>
-                                        <p className='text-sm text-[#414651]'>{t('registration.cpc')}<span className='text-[#006DE7]'>*</span> </p>
+                                        <p className='text-sm text-[#414651]'>{t('registration.cpc')}<span className='text-[#006DE7] pl-0.5'>*</span> </p>
                                         <img src={help_icon} alt='help_icon' className='h-3.5 cursor-pointer' />
                                     </label>
                                     <CertificateUploadingSection

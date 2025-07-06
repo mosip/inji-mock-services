@@ -20,8 +20,6 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
   const [progress, setProgress] = useState<number>(0);
   const [fileSize, setFileSize] = useState<number>(0);
   const { t } = useTranslation();
-  
-
 
   const handleFileInputClick = () => {
     document.getElementById('file-upload')?.click();
@@ -33,38 +31,50 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
     const file = e.target.files ? e.target.files[0] : null;
     if (!file) return;
 
+    const validExtensions = ['pdf', 'png'];
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    const maxSizeInBytes = 5 * 1024 * 1024;
+
     if (file) {
-      const fileName = file.name;
-      setFileSize(file.size);
+      setFileSize(file.size / 1024);
       setErrorMsg('');
-      const fileExtension = fileName.split('.').pop()?.toLowerCase();
-      if (fileExtension === 'pdf' || fileExtension === 'png') {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const fileData = e.target?.result as string;
-          setUploading(true);
-          setRemoveLastUploadData(true);
-          setFileName(fileName);
-          setData(fileData);
-          const uploadSimulation = setInterval(() => {
-            setProgress((prev) => {
-              const newProgress = prev + 20;
-              if (newProgress >= 100) {
-                clearInterval(uploadSimulation);
-                setUploading(false);
-              }
-              if (newProgress === 100) {
-                setFileUploaded(true);
-              }
-              return newProgress;
-            });
-          }, 500);
-        }
-        reader.readAsText(file);
-      } else {
-        setFileName(fileName);
-        setErrorMsg('Unsupported file type. Please upload valid PDF or image documents.');
+
+      if (!validExtensions.includes(fileExtension || '')) {
+        setFileName(file.name);
+        setErrorMsg(t('upload.error.unsupportedFileType'));
+        e.target.value = '';
+        return;
       }
+
+      if (file.size > maxSizeInBytes) {
+        setFileName(file.name);
+        setErrorMsg(t('upload.error.fileSizeExceeded'));
+        e.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const fileData = e.target?.result as string;
+        setUploading(true);
+        setRemoveLastUploadData(true);
+        setFileName(file.name);
+        setData(fileData);
+        const uploadSimulation = setInterval(() => {
+          setProgress((prev) => {
+            const newProgress = prev + 20;
+            if (newProgress >= 100) {
+              clearInterval(uploadSimulation);
+              setUploading(false);
+            }
+            if (newProgress === 100) {
+              setFileUploaded(true);
+            }
+            return newProgress;
+          });
+        }, 500);
+      };
+      reader.readAsText(file);
     }
   };
 
@@ -76,6 +86,9 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
     setData(null);
     setShowUploadingBlock(false);
     setFileUploaded(false);
+    if (document.getElementById('file-upload')) {
+      (document.getElementById('file-upload') as HTMLInputElement).value = '';
+    }
   };
 
   const onChangeFile = () => {
@@ -86,7 +99,10 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
     setErrorMsg('');
     setData(null);
     setFileUploaded(false);
-  }
+    if (document.getElementById('file-upload')) {
+      (document.getElementById('file-upload') as HTMLInputElement).value = '';
+    }
+  };
 
   return (
     <div className="flex flex-col ">
@@ -97,6 +113,7 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
               <input
                 id="file-upload"
                 type="file"
+                accept=".pdf,.png"
                 onChange={handleFileChange}
                 className="cursor-pointer hidden"
               />
@@ -111,7 +128,7 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
                 {t('certificationUploadSec.cpc')}
               </span>{' '} {t('certificationUploadSec.clickToBrowse')}
             </p>
-            <p className="text-[13px] text-[#475467]">{t('certificationUploadSec.uploadCertificateInfo')}</p>
+            <p className="text-[11px] text-[#475467] text-center">{t('certificationUploadSec.uploadCertificateInfo')}</p>
           </>
         )}
 
@@ -192,8 +209,6 @@ export const CertificateUploadingSection: React.FC<CertificateUploadingSectionPr
     </div>
   );
 };
-
-
 
 interface CertificateUploadingSectionProps {
   showUploadingBlock: boolean;

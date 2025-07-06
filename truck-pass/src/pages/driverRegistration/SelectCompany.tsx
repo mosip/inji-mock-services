@@ -82,16 +82,18 @@ export const SelectCompany: React.FC<SelectCompanyProps> = ({ }) => {
             />
 
             <div className={`flex flex-col bg-[#FFFFFF] pt-5 pb-9 w-full px-6 rounded-br-2xl rounded-tr-2xl justify-between font-inter`}>
-            
+
                 <div className="space-y-4">
                     <h1 className="font-semibold text-[22px]">{t('selectCompany.selectRegisteredTransportCompany')}</h1>
                     <p className="text-[15px]">{t('selectCompany.chooseCompanyDesc')}</p>
 
                     <div className="relative mb-6">
                         <label htmlFor="company-search" className="flex items-center text-[13px] font-medium text-gray-700 mb-2">
-                            Search Transport Company *
-                            <img src={help_icon} className='h-3 cursor-pointer px-1' />
+                            Search Transport Company
+                            <span className="text-[#006DE7] pl-1">*</span>
+                            <img src={help_icon} className="h-3 cursor-pointer px-1" />
                         </label>
+
                         <div className="relative">
                             <input
                                 id="company-search"
@@ -146,7 +148,7 @@ export const SelectCompany: React.FC<SelectCompanyProps> = ({ }) => {
                     )}
                 </div>
                 <button disabled={!selectedCompany} onClick={() => moveToVerifyUinPage()}
-                    className={`${selectedCompany ? "bg-[#006DE7] cursor-pointer" : "bg-[#B0B0B0] focus:shadow-md cursor-pointer"}} w-[21%] text-xs font-[600] place-self-end align-bottom py-2.5 text-center rounded-[5px] text-[#FFFFFF] cursor-pointer`}>
+                    className={`${selectedCompany ? "bg-[#006DE7] cursor-pointer" : "bg-[#B0B0B0] "} w-[21%] text-xs font-[600] place-self-end align-bottom py-2.5 text-center rounded-[5px] text-[#FFFFFF]`}>
                     {t('commans.continue')}
                 </button>
             </div>

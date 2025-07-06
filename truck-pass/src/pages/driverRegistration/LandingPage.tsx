@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import line_pattern_left from "../../assets/Line_Pattern_Left.png";
 import line_pattern_right from "../../assets/Line_Pattern_Right.png";
 import driver_user_icon from "../../assets/driver_user_icon.png";
+import user_01 from "../../assets/user_01.png";
+import credit_card_02 from "../../assets/credit_card_02.png";
 import request_truck_pass_icon from "../../assets/request_truck_pass_icon.png";
 import application_submit_icon from "../../assets/application_submit_icon.png";
 import verfication_icon from "../../assets/verfication_icon.png";
@@ -16,15 +19,19 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTruckPassHovered, setIsTruckPassHovered] = useState(false);
+
+
   const moveToDriverRegistration = () => {
     navigate('/driverRegistrationProcessPage/consentAndAgreementPage');
   }
 
   const streamlinedProcess = [
-    { id: 1, icon: application_submit_icon, title: t('landingPage.subApplication'), subTitle: t('landingPage.subApplicationInfo')},
-    { id: 2, icon: verfication_icon, title: t('landingPage.securityVerification'), subTitle: t('landingPage.securityVerificationInfo')},
-    { id: 3, icon: approval_issuance_icon, title: t('landingPage.approvalAndIssuance'), subTitle:t('landingPage.approvalAndIssuanceInfo')},
-    { id: 4, icon: truck_icon, title: t('landingPage.crossBorder'), subTitle: t('landingPage.crossBorderInfo')}
+    { id: 1, icon: application_submit_icon, title: t('landingPage.subApplication'), subTitle: t('landingPage.subApplicationInfo') },
+    { id: 2, icon: verfication_icon, title: t('landingPage.securityVerification'), subTitle: t('landingPage.securityVerificationInfo') },
+    { id: 3, icon: approval_issuance_icon, title: t('landingPage.approvalAndIssuance'), subTitle: t('landingPage.approvalAndIssuanceInfo') },
+    { id: 4, icon: truck_icon, title: t('landingPage.crossBorder'), subTitle: t('landingPage.crossBorderInfo') }
   ]
 
   return (
@@ -42,20 +49,45 @@ const LandingPage = () => {
           <div className="flex flex-col w-full items-center mt-14 pb-[38px] space-y-8 bg-[url('../assets/landingPage_bg.png')] h-[400px]">
             <p className="text-2xl text-[##181D27] font-[500]">{t('landingPage.getStartedToday')}</p>
             <div className="flex place-self-center space-x-10">
-              <div className="flex flex-col bg-[#FFFFFF] w-[380px] h-auto border-0 rounded-xl items-center py-7 shadow-2xl space-y-5 text-center justify-between">
-                <img src={driver_user_icon} className="h-10 border-0 p-2 rounded-md shadow-lg" />
+              <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="flex flex-col bg-[#FFFFFF] w-[380px] h-auto border border-transparent hover:border-[#006DE7] rounded-xl items-center py-7 shadow-2xl space-y-5 text-center justify-between transition duration-300 ease-in-out"
+              >
+                <img
+                  src={isHovered ? user_01 : driver_user_icon}
+                  className={`h-10 border border-[#D3E8FF] p-2 rounded-md shadow-lg transition duration-300 ease-in-out ${isHovered ? 'bg-[#006DE7]' : 'bg-[#F5F7FA]'
+                    }`}
+                  alt="Driver Icon"
+                />
+
                 <p className="font-[600]">{t('landingPage.driverRegistration')}</p>
                 <p className="text-[12px]">{t('landingPage.driverRegSubTitle')}</p>
-                <p onClick={moveToDriverRegistration} className="bg-[#006DE7] w-[90%] text-[10px] font-[600] py-[2%] text-center rounded-[5px] text-[#FFFFFF] cursor-pointer">
+                <p
+                  onClick={moveToDriverRegistration}
+                  className="bg-[#006DE7] w-[90%] text-[10px] font-[600] py-[2%] text-center rounded-[5px] text-[#FFFFFF] cursor-pointer"
+                >
                   {t('landingPage.registerAsDriver')}
                 </p>
               </div>
 
-              <div className="flex flex-col bg-[#FFFFFF] w-[380px] h-auto border-0 rounded-xl items-center py-7 shadow-2xl space-y-5 justify-between">
-                <img src={request_truck_pass_icon} className="h-10 border-0 p-2 rounded-md shadow-lg" />
+              <div
+                onMouseEnter={() => setIsTruckPassHovered(true)}
+                onMouseLeave={() => setIsTruckPassHovered(false)}
+                className="flex flex-col bg-[#FFFFFF] w-[380px] h-auto border border-transparent hover:border-[#006DE7] rounded-xl items-center py-7 shadow-2xl space-y-5 text-center justify-between transition duration-300 ease-in-out"
+              >
+                <img
+                  src={isTruckPassHovered ? credit_card_02 : request_truck_pass_icon}
+                  className={`h-10 border border-[#D3E8FF] p-2 rounded-md shadow-lg transition duration-300 ease-in-out ${isTruckPassHovered ? 'bg-[#006DE7]' : 'bg-[#F5F7FA]'}`}
+                  alt="Truck Pass Icon"
+                />
+
                 <p className="font-[600]">{t('landingPage.requestTruckPass')}</p>
                 <p className="text-[12px]">{t('landingPage.requestTruckPassSubTitle')}</p>
-                <p className="bg-[#006DE7] w-[90%] text-[10px] font-[600] py-[2%] text-center rounded-[5px] text-[#FFFFFF] cursor-pointer">
+                <p
+                  onClick={() => navigate('/truckpasslogin')}
+                  className="bg-[#006DE7] w-[90%] text-[10px] font-[600] py-[2%] text-center rounded-[5px] text-[#FFFFFF] cursor-pointer"
+                >
                   {t('landingPage.login')}
                 </p>
               </div>
@@ -84,8 +116,8 @@ const LandingPage = () => {
 
       {/* Footer */}
 
-      <footer className='text-sm text-[#717171] place-self-center pt-12 pb-6 bg-transparent font-inter'>
-        © 2025 TruckPass. All rights reserved.
+      <footer className="text-sm text-[#717171] place-self-center pt-12 pb-6 bg-transparent font-inter">
+        {t('footer.footerText')}
       </footer>
 
       {/* Footer */}

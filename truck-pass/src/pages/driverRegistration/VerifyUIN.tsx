@@ -109,8 +109,15 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
           <div className="flex flex-col bg-[#FFF7E8] border border-[#FFE7B7] space-y-2 rounded-lg p-4">
             <h2 className="text-sm font-semibold text-[#C4320A]">{t('uinVerification.uinAlreadyRegistered')}</h2>
             <div className="bg-white border border-[#FFE7B7] rounded-md px-3 py-2 flex justify-between items-center text-sm text-[#C4320A] font-semibold">
-              {t('')} <span className=" text-[#0059D4]">UIN Fetched: 276301076687</span>
-              <span className="text-[#C4320A] text-base"><img src={eye_icon} alt='eye_icon' className='h-3' /></span>
+              {t('')} <span className="text-[#0059D4] flex items-center">
+                UIN Fetched:&nbsp;{displayValue("276301076687", showUIN)}
+                <img
+                  src={showUIN ? eye_off : eye_icon}
+                  alt={showUIN ? "Hide UIN" : "Show UIN"}
+                  className={`ml-2 ${showUIN ? eyeOffIconClass : eyeIconClass}`}
+                  onClick={() => setShowUIN(prev => !prev)}
+                />
+              </span>
             </div>
             <p className="text-[12px] text-[#C4320A] font-[500]">{t('uinVerification.alreadyRegisteredInfo',)}</p>
             {/* <p className="text-[12px] text-[#ff0004] font-[500]">{t('uinVerification.alreadyRegisteredInfoTryAgain',)}</p> */}
