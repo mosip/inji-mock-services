@@ -62,7 +62,7 @@ export const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ }) => {
                 <div className="flex flex-col items-center space-y-4">
                     <img src={confirmation_icon} alt="confirmation_icon" className="h-14" />
                     <h1 className="font-semibold text-[20px]">{t('confirmationPage.registrationCompleted')}</h1>
-                    <p className="text-[18px] text-center">{t('confirmationPage.SuccessFullySubmitText')}</p>
+                    <p className="text-[15px] text-centerr">{t('confirmationPage.SuccessFullySubmitText')}</p>
 
                     <div className="w-[90%] border border-[#E2E8F0] rounded-lg p-6">
                         <div className="flex gap-x-3 items-center">

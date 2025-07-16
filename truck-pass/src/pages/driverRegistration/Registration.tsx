@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import user_photo from "../../assets/user_photo.png";
 import help_icon from "../../assets/help_icon.png";
 import registering_process from "../../assets/registering_process.gif";
@@ -24,7 +24,6 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
     const [registrationSubmitBtn, setRegistrationSubmitBtn] = useState(false);
     const [confirmationBtn, setConfirmationBtn] = useState(false);
 
-
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -34,11 +33,14 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
     }
 
     const RegistrationLoader = () => {
-        setTimeout(() => {
-            navigate('/driverRegistrationProcessPage/confirmationPagePage');
-            setRegistrationSubmitBtn(true);
-            setConfirmationBtn(true);
-        }, 4000)
+        useEffect(() => {
+            const timer = setTimeout(() => {
+                navigate('/driverRegistrationProcessPage/confirmationPagePage');
+                setRegistrationSubmitBtn(true);
+                setConfirmationBtn(true);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }, []);
 
         return (
             <div className={`flex flex-col bg-[#FFFFFF] pt-16 pb-9 w-full px-6 rounded-br-2xl rounded-tr-2xl justify-center font-inter`}>
@@ -48,7 +50,6 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                     <p>{t('registration.pleaseWait')}</p>
                 </div>
             </div>
-
         )
     };
 
@@ -77,7 +78,6 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
         setLicenseShared(true);
     }
 
-
     return (
         <div className="flex w-[63%] shadow-lg rounded-2xl place-self-center">
             <Stepper
@@ -103,7 +103,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                             </div>
                             <div className="space-y-1">
                                 <label className="flex items-center">
-                                    <p className="text-sm">{t('registration.uin')} <span className="text-[#006DE7] ">*</span> </p>
+                                    <p className="text-sm">{t('registration.uin')} <span className="text-[#006DE7] p-0">*</span> </p>
                                     <img src={help_icon} alt="help_icon" className="h-3 cursor-pointer ml-1" />
                                 </label>
                                 <input
@@ -119,7 +119,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                             </div>
                             <div className='space-y-1'>
                                 <label className="flex items-center">
-                                    <p className="text-sm">{t('registration.eMailId')} <span className="text-[#006DE7]">*</span> </p>
+                                    <p className="text-sm">{t('registration.eMailId')} <span className="text-[#006DE7] p-0">*</span> </p>
                                     <img src={help_icon} alt="help_icon" className="h-3 cursor-pointer ml-1" />
                                 </label>
                                 <input disabled value={'myemail@gmail.com'} className='bg-[#FAFAFA] text-[15px] text-[#717680] p-1.5 w-full border border-[#D5D7DA] rounded-md' />
@@ -166,14 +166,14 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                         <div className='flex items-center'>
                                             <input
                                                 id="shareViaInjiVerify"
-                                                disabled
                                                 type="radio"
                                                 value="shareViaInjiVerify"
                                                 checked={selectedOpt === 'shareViaInjiVerify'}
-                                                className='opacity-80'
+                                                
+                                                className='opacity-40'
                                                 onChange={handleEntryOptionChange}
                                             />
-                                            <label htmlFor='shareViaInjiVerify' className={`px-1 text-sm opacity-50`}>{t('registration.shareViaInjiVerify')}</label>
+                                            <label htmlFor='shareViaInjiVerify' className={`px-1 text-sm opacity-40`}>{t('registration.shareViaInjiVerify')}</label>
                                         </div>
                                     </div>
                                     <input
@@ -184,35 +184,23 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                     />
                                     {errorMsg && <p className='text-xs text-[#D92D20]'>{t('form.error.requiredFields')}</p>}
 
-                                    {/* Share through Inji-Verify block*/}
-                                    {selectedOpt === 'shareViaInjiVerify' &&
+                                    {/* Share through Inji-Verify block */}
+                                    {/* {selectedOpt === 'shareViaInjiVerify' &&
                                         <div className={`flex flex-col ${licenseShared ? 'bg-[#EFFDF5] border-[#B3F6D2]' : 'bg-[#EEF7FF] border-[#B9DDFD]'} space-y-2 h-auto border rounded-lg p-4`}>
                                             <h2 className={`text-sm font-semibold ${licenseShared ? 'text-[#007F41]' : 'text-[#006DE7]'}`}>{licenseShared ? t('registration.fetchedSuccessfully') : t('registration.shareLicenseViaInjiVerify')}</h2>
                                             <p className={`text-[12px] ${licenseShared ? 'text-[#007F41]' : 'text-[#0059D4]'} font-[500]`}>
                                                 {licenseShared ? t('registration.authenticatedSuccessfully') : t('registration.shareLicenseViaInjiVerifyInfo')}
                                             </p>
                                             {!licenseShared &&
-                                                // <QRCodeVerification
-                                                //     verifyServiceUrl="https://0358-223-185-132-139.ngrok-free.app/v1/verify"
-                                                //     onVCProcessed={(vpResult) => { console.log("VC + Status:", vpResult) }}
-                                                //     onError={handleError}
-                                                //     isEnableScan={false}
-                                                //     triggerElement={
-                                                //         <button onClick={shareViaInjiVerify}
-                                                //             className={`bg-[#006DE7] cursor-pointer"} w-[33%] text-[12px] font-[600] py-2.5 text-center rounded-[5px] text-[#FFFFFF] cursor-pointer`}>
-                                                //             {t('registration.shareBtn')}
-                                                //         </button>
-                                                //     }
-                                                // />
-                                                <button onClick={shareViaInjiVerify}
-                                                    className={`bg-[#006DE7] cursor-pointer"} w-[33%] text-[12px] font-[600] py-2.5 text-center rounded-[5px] text-[#FFFFFF] cursor-pointer`}>
+                                                <button type="button" onClick={shareViaInjiVerify}
+                                                    className={`bg-[#006DE7] cursor-pointer w-[33%] text-[12px] font-[600] py-2.5 text-center rounded-[5px] text-[#FFFFFF]`}>
                                                     {t('registration.shareBtn')}
                                                 </button>
                                             }
                                             <img src={poweredby_inji_icon} alt="poweredBy_logo" className='h-7 w-[34%] pt-1' />
                                         </div>
-                                    }
-                                    {/* Share through Inji-Verify block*/}
+                                    } */}
+                                    {/* Share through Inji-Verify block */}
 
                                     <div className='space-y-1 py-4'>
                                         <label className='flex items-center'>
@@ -223,7 +211,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                                             placeholder='e.g., Z7654321'
                                             value={passportNum}
                                             onChange={handlePassportNumChange}
-                                            className={`${!passportNum ? 'bg-[#FAFAFA] text-[#717680]' : 'bg-[#FFFFFF]'} text-[15px]  p-1.5 w-full border ${errorMsg ? 'border-[#FDA29B]' : 'border-[#D5D7DA]'} rounded-md outline-none`}
+                                            className={`${!passportNum ? 'bg-[#FAFAFA] text-[#717680]' : 'bg-[#FFFFFF]'} text-[15px] p-1.5 w-full border ${errorMsg ? 'border-[#FDA29B]' : 'border-[#D5D7DA]'} rounded-md outline-none`}
                                         />
                                         {errorMsg && <p className='text-xs text-[#D92D20]'>{t('form.error.requiredFields')}</p>}
                                     </div>
@@ -244,12 +232,12 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
                     </div>
 
                     <div className='flex space-x-2 justify-end mt-5'>
-                        <button onClick={moveToVerifyUinPage}
+                        <button type="button" onClick={moveToVerifyUinPage}
                             className={`bg-transparent w-[23%] text-xs text-[#414651] border border-[#D5D7DA] font-[600] py-2.5 text-center rounded-[5px] cursor-pointer`}>
                             {t('commans.goBack')}
                         </button>
                         {selectedOpt !== 'shareViaInjiVerify' ?
-                            <button disabled={!passportNum || !driverLicenceNum || !certificateUploaded} onClick={moveToConfirmationPage}
+                            <button type="button" disabled={!passportNum || !driverLicenceNum || !certificateUploaded} onClick={moveToConfirmationPage}
                                 className={`${(passportNum && driverLicenceNum && certificateUploaded) ? 'bg-[#006DE7] cursor-pointer' : 'bg-[#C2C2C2]'} w-[33%] text-xs font-[600] py-2.5 text-center rounded-[5px] text-[#FFFFFF]`}>
                                 {t('commans.submit')}
                             </button>
