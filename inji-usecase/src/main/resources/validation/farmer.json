@@ -1,0 +1,26 @@
+{
+    "fields": {
+        "farmerId": {
+            "type": "integer"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+        },
+        "address": {
+            "type": "string"
+        },
+        "phoneNumber": {
+            "type": "string",
+            "regex": "^[0-9]{10}$"
+        },
+        "landId": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "landId"
+    ]
+}
