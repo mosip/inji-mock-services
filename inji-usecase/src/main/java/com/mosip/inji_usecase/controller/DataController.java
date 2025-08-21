@@ -33,16 +33,11 @@ public class DataController {
     public ResponseEntity<?> retrieveDataById(@PathVariable("id") Long id) {
 
         List<Map<String, Object>> result = new ArrayList<>();
-
-        System.out.println(repositoryServices.entrySet());
         for(Map.Entry<String, RepositoryService> repository : repositoryServices.entrySet()){
 
             Optional<Map<String, Object>> entity = repository.getValue().getById(id);
-            // System.out.println("Called from DataController: " + entity);
             entity.ifPresent(object -> result.addLast(object));
-
         }
-        // System.out.println(result);
 
         return ResponseEntity.ok(result);
     }
@@ -60,15 +55,8 @@ public class DataController {
                 });
             }
 
-            // System.out.println("params:: " + params);
-            // System.out.println("criteriaList:: " + criteriaList);
-            // System.out.println("Builder:: " + builder);
-            // System.out.println("Built:: " + builder.build());
-
-
             for(Map.Entry<String, RepositoryService> repo : repositoryServices.entrySet()){
                 try{
-                    // System.out.println(repo.getKey() + " " + repo.getValue());
                     result.addAll(repo.getValue().getBySearchCriteria(builder.build()));
                 } catch (Exception e){
                     System.err.println("Search failed for repository "+repo.getKey() +": " + e.getMessage());

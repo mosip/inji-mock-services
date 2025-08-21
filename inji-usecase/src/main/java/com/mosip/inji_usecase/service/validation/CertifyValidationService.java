@@ -65,7 +65,6 @@ public class CertifyValidationService implements ValidationService{
     public void validate(Map<String, Object> data){
 
         loadConfig();
-        System.out.println("Called from CertifyValidationService");
 
         verifyFieldService.verifyRequired(data, requiredFields);
         verifyFieldService.verify(data, fields);
