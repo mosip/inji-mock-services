@@ -66,7 +66,6 @@ public class FarmerValidationService implements ValidationService{
     public void validate(Map<String, Object> data){
 
         loadConfig();
-        System.out.println("Called from FarmerValidationService");
 
         verifyFieldService.verifyRequired(data, requiredFields);
         verifyFieldService.verify(data, fields);

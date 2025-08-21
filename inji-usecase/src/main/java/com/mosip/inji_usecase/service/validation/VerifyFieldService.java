@@ -18,7 +18,6 @@ public class VerifyFieldService {
                 throw new IllegalArgumentException("Missing required field: " + field);
             }
         }
-        System.out.println("Required Fields verified");
     }
 
 
@@ -59,7 +58,7 @@ public class VerifyFieldService {
                 }
             }
             case "date" -> {
-                // TODO: Also parse ethe string into date to check validity
+                // TODO: Also parse the string into date to check validity
                 if(!(data_value instanceof String)) {
                     throw new IllegalArgumentException("Field '" + data_field + "' must be a date");
                 }
@@ -71,9 +70,6 @@ public class VerifyFieldService {
             }
             default -> throw new IllegalArgumentException("Unknown expected type for the field '" + data_field + "': " + type + "\n Possible types: string, integer, float, boolean, array, date, object");
         }
-
-
-        System.out.println("Type verified");
     };
     
 
@@ -129,9 +125,6 @@ public class VerifyFieldService {
         } else {
             throw new IllegalArgumentException("Field '" + data.getKey() + "' has no property in relation to length");
         }
-
-
-        System.out.println("Length verified");
     }
 
 
@@ -142,26 +135,18 @@ public class VerifyFieldService {
         if(!regex_pattern.matcher(data.getValue().toString()).matches()) {
             throw new IllegalArgumentException("Field '" + data.getKey() + "' does not match pattern");
         }
-        System.out.println("Regex Pattern verified");
-
     }
-
-    // TODO: Make verifyUniqueness
 
     public void verifyConditional(Map.Entry<String, Object> data, Set<String> data_keys, List<String> conditionals) {
 
         for(String conditional : conditionals){
-            System.out.println(data_keys);
-            System.out.println(data_keys.contains(conditional));
             if(!data_keys.contains(conditional)){
-                System.out.println(conditional);
                 throw new IllegalArgumentException("Field '" + data.getKey() + "' requires field(s)'" + conditionals + "'");
             }
         }
-
-        System.out.println("Conditional verified");
     }
 
+    // TODO: Implement verifyUniqueness
 
     public void verifyUniqueness() {
         System.out.println("Uniqueness verified");
@@ -176,18 +161,10 @@ public class VerifyFieldService {
                 throw new IllegalArgumentException("The field '" + data_field.getKey() + "' is not found in the configuration file");
             }
 
-            // Debugging
-            System.out.println(data_field);
-            System.out.println(fields.get(data_field.getKey()));
-            System.out.println();
-
             Map<String, Object> field_params = (Map<String, Object>) fields.get(data_field.getKey());
 
             try {
             for (Map.Entry<String, Object> field_param : field_params.entrySet()) {
-
-                // Debugging
-                System.out.println(field_param.getKey() + " " + field_param.getValue());
 
                 ValidationType type = ValidationType.fromString(field_param.getKey());
 
@@ -203,7 +180,6 @@ public class VerifyFieldService {
                 }
 
             }
-            System.out.println();
         } catch (IllegalArgumentException e){
             throw e;
         }
