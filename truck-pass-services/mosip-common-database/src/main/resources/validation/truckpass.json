@@ -1,0 +1,72 @@
+{
+  "required": [
+    "truckNumber",
+    "driverName",
+    "driverUIN"
+  ],
+  "fields": {
+    "truckNumber": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "driverName": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "driverUIN": {
+      "type": "string",
+      "maxLength": 255,
+      "unique": true
+    },
+    "phoneNumber": {
+      "type": "string",
+      "maxLength": 15,
+      "required": false
+    },
+    "gender": {
+      "type": "string",
+      "maxLength": 10,
+      "required": false,
+      "allowedValues": ["Male", "Female", "Other"]
+    },
+    "emailId": {
+      "type": "string",
+      "maxLength": 255,
+      "required": false,
+      "regex": "^[A-Za-z0-9+_.-]+@(.+)$"
+    },
+    "city": {
+      "type": "string",
+      "maxLength": 100,
+      "required": false
+    },
+    "faceImagePath": {
+      "type": "string",
+      "maxLength": 500,
+      "required": false
+    },
+    "driversLicenseNumber": {
+      "type": "string",
+      "maxLength": 50,
+      "required": false
+    },
+    "passportNumber": {
+      "type": "string",
+      "maxLength": 20,
+      "required": false
+    },
+    "passStartDate": {
+      "type": "date",
+      "required": false
+    },
+    "passEndDate": {
+      "type": "date",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "maxLength": 100,
+      "required": false
+    }
+  }
+}
