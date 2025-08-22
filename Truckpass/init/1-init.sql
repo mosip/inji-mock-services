@@ -1,0 +1,5 @@
+CREATE DATABASE certify;
+
+CREATE DATABASE farmer;
+
+CREATE DATABASE truckpass;

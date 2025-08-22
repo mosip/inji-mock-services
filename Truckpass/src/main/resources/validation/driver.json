@@ -1,0 +1,62 @@
+{
+  "fields": {
+    "id": {
+      "type": "integer"
+    },
+    "fullName": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 255
+    },
+    "uin": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 50,
+      "regex": "^[0-9]{10,16}$"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "regex": "^[+]?[0-9]{10,15}$"
+    },
+    "gender": {
+      "type": "string",
+      "regex": "^(Male|Female|Other)$"
+    },
+    "emailId": {
+      "type": "string",
+      "regex": "^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$"
+    },
+    "city": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "faceImage": {
+      "type": "string"
+    },
+    "driversLicenseNumber": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50
+    },
+    "passportNumber": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 50
+    },
+    "cpcCertificate": {
+      "type": "string"
+    },
+    "companyId": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "fullName",
+    "uin",
+    "emailId",
+    "driversLicenseNumber",
+    "passportNumber",
+    "cpcCertificate",
+    "companyId"
+  ]
+}
