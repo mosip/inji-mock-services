@@ -44,7 +44,7 @@ public class DataController {
         else return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/api/data/query")
+    @GetMapping("/api/data")
     public ResponseEntity<?> retrieveDataByQuery(@RequestParam List filterKey,
                                                 @RequestParam List operation,
                                                 @RequestParam List value,

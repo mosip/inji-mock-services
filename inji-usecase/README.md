@@ -92,11 +92,11 @@ The various validation parameters that can be used in the configuration file are
 The requests sent at ```GET /api/data/{id}``` will go through every database thats been configured and look up at the ID for each table. If multiple matching IDs are found in each database, then it will return a list of Map<String, Object> as response. If none is found, an empty list is returned.  
 The implementation for the look up is under ```/src/main/java/com/mosip/inji_usecase/service/repository/```
 
-### ```GET /api/data/query```
+### ```GET /api/data```
 Reference used: https://medium.com/@cmmapada/advanced-search-and-filtering-using-spring-data-jpa-specification-and-criteria-api-b6e8f891f2bf
 The requests sent at ```GET /api/data/query``` goes through a multi-step process. The request body must contain a valid pre-defined key:value pair. An example is given below
 ```
-http://localhost:8080/api/data/query?filterKey=name&operation=cn&value=z&dataOption=all&filterKey=pin_code&operation=eq&value=123456
+http://localhost:8080/api/data?filterKey=name&operation=cn&value=z&dataOption=all&filterKey=pin_code&operation=eq&value=123456
 ```
 It must contain a list of criteria objects.  
 The valid operations with their respective meanings are:
@@ -122,7 +122,7 @@ Valid dataOptions are:
 all
 any
 ```
-The implementation for GET /api/data/query is found in ```/src/main/java/com/mosip/inji_usecase/service/query```
+The implementation for GET /api/data is found in ```/src/main/java/com/mosip/inji_usecase/service/query```
 
 ## Adding an Use-case
 2 example use-cases have been implemented in this application, namely Certify and Farmer
@@ -142,7 +142,8 @@ The following files, folders have to modified/added for adding an use-case
 │   │   │           └── inji_usecase
 │   │   │               ├── config
 │   │   │               │   ├── FarmerConfiguration.java
-|   |   |                   └── ExampleConfiguration.java             --Add your configuration here
+│   │   │               │   ├── JpaConfigHelper.java
+|   |   |               |   └── ExampleConfiguration.java             --Add your configuration here
 │   │   │               ├── dto
 │   │   │               │   ├── farmer
 │   │   │               │   |   └── FarmerDto.java
