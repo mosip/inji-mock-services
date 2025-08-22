@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -35,17 +34,18 @@ public class FarmerConfiguration {
             @Qualifier("farmerDataSource") DataSource dataSource,
             EntityManagerFactoryBuilder builder) {
 
-        return builder
-                .dataSource(dataSource)
-                .packages("com.mosip.inji_usecase.entity.farmer")
-                .persistenceUnit("farmer")
-                .build();
+        return JpaConfigHelper.createEntityManagerFactory(
+                builder,
+                dataSource,
+                "com.mosip.inji_usecase.entity.farmer",
+                "farmer");
+
     }
 
     @Bean
     public PlatformTransactionManager farmerTransactionManager(
             @Qualifier("farmerEntityManager") EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
+        return JpaConfigHelper.createTransactionManager(emf);
     }
 
 }

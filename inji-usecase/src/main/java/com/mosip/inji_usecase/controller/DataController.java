@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mosip.inji_usecase.service.query.SearchCriteria;
@@ -29,7 +30,7 @@ public class DataController {
     private final Map<String, ValidationService> validationServices;
     private final Map<String, RepositoryService> repositoryServices;
 
-    @GetMapping("/api/data/retrieve/{id}")
+    @GetMapping("/api/data/{id}")
     public ResponseEntity<?> retrieveDataById(@PathVariable("id") Long id) {
 
         List<Map<String, Object>> result = new ArrayList<>();
@@ -39,11 +40,26 @@ public class DataController {
             entity.ifPresent(object -> result.addLast(object));
         }
 
-        return ResponseEntity.ok(result);
+        if(result.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found for ID: " + id);
+        else return ResponseEntity.ok(result);
     }
 
     @GetMapping("/api/data/query")
-    public ResponseEntity<?> retrieveDataByQuery(@RequestBody SearchDto params) {
+    public ResponseEntity<?> retrieveDataByQuery(@RequestParam List filterKey,
+                                                @RequestParam List operation,
+                                                @RequestParam List value,
+                                                @RequestParam(required = false) String dataOption){
+
+        List<SearchCriteria> criterias = new ArrayList<>();
+        for(int i = 0; i < filterKey.size(); i++){
+            SearchCriteria criteria = new SearchCriteria();
+            criteria.setFilterKey(filterKey.get(i).toString());
+            criteria.setOperation(operation.get(i).toString());
+            criteria.setValue(value.get(i).toString());
+            criteria.setDataOption(dataOption);
+            criterias.add(criteria);
+        }
+        SearchDto params = new SearchDto(criterias, dataOption);
         List<Map<String, Object>> result = new ArrayList<>();
             SpecificationBuilder<?> builder = new SpecificationBuilder<>();
             List<SearchCriteria> criteriaList = params.getSearchCriteria();
@@ -63,11 +79,14 @@ public class DataController {
                 }
             }
 
-        return ResponseEntity.ok(result);
+        if(result.isEmpty()) 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found for the given query criteria");
+        else
+            return ResponseEntity.ok(result);
 
     }
 
-    @PostMapping("/api/data/ingest")
+    @PostMapping("/api/data")
     public ResponseEntity<?> ingestData(
         @RequestHeader(name = "x-source") String dataSource,
         @RequestBody Map<String, Object> data) 

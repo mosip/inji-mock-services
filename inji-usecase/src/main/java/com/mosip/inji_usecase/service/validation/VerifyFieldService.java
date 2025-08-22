@@ -149,7 +149,6 @@ public class VerifyFieldService {
     // TODO: Implement verifyUniqueness
 
     public void verifyUniqueness() {
-        System.out.println("Uniqueness verified");
     }
 
 
@@ -183,8 +182,6 @@ public class VerifyFieldService {
         } catch (IllegalArgumentException e){
             throw e;
         }
-
-
         }
 
     }

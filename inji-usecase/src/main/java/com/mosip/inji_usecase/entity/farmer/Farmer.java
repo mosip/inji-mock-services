@@ -9,9 +9,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "farmer_entity", schema = "farmer")
+@Table(name = "farmer", schema = "farmer")
 @Data
-public class FarmerEntity {
+public class Farmer {
 
 
     @Id

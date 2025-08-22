@@ -1,3 +1,1 @@
-CREATE DATABASE certify;
-
 CREATE DATABASE farmer;

@@ -1,76 +1,15 @@
 package com.mosip.inji_usecase.service.validation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Service("farmerValidationService")
-public class FarmerValidationService implements ValidationService{
+public class FarmerValidationService extends AbstractValidationService {
 
-    private final VerifyFieldService verifyFieldService;
+    private static final Logger logger = LoggerFactory.getLogger(FarmerValidationService.class);
 
     public FarmerValidationService(VerifyFieldService verifyFieldService) {
-        this.verifyFieldService = verifyFieldService;
+        super(verifyFieldService, "validation/farmer.json", logger);
     }
-
-    private Set<String> requiredFields;
-
-    private Map<String, Object> fields;
-
-    private Map<String, Object> readConfig(InputStream in) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.readValue(in, new TypeReference<Map<String, Object>>() {
-            });
-        } catch (IOException e) {
-            System.out.println("Given file is empty or invalid");
-            return Collections.emptyMap();
-        }
-    }
-
-    private void loadConfig() {
-
-        try {
-            InputStream in = getClass().getClassLoader().getResourceAsStream("validation/farmer.json");
-            if (in == null) {
-                throw new RuntimeException("Config file not found: validation/farmer.json");
-            }
-            Map<String, Object> config = readConfig(in);
-
-            requiredFields = new HashSet<>((List<String>) config.get("required"));
-
-            fields = new HashMap<>();
-            Map<String, Object> f = (Map<String, Object>) config.get("fields");
-            for (Map.Entry<String, Object> entry : f.entrySet()) {
-                fields.put(entry.getKey(), entry.getValue());
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load config for CertifyValidationService", e);
-        }
-
-
-    }
-
-    @Override
-    public void validate(Map<String, Object> data){
-
-        loadConfig();
-
-        verifyFieldService.verifyRequired(data, requiredFields);
-        verifyFieldService.verify(data, fields);
-
-        System.out.println("FarmerValidationService: Validation Passed!");
-    }
-    
 }

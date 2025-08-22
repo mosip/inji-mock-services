@@ -7,22 +7,25 @@ import org.mapstruct.Mapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mosip.inji_usecase.dto.farmer.FarmerDto;
-import com.mosip.inji_usecase.entity.farmer.FarmerEntity;
+import com.mosip.inji_usecase.entity.farmer.Farmer;
 import com.mosip.inji_usecase.mapper.MappingUtils;
 
+
 @Mapper(componentModel = "spring", uses = MappingUtils.class)
-public interface FarmerMapper {
+public interface FarmerMapper extends com.mosip.inji_usecase.mapper.Mapper<Farmer, FarmerDto> {
 
-    FarmerDto toDto(Map<String, Object> farmerMapObject);
+    @Override
+    FarmerDto toDto(Farmer entity);
 
-    FarmerDto toDto(FarmerEntity farmerMapObject);
+    @Override
+    Farmer toEntity(FarmerDto dto);
 
-    FarmerEntity toEntity(FarmerDto farmerDto);
+    @Override
+    FarmerDto toDto(Map<String, Object> map);
 
-    default Map<String, Object> toMap(FarmerDto farmerDto) {
+    @Override
+    default Map<String, Object> toMap(FarmerDto dto) {
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = objectMapper.convertValue(farmerDto, new TypeReference<>() {});
-        return map;
+        return objectMapper.convertValue(dto, new TypeReference<Map<String, Object>>() {});
     }
-
 }

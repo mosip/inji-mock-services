@@ -7,11 +7,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public interface RepositoryService<T> {
+public interface RepositoryService<T, ID> {
 
     public Map<String, Object> save(Map<String, Object> obj);
 
-    public Optional<Map<String, Object>> getById(Long id);
+    public Optional<Map<String, Object>> getById(ID id);
     
     public List<Map<String, Object>> getBySearchCriteria(Specification<T> spec);
 

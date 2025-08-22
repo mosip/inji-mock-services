@@ -16,8 +16,7 @@ ProjectDir
 ├── HELP.md
 ├── init
 │   ├── 1-init.sql
-│   ├── 2-certify-schema.sql
-│   └── 3-farmer-schema.sql
+│   └── 2-farmer-schema.sql
 ├── mvnw
 ├── mvnw.cmd
 ├── pom.xml
@@ -27,31 +26,22 @@ ProjectDir
 │   │   │   └── com
 │   │   │       └── mosip
 │   │   │           └── inji_usecase
-│   │   │               ├── InjiApplication.java
+│   │   │               ├── InjiDataCreationApp.java
 │   │   │               ├── config
-│   │   │               │   ├── CertifyConfiguration.java
 │   │   │               │   └── FarmerConfiguration.java
 │   │   │               ├── controller
 │   │   │               │   └── DataController.java
 │   │   │               ├── dto
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyDto.java
 │   │   │               │   └── farmer
 │   │   │               │       └── FarmerDto.java
 │   │   │               ├── entity
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyEntity.java
 │   │   │               │   └── farmer
 │   │   │               │       └── FarmerEntity.java
 │   │   │               ├── mapper
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyMapper.java
 │   │   │               │   ├── farmer
 │   │   │               │   │   └── FarmerMapper.java
 │   │   │               │   └── MappingUtils.java
 │   │   │               ├── repository
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyRepository.java
 │   │   │               │   └── farmer
 │   │   │               │       └── FarmerRepository.java
 │   │   │               └── service
@@ -62,11 +52,9 @@ ProjectDir
 │   │   │                   │   ├── SearchOperation.java
 │   │   │                   │   └── SpecificationBuilder.java
 │   │   │                   ├── repository
-│   │   │                   │   ├── CertifyRepositoryService.java
 │   │   │                   │   ├── FarmerRepositoryService.java
 │   │   │                   │   └── RepositoryService.java
 │   │   │                   └── validation
-│   │   │                       ├── CertifyValidationService.java
 │   │   │                       ├── FarmerValidationService.java
 │   │   │                       ├── ValidationService.java
 │   │   │                       ├── ValidationType.java
@@ -77,7 +65,6 @@ ProjectDir
 │   │       ├── static
 │   │       ├── templates
 │   │       └── validation
-│   │           ├── certify.json
 │   │           └── farmer.json
 ```
 The project mostly follows Java Spring Boot structure.
@@ -85,8 +72,8 @@ The implementation for GET /api/data/query is found in ```/src/main/java/com/mos
 The configuration files for various services can be found under ```/src/main/resources/validation```
 
 ## Endpoints
-### ```POST /api/data/ingest```
-The requests sent at ```POST /api/data/ingest``` goes through validation layer before being saved. The endpoint receives a JSON object in the BODY with a custom HEADER ```x-source``` that tells clarifies which service it came from. Currently it accepts ```certify``` and ```farmer```.  
+### ```POST /api/data```
+The requests sent at ```POST /api/data``` goes through validation layer before being saved. The endpoint receives a JSON object in the BODY with a custom HEADER ```x-source``` that tells clarifies which service it came from. Currently it accepts ```farmer```.  
 Validation is handled by ValidationService which maps it to the correct validation service, whether Certify or Farmer based on the source.  
 The implementation for validation is found under ```/src/main/java/com/mosip/inji_usecase/service/validation/```. Config file for the respective service must be under ```/src/main/resources/validation```  
 After validation is passed with no errors, it will then be saved by the respective RepositoryService which will save it to the correct database, based on the ```x-source```
@@ -101,29 +88,15 @@ The various validation parameters that can be used in the configuration file are
     unique          -- whether the object is unique or not       (TODO)
 ```
 
-### ```GET /api/data/retrieve/{id}```
-The requests sent at ```GET /api/data/retrieve/{id}``` will go through every database thats been configured and look up at the ID for each table. If multiple matching IDs are found in each database, then it will return a list of Map<String, Object> as response. If none is found, an empty list is returned.  
+### ```GET /api/data/{id}```
+The requests sent at ```GET /api/data/{id}``` will go through every database thats been configured and look up at the ID for each table. If multiple matching IDs are found in each database, then it will return a list of Map<String, Object> as response. If none is found, an empty list is returned.  
 The implementation for the look up is under ```/src/main/java/com/mosip/inji_usecase/service/repository/```
 
 ### ```GET /api/data/query```
 Reference used: https://medium.com/@cmmapada/advanced-search-and-filtering-using-spring-data-jpa-specification-and-criteria-api-b6e8f891f2bf
-The requests sent at ```GET /api/data/query``` goes through a multi-step process. The request body must contain a valid pre-defined layout. An example is given below
+The requests sent at ```GET /api/data/query``` goes through a multi-step process. The request body must contain a valid pre-defined key:value pair. An example is given below
 ```
-{
-    "dataOption":"all",
-    "searchCriteria":[
-       {
-          "filterKey":"landId",
-          "operation":"bn",
-          "value":"dey"
-       },
-        {
-          "filterKey":"name",
-          "operation":"cn",
-          "value":"De"
-       }
-    ]
-}
+http://localhost:8080/api/data/query?filterKey=name&operation=cn&value=z&dataOption=all&filterKey=pin_code&operation=eq&value=123456
 ```
 It must contain a list of criteria objects.  
 The valid operations with their respective meanings are:
@@ -168,34 +141,26 @@ The following files, folders have to modified/added for adding an use-case
 │   │   │       └── mosip
 │   │   │           └── inji_usecase
 │   │   │               ├── config
-│   │   │               │   ├── CertifyConfiguration.java
 │   │   │               │   ├── FarmerConfiguration.java
 |   |   |                   └── ExampleConfiguration.java             --Add your configuration here
 │   │   │               ├── dto
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyDto.java
 │   │   │               │   ├── farmer
 │   │   │               │   |   └── FarmerDto.java
 │   │   │               │   └── example                                --Add your dto here
 │   │   │               │       └── ExampleDto.java
 │   │   │               ├── entity
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyEntity.java
 │   │   │               │   ├── farmer
 │   │   │               │   │   └── FarmerEntity.java
 │   │   │               │   └── example                                --Add your entity here
 │   │   │               │       └── ExampleEntity.java
 │   │   │               ├── mapper
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyMapper.java
+│   │   │               │   ├── Mapper
 │   │   │               │   ├── farmer
 │   │   │               │   │   └── FarmerMapper.java
 │   │   │               │   ├── example                                --Add your mapper here
 │   │   │               │   │   └── ExampleMapper.java
 │   │   │               │   └── MappingUtils.java
 │   │   │               ├── repository
-│   │   │               │   ├── certify
-│   │   │               │   │   └── CertifyRepository.java
 │   │   │               │   ├── farmer
 │   │   │               │   │   └── FarmerRepository.java
 │   │   │               │   └── example                                --Add your repository here
@@ -203,14 +168,14 @@ The following files, folders have to modified/added for adding an use-case
 │   │   │               └── service
 │   │   │                   ├── query
 │   │   │                   ├── repository
-│   │   │                   │   ├── CertifyRepositoryService.java
+│   │   │                   │   ├── AbstractRepositoryService.java
 │   │   │                   │   ├── FarmerRepositoryService.java
 │   │   │                   │   ├── ExampleRepositoryService.java        --Add your repository service here
 │   │   │                   │   └── RepositoryService.java
 │   │   │                   └── validation
-│   │   │                       ├── CertifyValidationService.java
 │   │   │                       ├── FarmerValidationService.java
 │   │   │                       ├── ExampleValidationService.java        --Add your validation service here
+│   │   │                       ├── AbstractValidationService.java
 │   │   │                       ├── ValidationService.java
 │   │   │                       ├── ValidationType.java
 │   │   │                       └── VerifyFieldService.java
@@ -220,7 +185,6 @@ The following files, folders have to modified/added for adding an use-case
 │   │       ├── static
 │   │       ├── templates
 │   │       └── validation
-│   │           ├── certify.json
 │   │           ├── farmer.json
 │   │           └── example.json                                        --Add your validtion configuration here
                       
