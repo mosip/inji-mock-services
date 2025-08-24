@@ -39,7 +39,10 @@ public class CriteriaSpecification<T> implements Specification<T>{
         Path<?> path = root.get(searchCriteria.getFilterKey());
         Class<?> fieldType = path.getJavaType();
         String operation = searchCriteria.getOperation();
-        Object castedValue = castToFieldType(fieldType, searchCriteria.getValue().toString());
+        Object castedValue = null;
+        if (searchCriteria.getValue() != null) {
+            castedValue = castToFieldType(fieldType, searchCriteria.getValue().toString());
+        }
 
         switch (Objects.requireNonNull(SearchOperation.getSimpleOperation(operation))) {
             case CONTAINS:

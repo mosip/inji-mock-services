@@ -43,8 +43,8 @@ public class VerifyFieldService {
                 }
             }
             case "float" -> {
-                if(!(data_value instanceof Float) && (data_value instanceof Double)) {
-                    throw new IllegalArgumentException("Field '" + data_field + "' must be a float or double");
+                if(!(data_value instanceof Float) && !(data_value instanceof Double)) {
+                    throw new IllegalArgumentException("Field '" + data_field + "' must be a float");
                 }
             }
             case "boolean" -> {
@@ -109,9 +109,10 @@ public class VerifyFieldService {
                 throw new IllegalArgumentException("Field '" + data.getKey() + "' failed length validation for integer/long");
             }
 
-        } else if ((data_value instanceof Float) || (data_value instanceof  Double)) {
+        } else if ((data_value instanceof Float) || (data_value instanceof Double)) {
 
-            if(!type.compare((int)data_value, limit)) {
+            double value = ((Number) data_value).doubleValue();
+            if (!type.compare((int) value, limit)) {
                 throw new IllegalArgumentException("Field '" + data.getKey() + "' failed length validation for float/double");
             }
 
