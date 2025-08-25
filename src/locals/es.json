@@ -1,0 +1,172 @@
+{
+  "navbar": {
+    "home": "Inicio",
+    "help": "Ayuda"
+  },
+  "footer": {
+    "footerText": "© 2025 TruckPass. Todos los derechos reservados."
+  },
+  "landingPage": {
+    "landingPageTitle": "Sistema Digital de Pase para Camiones Transfronterizos",
+    "landingPageSubTitle": "Optimice el transporte transfronterizo con nuestro sistema digital de pases seguro y eficaz. Reduzca tiempos de espera, mejore la seguridad y simplifique la documentación para todos los actores.",
+    "getStartedToday": "Comienza hoy",
+    "driverRegistration": "Registro de Conductores",
+    "driverRegSubTitle": "Auto-registro para conductores y operadores independientes.",
+    "registerAsDriver": "Regístrate como Conductor",
+    "requestTruckPass": "Solicitar Pase de Camión",
+    "requestTruckPassSubTitle": "Lorem ipsum dolor sit amet consectetur.",
+    "login": "Iniciar sesión",
+    "howItWorks": "Cómo Funciona",
+    "landingPageInfo": "Nuestro proceso optimizado hace que el transporte transfronterizo sea simple y seguro.",
+    "subApplication": "Enviar Solicitud",
+    "subApplicationInfo": "Complete el formulario digital con la documentación requerida e información del vehículo.",
+    "securityVerification": "Verificación de Seguridad",
+    "securityVerificationInfo": "Nuestro sistema realiza controles automatizados y valida los documentos presentados.",
+    "approvalAndIssuance": "Aprobación y Emisión",
+    "approvalAndIssuanceInfo": "Reciba su pase digital con código QR y número de seguimiento para el cruce fronterizo.",
+    "crossBorder": "Cruce Fronterizo",
+    "crossBorderInfo": "Presente su pase digital en los puntos de control para un cruce rápido y seguro."
+  },
+  "driverRegistrationProcess": {
+    "processMainTitle": "Registro de Transporte Transfronterizo",
+    "respDescription": "Regístrese como Conductor Profesional de Camiones"
+  },
+  "stepper": {
+    "registrationProcess": "Proceso de Registro",
+    "consentAndAgreement": "Consentimiento y Acuerdo",
+    "selectCompany": "Seleccionar Empresa",
+    "uinVerification": "Verificación UIN",
+    "registration": "Registro",
+    "submitApplication": "Enviar Solicitud",
+    "confirmation": "Confirmación"
+  },
+  "consentAndAgreementPage": {
+    "consentAndAgreementTitle": "Consentimiento y Acuerdo",
+    "consentAndAgreementDesc": "Lea y acepte los términos para continuar con su registro.",
+    "termsAndConditions": "Términos y Condiciones",
+    "termsAndConditionsInfo": "Consulte nuestros términos y condiciones para conductores profesionales de camión.",
+    "consentPara1": "Consiento la recopilación y uso de mis datos personales para recibir un pase de demostración TruckPass.",
+    "consentPara2": "Entiendo que mis datos se usarán solo para demostración y no se compartirán fuera de este contexto.",
+    "getStarted": "Comenzar"
+  },
+  "selectCompany": {
+    "activeAndValid": "Activo y Válido",
+    "commercialTransport": "Transporte Comercial",
+    "selectRegisteredTransportCompany": "Seleccione una Empresa de Transporte Registrada",
+    "chooseCompanyDesc": "Elija la empresa de transporte con la que desea registrarse como conductor profesional.",
+    "description": "Buscar empresa de transporte",
+    "inputPlaceholder": "Empiece a escribir para buscar empresas",
+    "companyDetails": "Detalles de la empresa",
+    "selected": "Seleccionado:",
+    "licenseStatus": "Estado de licencia:",
+    "registrationType": "Tipo de registro:",
+    "companyNames": {
+      "transGlobal1": "TransGlobal Company 1",
+      "transGlobal2": "TransGlobal Company 2",
+      "transGlobal3": "TransGlobal Company 3",
+      "transGlobal4": "TransGlobal Company 4",
+      "transGlobalLogistics": "TransGlobal Logistics Ltd.",
+      "globalExpress": "Global Express Transport",
+      "internationalFreight": "International Freight Solutions"
+    }
+  },
+  "uinVerification": {
+    "uinVerification": "Verificación UIN",
+    "readyForVerfication": "Listo para Verificar",
+    "verifiedSuccessFully": "Verificado con Éxito",
+    "verificationReadyInfo": "Haga clic para verificar su UIN mediante eSignet.",
+    "verifiedInfo": "Sus datos han sido verificados. Continúe al siguiente paso.",
+    "verifyBtn": "Verificar",
+    "uinAlreadyRegistered": "UIN ya registrado",
+    "alreadyRegisteredInfo": "Ya existe un conductor con este UIN en el sistema TruckPass.",
+    "fetchmsg": "UIN Obtenido"
+  },
+  "registration": {
+    "personalInformation": "Información personal",
+    "fullName": "Nombre completo",
+    "uin": "Número de Identificación Único (UIN)",
+    "gender": "Género",
+    "eMailId": "Correo electrónico",
+    "phNum": "Número de teléfono",
+    "city": "Ciudad",
+    "additionalInfo": "Información adicional",
+    "provideInfo": "Proporcione toda la información requerida.",
+    "driverLicenseNum": "Número de licencia de conductor",
+    "manualEntry": "Entrada manual",
+    "shareViaInjiVerify": "Compartir vía Inji Verify",
+    "shareLicenseViaInjiVerify": "Compartir licencia mediante Inji Verify",
+    "shareLicenseViaInjiVerifyInfo": "Haga clic para compartir su licencia por VP Flow. El número se recuperará automáticamente.",
+    "shareBtn": "Compartir",
+    "fetchedSuccessfully": "Licencia obtenida con éxito",
+    "authenticatedSuccessfully": "Sus datos han sido autenticados. Continúe.",
+    "passportNum": "Número de pasaporte",
+    "cpc": "Certificado de Competencia Profesional (CPC)",
+    "registering": "Registrando",
+    "pleaseWait": "Espere por favor!"
+  },
+  "certificationUploadSec": {
+    "cpc": "Certificado de Competencia Profesional (CPC)",
+    "clickToBrowse": "o haga clic para buscar",
+    "uploadCertificateInfo": "Cargue un archivo en formato PNG o PDF, tamaño máximo 5 MB",
+    "uploadViaInjiVerifyCertificateInfo": "PNG o PDF (máx. 1 MB)",
+    "failed": "Falló",
+    "changeFile": "Cambiar archivo"
+  },
+  "confirmationPage": {
+    "registrationCompleted": "¡Registro completado!",
+    "SuccessFullySubmitText": "Todo listo. Su registro fue exitoso, y un correo de confirmación está en camino.",
+    "driverSummary": "Resumen del conductor",
+    "registrationDetailsInfo": "Detalles de registro para {{driverName}}",
+    "fullName": "Nombre completo:",
+    "uin": "UIN:",
+    "gender": "Género:",
+    "email": "Correo electrónico:",
+    "phoneNumber": "Número de teléfono:",
+    "city": "Ciudad:",
+    "transportCompany": "Empresa de transporte:",
+    "licenseNum": "Número de licencia:",
+    "passportNumber": "Número de pasaporte:",
+    "cpcCertificate": "Certificado CPC:",
+    "startNewRegistrationBtn": "Iniciar nuevo registro",
+    "hideDetails": "Ocultar detalles",
+    "showDetails": "Mostrar detalles",
+    "fileUploaded": "Archivo subido"
+  },
+  "successPopUp": {
+    "header": "¡Registro exitoso!",
+    "desc": "Registro de conductor completado con éxito."
+  },
+  "commans": {
+    "inProgress": "En curso",
+    "completed": "Completado",
+    "continue": "Continuar",
+    "goBack": "Regresar",
+    "submit": "Enviar",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "upload": {
+    "error": {
+      "unsupportedFileType": "Tipo de archivo no admitido. Solo PNG o PDF.",
+      "fileSizeExceeded": "El archivo excede el límite de 5 MB."
+    }
+  },
+  "form": {
+    "error": {
+      "requiredFields": "Complete todos los campos obligatorios correctamente antes de enviar."
+    }
+  },
+  "common": {
+    "gender": {
+      "male": "Hombre",
+      "female": "Mujer",
+      "other": "Otro"
+    },
+    "cities": {
+      "chandigarh": "Chandigarh"
+    },
+    "status": {
+      "fileUploaded": "Archivo subido"
+    }
+  },
+  "errors": {}
+}

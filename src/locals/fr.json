@@ -1,0 +1,167 @@
+{
+  "navbar": {
+    "home": "Accueil",
+    "help": "Aide"
+  },
+  "footer": {
+    "footerText": "© 2025 TruckPass. Tous droits réservés."
+  },
+  "landingPage": {
+    "landingPageTitle": "Système de Passe Numérique pour Camions Transfrontaliers",
+    "landingPageSubTitle": "Rationalisez le transport transfrontalier avec notre système de passe numérique sécurisé et efficace. Réduisez les temps d'attente, améliorez la sécurité et simplifiez la documentation pour toutes les parties prenantes.",
+    "getStartedToday": "Commencer aujourd'hui",
+    "driverRegistration": "Enregistrement du Conducteur",
+    "driverRegSubTitle": "Auto-enregistrement pour les conducteurs et opérateurs indépendants.",
+    "registerAsDriver": "S'enregistrer en tant que conducteur",
+    "requestTruckPass": "Demander un Truck Pass",
+    "requestTruckPassSubTitle": "Lorem ipsum dolor sit amet consectetur.",
+    "login": "Se connecter",
+    "howItWorks": "Comment ça marche",
+    "landingPageInfo": "Notre processus simplifié rend le transport transfrontalier simple et sécurisé.",
+    "subApplication": "Soumettre la demande",
+    "subApplicationInfo": "Remplissez le formulaire de demande numérique avec les documents requis et les informations sur le véhicule.",
+    "securityVerification": "Vérification de sécurité",
+    "securityVerificationInfo": "Notre système effectue des contrôles de sécurité automatisés et la validation des documents soumis.",
+    "approvalAndIssuance": "Approbation et Délivrance",
+    "approvalAndIssuanceInfo": "Recevez votre passe numérique avec un code QR et un numéro de suivi pour le passage à la frontière.",
+    "crossBorder": "Passage de Frontière",
+    "crossBorderInfo": "Présentez votre passe numérique aux points de contrôle pour un passage rapide et sécurisé."
+  },
+  "driverRegistrationProcess": {
+    "processMainTitle": "Enregistrement de Transport Transfrontalier",
+    "respDescription": "S'enregistrer en tant que Conducteur de Camion Professionnel"
+  },
+  "stepper": {
+    "registrationProcess": "Processus d'Enregistrement",
+    "consentAndAgreement": "Consentement & Accord",
+    "selectCompany": "Sélectionner une Entreprise",
+    "uinVerification": "Vérification UIN",
+    "registration": "Enregistrement",
+    "submitApplication": "Soumettre la demande",
+    "confirmation": "Confirmation"
+  },
+  "consentAndAgreementPage": {
+    "consentAndAgreementTitle": "Consentement & Accord",
+    "consentAndAgreementDesc": "Veuillez lire et accepter les conditions suivantes pour continuer votre enregistrement.",
+    "termsAndConditions": "Conditions générales",
+    "termsAndConditionsInfo": "Veuillez consulter nos conditions générales pour les conducteurs de camions professionnels.",
+    "consentPara1": "Je consens à la collecte et à l'utilisation de mes informations personnelles dans le but de m'enregistrer pour recevoir un TruckPass de démonstration.",
+    "consentPara2": "Je comprends que mes données ne seront utilisées qu'à des fins de démonstration et ne seront pas partagées en dehors de ce contexte.",
+    "getStarted": "Commencer"
+  },
+  "selectCompany": {
+    "activeAndValid": "Actif et Valide",
+    "commercialTransport": "Transport Commercial",
+    "selectRegisteredTransportCompany": "Sélectionner une Entreprise de Transport Enregistrée",
+    "chooseCompanyDesc": "Choisissez l'entreprise de transport avec laquelle vous souhaitez vous enregistrer en tant que conducteur professionnel.",
+    "description": "Rechercher une entreprise de transport",
+    "inputPlaceholder": "Commencez à taper pour rechercher des entreprises",
+    "companyDetails": "Détails de l'entreprise",
+    "selected": "Sélectionné :",
+    "licenseStatus": "Statut de la licence :",
+    "registrationType": "Type d'enregistrement :",
+    "companyNames": {
+      "transGlobal1": "TransGlobal Société 1",
+      "transGlobal2": "TransGlobal Société 2",
+      "transGlobal3": "TransGlobal Société 3",
+      "transGlobal4": "TransGlobal Société 4",
+      "transGlobalLogistics": "TransGlobal Logistique SARL",
+      "globalExpress": "Global Express Transport",
+      "internationalFreight": "Solutions de Fret International"
+    }
+  },
+  "uinVerification": {
+    "uinVerification": "Vérification UIN",
+    "readyForVerfication": "Prêt pour vérification",
+    "verifiedSuccessFully": "Vérifié avec succès",
+    "verificationReadyInfo": "Cliquez sur le bouton ci-dessous pour vérifier votre UIN avec eSignet.",
+    "verifiedInfo": "Vos informations ont été vérifiées. Veuillez passer à l'étape suivante.",
+    "verifyBtn": "Vérifier",
+    "uinAlreadyRegistered": "UIN déjà enregistré",
+    "alreadyRegisteredInfo": "Un conducteur avec cet UIN est déjà enregistré dans le système TruckPass.",
+    "fetchmsg": "UIN récupéré"
+  },
+  "registration": {
+    "personalInformation": "Informations personnelles",
+    "fullName": "Nom complet",
+    "uin": "Numéro d'identification unique (UIN)",
+    "gender": "Sexe",
+    "eMailId": "Adresse e-mail",
+    "phNum": "Numéro de téléphone",
+    "city": "Ville",
+    "additionalInfo": "Informations supplémentaires",
+    "provideInfo": "Veuillez fournir toutes les informations requises.",
+    "driverLicenseNum": "Numéro de permis de conduire",
+    "manualEntry": "Saisie manuelle",
+    "shareViaInjiVerify": "Partager via Inji Verify",
+    "shareLicenseViaInjiVerify": "Partager le permis via Inji Verify",
+    "shareLicenseViaInjiVerifyInfo": "Cliquez pour partager votre permis via VP Flow. Le numéro sera automatiquement récupéré.",
+    "shareBtn": "Partager",
+    "fetchedSuccessfully": "Permis récupéré avec succès",
+    "authenticatedSuccessfully": "Vos informations ont été authentifiées. Veuillez continuer.",
+    "passportNum": "Numéro de passeport",
+    "cpc": "Certificat de compétence professionnelle (CPC)",
+    "registering": "Enregistrement en cours",
+    "pleaseWait": "Veuillez patienter !",
+    "Dgender": "Homme"
+  },
+  "certificationUploadSec": {
+    "cpc": "Certificat de compétence professionnelle (CPC)",
+    "clickToBrowse": " ou cliquez pour parcourir",
+    "uploadCertificateInfo": "Veuillez télécharger un document au format PNG ou PDF, taille maximale 5 Mo",
+    "uploadViaInjiVerifyCertificateInfo": "PNG ou PDF (taille max : 1 Mo)",
+    "failed": "Échec",
+    "changeFile": "Changer de fichier"
+  },
+  "confirmationPage": {
+    "registrationCompleted": "Inscription terminée !",
+    "SuccessFullySubmitText": "Votre inscription a été effectuée avec succès. Un e-mail de confirmation est en route vers votre boîte de réception.",
+    "driverSummary": "Résumé du conducteur",
+    "registrationDetailsInfo": "Détails d'enregistrement pour {{driverName}}",
+    "fullName": "Nom complet :",
+    "uin": "UIN :",
+    "gender": "Sexe :",
+    "email": "E-mail :",
+    "phoneNumber": "Numéro de téléphone :",
+    "city": "Ville :",
+    "transportCompany": "Entreprise de transport :",
+    "licenseNum": "Numéro de permis :",
+    "passportNumber": "Numéro de passeport :",
+    "cpcCertificate": "Certificat CPC :",
+    "startNewRegistrationBtn": "Commencer une nouvelle inscription",
+    "hideDetails": "Masquer les détails",
+    "showDetails": "Afficher les détails",
+    "fileUploaded": "Fichier téléversé"
+  },
+  "successPopUp": {
+    "header": "Inscription réussie !",
+    "desc": "Inscription du conducteur réussie."
+  },
+  "commans": {
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "continue": "Continuer",
+    "goBack": "Retour",
+    "submit": "Soumettre",
+    "tryAgain": "Réessayer"
+  },
+  "upload": {
+    "error": {
+      "unsupportedFileType": "Type de fichier non pris en charge. Veuillez télécharger uniquement des fichiers PDF ou PNG.",
+      "fileSizeExceeded": "La taille du fichier dépasse la limite de 5 Mo."
+    }
+  },
+  "form": {
+    "error": {
+      "requiredFields": "Veuillez remplir correctement tous les champs requis avant de soumettre."
+    }
+  },
+  "common": {
+    "gender": {
+      "male": "Homme",
+      "female": "Femme",
+      "other": "Autre"
+    }
+  },
+  "errors": {}
+}
