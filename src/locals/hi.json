@@ -1,0 +1,164 @@
+{
+  "navbar": {
+    "home": "मुख्य पृष्ठ",
+    "help": "सहायता"
+  },
+  "footer": {
+    "footerText": "© 2025 ट्रकपास। सर्वाधिकार सुरक्षित।"
+  },
+  "landingPage": {
+    "landingPageTitle": "सीमा-आधारित ट्रक पास डिजिटल प्रणाली",
+    "landingPageSubTitle": "हमारी सुरक्षित, कुशल डिजिटल पास प्रणाली के साथ सीमा-पार परिवहन को सरल बनाएं। प्रतीक्षा समय कम करें, सुरक्षा बढ़ाएं, और सभी हितधारकों के लिए दस्तावेज़ीकरण सरल बनाएं।",
+    "getStartedToday": "आज ही शुरू करें",
+    "driverRegistration": "ड्राइवर पंजीकरण",
+    "driverRegSubTitle": "स्वयं पंजीकरण स्वतंत्र ऑपरेटरों और चालकों के लिए।",
+    "registerAsDriver": "ड्राइवर के रूप में पंजीकरण करें",
+    "requestTruckPass": "ट्रक पास का अनुरोध करें",
+    "requestTruckPassSubTitle": "यह एक नमूना पाठ है।",
+    "login": "लॉग इन",
+    "howItWorks": "यह कैसे काम करता है",
+    "landingPageInfo": "हमारी सुव्यवस्थित प्रक्रिया सीमा-पार परिवहन को सरल और सुरक्षित बनाती है",
+    "subApplication": "आवेदन जमा करें",
+    "subApplicationInfo": "आवश्यक दस्तावेज़ों और वाहन की जानकारी के साथ डिजिटल आवेदन फॉर्म पूरा करें।",
+    "securityVerification": "सुरक्षा सत्यापन",
+    "securityVerificationInfo": "हमारा सिस्टम स्वचालित सुरक्षा जांच और प्रस्तुत दस्तावेज़ों की पुष्टि करता है।",
+    "approvalAndIssuance": "मंजूरी और निर्गमन",
+    "approvalAndIssuanceInfo": "सीमा पार करने के लिए आपके डिजिटल पास के साथ QR कोड और ट्रैकिंग नंबर प्राप्त करें।",
+    "crossBorder": "सीमा-पार",
+    "crossBorderInfo": "त्वरित और सुरक्षित क्रॉसिंग के लिए सीमा जांच स्थलों पर अपना डिजिटल पास प्रस्तुत करें।"
+  },
+  "driverRegistrationProcess": {
+    "processMainTitle": "सीमा-पार परिवहन पंजीकरण",
+    "respDescription": "एक पेशेवर ट्रक ड्राइवर के रूप में पंजीकरण करें"
+  },
+  "stepper": {
+    "registrationProcess": "पंजीकरण प्रक्रिया",
+    "consentAndAgreement": "सहमति और समझौता",
+    "selectCompany": "कंपनी चुनें",
+    "uinVerification": "यूनिक आइडेंटिफिकेशन नंबर सत्यापन",
+    "registration": "पंजीकरण",
+    "submitApplication": "आवेदन सबमिट करें",
+    "confirmation": "पुष्टिकरण"
+  },
+  "consentAndAgreementPage": {
+    "consentAndAgreementTitle": "सहमति और समझौता",
+    "consentAndAgreementDesc": "अपना पंजीकरण जारी रखने के लिए कृपया निम्नलिखित शर्तों को पढ़ें और सहमत हों",
+    "termsAndConditions": "नियम एवं शर्तें",
+    "termsAndConditionsInfo": "कृपया पेशेवर ट्रक ड्राइवरों के लिए हमारे नियम और शर्तें देखें",
+    "consentPara1": "मैं अपने व्यक्तिगत सूचनाओं के संग्रह और उपयोग के लिए सहमति देता/देती हूँ ताकि मैं डेमो ट्रकपास प्राप्त करने के लिए स्वयं को पंजीकृत कर सकूं। मैं समझता/समझती हूँ कि यह डेटा केवल Inji Stack उत्पाद को प्रदर्शित करने और MOSIP सैंडबॉक्स वातावरण के भीतर स्व-सेवा अनुभव प्रदान करने के लिए एक डेमो के रूप में एकत्र किया जा रहा है।",
+    "consentPara2": "मैं स्वीकार करता/करती हूँ कि मेरा डेटा किसी अन्य उद्देश्य के लिए उपयोग नहीं किया जाएगा, न ही इसे इस डेमो के लिए आवश्यक किसी भी तीसरे पक्ष के साथ साझा किया जाएगा। मैं यह भी समझता/समझती हूँ कि यह एक गैर-प्रोडक्शन पर्यावरण है और प्रदान की गई जानकारी लागू डेटा सुरक्षा प्रथाओं के अनुसार संभाली जाएगी।",
+    "getStarted": "शुरू करें"
+  },
+  "selectCompany": {
+    "activeAndValid": "सक्रिय और मान्य",
+    "commercialTransport": "वाणिज्यिक परिवहन",
+    "selectRegisteredTransportCompany": "पंजीकृत परिवहन कंपनी चुनें",
+    "chooseCompanyDesc": "वह परिवहन कंपनी चुनें जिसके साथ आप एक पेशेवर चालक के रूप में पंजीकरण करना चाहते हैं।",
+    "description": "परिवहन कंपनी खोजें",
+    "inputPlaceholder": "कंपनियों को खोजने के लिए टाइप करना शुरू करें",
+    "companyDetails": "कंपनी विवरण",
+    "selected": "चुना गया:",
+    "licenseStatus": "लाइसेंस स्थिति:",
+    "registrationType": "पंजीकरण प्रकार:",
+    "companyNames": {
+      "transGlobal1": "ट्रांसग्लोबल कंपनी 1",
+      "transGlobal2": "ट्रांसग्लोबल कंपनी 2",
+      "transGlobal3": "ट्रांसग्लोबल कंपनी 3",
+      "transGlobal4": "ट्रांसग्लोबल कंपनी 4",
+      "transGlobalLogistics": "ट्रांसग्लोबल लॉजिस्टिक्स लिमिटेड",
+      "globalExpress": "ग्लोबल एक्सप्रेस ट्रांसपोर्ट",
+      "internationalFreight": "इंटरनेशनल फ्रेट सॉल्यूशंस"
+    }
+  },
+  "uinVerification": {
+    "uinVerification": "यूआईएन सत्यापन",
+    "readyForVerfication": "सत्यापन के लिए तैयार",
+    "verifiedSuccessFully": "सफलतापूर्वक सत्यापित",
+    "verificationReadyInfo": "अपने यूआईएन को eSignet के माध्यम से सत्यापित करने के लिए नीचे दिए गए बटन पर क्लिक करें। यह स्वचालित रूप से आपकी व्यक्तिगत जानकारी प्राप्त कर भरेगा।",
+    "verifiedInfo": "आपका विवरण सत्यापित हो गया है। कृपया अगले चरण पर आगे बढ़ें।",
+    "verifyBtn": "सत्यापित करें",
+    "uinAlreadyRegistered": "यूआईएन पहले से पंजीकृत है",
+    "alreadyRegisteredInfo": "इस यूआईएन के साथ एक ड्राइवर पहले से ट्रकपास सिस्टम में पंजीकृत है",
+    "fetchmsg": "यूआईएन प्राप्त किया गया"
+  },
+  "registration": {
+    "personalInformation": "व्यक्तिगत जानकारी",
+    "fullName": "पूरा नाम",
+    "uin": "यूनिक आइडेंटिफिकेशन नंबर (यूआईएन)",
+    "gender": "लिंग",
+    "eMailId": "ईमेल आईडी",
+    "phNum": "फोन नंबर",
+    "city": "शहर",
+    "additionalInfo": "अतिरिक्त जानकारी",
+    "provideInfo": "कृपया सभी आवश्यक जानकारी प्रदान करें।",
+    "driverLicenseNum": "ड्राइवर का लाइसेंस नंबर",
+    "manualEntry": "मैनुअल प्रविष्टि",
+    "shareViaInjiVerify": "Inji Verify के जरिए साझा करें",
+    "shareLicenseViaInjiVerify": "Inji Verify के जरिए लाइसेंस साझा करें",
+    "shareLicenseViaInjiVerifyInfo": "अपना लाइसेंस VP फ्लो के माध्यम से साझा करने के लिए नीचे दिए गए बटन पर क्लिक करें। आपका लाइसेंस नंबर स्वचालित रूप से VC से प्राप्त हो जाएगा।",
+    "shareBtn": "साझा करें",
+    "fetchedSuccessfully": "लाइसेंस सफलतापूर्वक प्राप्त किया गया",
+    "authenticatedSuccessfully": "आपका विवरण प्रमाणित हो चुका है। कृपया अगले चरण पर आगे बढ़ें।",
+    "passportNum": "पासपोर्ट संख्या",
+    "cpc": "पेशेवर योग्यता का प्रमाणपत्र (CPC)",
+    "registering": "पंजीकरण हो रहा है",
+    "pleaseWait": "कृपया प्रतीक्षा करें!",
+    "DfullName": "राजेश सिंह",
+    "Dgender": "पुरुष",
+    "Demail": "myemail@gmail.com",
+    "Dcity": "चंडीगढ़",
+    "Dcompany": "ट्रांसग्लोबल लॉजिस्टिक्स लिमिटेड"
+  },
+  "certificationUploadSec": {
+    "cpc": "पेशेवर योग्यता का प्रमाणपत्र (CPC)",
+    "clickToBrowse": " या ब्राउज़ करने के लिए क्लिक करें",
+    "uploadCertificateInfo": "कृपया दस्तावेज़ अपलोड करें फ़ाइल स्वरूप PNG या PDF होना चाहिए और आकार अधिकतम 5MB होना चाहिए",
+    "uploadViaInjiVerifyCertificateInfo": "PNG या PDF (अधिकतम आकार 1MB)",
+    "failed": "अपयश",
+    "changeFile": "फ़ाइल बदलें"
+  },
+  "confirmationPage": {
+    "registrationCompleted": "पंजीकरण पूरा हुआ!",
+    "SuccessFullySubmitText": "आप तैयार हैं! आपका पंजीकरण सफलतापूर्वक हो चुका है, और एक पुष्टिकरण ईमेल आपके इनबॉक्स पर भेजा गया है।",
+    "driverSummary": "ड्राइवर सारांश",
+    "registrationDetailsInfo": "{{driverName}} के लिए पंजीकरण विवरण",
+    "fullName": "पूरा नाम:",
+    "uin": "यूआईएन",
+    "gender": "लिंग",
+    "email": "ईमेल:",
+    "phoneNumber": "फोन नंबर:",
+    "city": "शहर",
+    "transportCompany": "परिवहन कंपनी",
+    "licenseNum": "लाइसेंस नंबर:",
+    "passportNumber": "पासपोर्ट संख्या:",
+    "cpcCertificate": "CPC प्रमाणपत्र:",
+    "startNewRegistrationBtn": "नया पंजीकरण शुरू करें",
+    "hideDetails": "विवरण छिपाएं",
+    "showDetails": "विवरण दिखाएं",
+    "fileUploaded": "फ़ाइल अपलोड की गई"
+  },
+  "successPopUp": {
+    "header": "पंजीकरण सफल!",
+    "desc": "ड्राइवर पंजीकरण सफलतापूर्वक हो गया।"
+  },
+  "commans": {
+    "inProgress": "प्रगति पर",
+    "completed": "पूर्ण हुआ",
+    "continue": "जारी रखें",
+    "goBack": "वापस जाएं",
+    "submit": "सबमिट करें",
+    "tryAgain": "फिर से प्रयास करें"
+  },
+  "upload": {
+    "error": {
+      "unsupportedFileType": "असमर्थित फ़ाइल प्रकार। कृपया केवल PDF या PNG फ़ाइलें अपलोड करें।",
+      "fileSizeExceeded": "फ़ाइल का आकार 5MB सीमा से अधिक है।"
+    }
+  },
+  "form": {
+    "error": {
+      "requiredFields": "सबमिट करने से पहले कृपया सभी आवश्यक फ़ील्ड सही ढंग से भरें।"
+    }
+  },
+  "errors": {}
+}

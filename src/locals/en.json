@@ -1,0 +1,231 @@
+{
+  "navbar": {
+    "home": "Home",
+    "help": "Help",
+    "english": "English",
+    "french": "French"
+  },
+  "footer": {
+    "footerText": "© 2025 TruckPass. All rights reserved."
+  },
+  "landingPage": {
+    "landingPageTitle": "Cross-Border Truck Pass Digital System",
+    "landingPageSubTitle": "Streamline cross-border transportation with our secure, efficient digital pass system. Reduce wait times, enhance security, and simplify documentation for all stakeholders",
+    "getStartedToday": "Get Started Today",
+    "driverRegistration": "Driver Registration",
+    "driverRegSubTitle": "Self registration for independent operators and drivers.",
+    "registerAsDriver": "Register As Driver",
+    "requestTruckPass": "Request Truck Pass",
+    "requestTruckPassSubTitle": "Streamlined process for truck pass applications.",
+    "login": "Log In",
+    "howItWorks": "How It Works",
+    "landingPageInfo": "Our streamlined process makes cross-border transportation simple and secure",
+    "subApplication": "Submit Application",
+    "subApplicationInfo": "Complete the digital application form with required documentation and vehicle information.",
+    "securityVerification": "Security Verification",
+    "securityVerificationInfo": "Our system conducts automated security checks and validation of submitted documents.",
+    "approvalAndIssuance": "Approval & Issuance",
+    "approvalAndIssuanceInfo": "Receive your digital pass with QR code and tracking number for border crossing.",
+    "crossBorder": "Cross Border",
+    "crossBorderInfo": "Present your digital pass at border checkpoints for quick and secure crossing."
+  },
+  "driverRegistrationProcess": {
+    "processMainTitle": "Cross-Border Transport Registration",
+    "respDescription": "Register as a Professional Truck Driver"
+  },
+  "stepper": {
+    "registrationProcess": "Registration Process",
+    "consentAndAgreement": "Consent & Agreement",
+    "selectCompany": "Select Company",
+    "uinVerification": "UIN Verification",
+    "registration": "Registration",
+    "submitApplication": "Submit Application",
+    "confirmation": "Confirmation"
+  },
+  "consentAndAgreementPage": {
+    "consentAndAgreementTitle": "Consent & Agreement",
+    "consentAndAgreementDesc": "Please read and agree to the following terms to continue with your registration",
+    "termsAndConditions": "Terms and Conditions",
+    "termsAndConditionsInfo": "Please review our terms and conditions for professional truck drivers",
+    "consentPara1": "I hereby consent to the collection and use of my personal information for the purpose of registering myself to receive a demo TruckPass. I understand that this data is being collected solely for demonstration purposes related to showcasing the Inji Stack product and to provide me with a self-service experience within the MOSIP Sandbox Environment.",
+    "consentPara2": "I acknowledge that my data will not be used for any other purpose, nor will it be shared with any third party beyond what is required for this demo. I also understand that this is a non-production environment and the data provided will be handled in accordance with applicable data protection practices.",
+    "getStarted": "Get Started"
+  },
+  "selectCompany": {
+    "searchTransportCompany": "Search Transport Company *",
+    "selectRegisteredTransportCompany": "Select Registered Transport Company",
+    "chooseCompanyDesc": "Choose the transport company you wish to register with as a professional driver.",
+    "companyDetails": "Company Details",
+    "selected": "Selected:",
+    "licenseStatus": "License Status:",
+    "activeAndValid": "Active and Valid",
+    "inactiveText": "Inactive and Invalid",
+    "registrationType": "Registration Type:",
+    "inputPlaceholder": "Start typing to search companies",
+    "companyNames": {
+      "transGlobal1": "TransGlobal Company 1",
+      "transGlobal2": "TransGlobal Company 2",
+      "transGlobal3": "TransGlobal Company 3",
+      "transGlobal4": "TransGlobal Company 4",
+      "transGlobalLogistics": "TransGlobal Logistics Ltd.",
+      "globalExpress": "Global Express Transport",
+      "internationalFreight": "International Freight Solutions"
+    }
+  },
+  "uinVerification": {
+    "uinVerification": "UIN Verification",
+    "readyForVerfication": "Ready for Verification",
+    "uinAlreadyRegistered": "UIN Already Registered",
+    "alreadyRegisteredInfo": "A driver with this UIN is already registered in the TruckPass system.",
+    "verifiedSuccessFully": "Verified Successfully",
+    "uinFetched": "UIN Fetched:",
+    "unableToFetchInfo": "Please check all required details and try again.",
+    "verificationReadyInfo": "Click the button below to verify your UIN using eSignet. This will automatically fetch and fill your personal details.",
+    "verifiedInfo": "Your details have been verified. Please proceed to the next step.",
+    "verifyBtn": "Verify"
+  },
+  "registration": {
+    "personalInformation": "Personal Information",
+    "fullName": "Full Name",
+    "uin": "Unique Identification Number (UIN)",
+    "gender": "Gender",
+    "eMailId": "Email ID",
+    "phNum": "Phone Number",
+    "city": "City",
+    "additionalInfo": "Additional Information",
+    "provideInfo": "Please provide all required information.",
+    "driverLicenseNum": "Driver’s License Number",
+    "manualEntry": "Manual Entry",
+    "shareViaInjiVerify": "Share Via Inji Verify",
+    "shareLicenseViaInjiVerify": "Share License via Inji Verify",
+    "shareLicenseViaInjiVerifyInfo": "Click the button below to share your license through VP Flow. Your license number will be automatically fetched from the VC.",
+    "shareBtn": "Share",
+    "fetchedSuccessfully": "License Fetched Successfully",
+    "authenticatedSuccessfully": "Your details have been authenticated. Please proceed to the next step.",
+    "passportNum": "Passport Number",
+    "cpc": "Certificate of Professional Competence (CPC)",
+    "registering": "Registering",
+    "pleaseWait": "Please Wait!",
+    "demoData": {
+      "DfullName": "Rajesh Singh",
+      "Dgender": "Male",
+      "Demail": "myemail@gmail.com",
+      "Dcity": "Chandigarh"
+    }
+  },
+  "certificationUploadSec": {
+    "cpc": "Certificate of Professional Competence (CPC)",
+    "clickToBrowse": " or click to browse",
+    "uploadCertificateInfo": "Please upload document with the file format as PNG or PDF and Size should be maximum of 5MB",
+    "uploadViaInjiVerifyCertificateInfo": "PNG or PDF (max size. 1mb)",
+    "failed": "Failed",
+    "kb": "KB",
+    "fullPercentage": "100%",
+    "changeFile": "Change File"
+  },
+  "confirmationPage": {
+    "registrationCompleted": "Registration Completed!",
+    "SuccessFullySubmitText": "Your application has been successfully submitted.",
+    "driverSummary": "Driver Summary",
+    "registrationDetailsInfo": "Registration details for {{driverName}}",
+    "fullName": "Full Name:",
+    "uin": "UIN",
+    "gender": "Gender",
+    "email": "Email:",
+    "phoneNumber": "Phone Number:",
+    "city": "City",
+    "transportCompany": "Transport Company",
+    "licenseNum": "License Number:",
+    "passportNumber": "Passport Number:",
+    "cpcCertificate": "CPC Certificate:",
+    "startNewRegistrationBtn": "Start New Registration",
+    "fileUploaded": "File Uploaded",
+    "hideDetails": "Hide Details",
+    "showDetails": "Show Details"
+  },
+  "successPopUp": {
+    "header": "Registration Successful!",
+    "desc": "Driver registration successful."
+  },
+  "dashBoard": {
+    "activeRequest": "Active Request",
+    "approvedPasses": "Approved Passes",
+    "pendingReview": "Pending Review",
+    "totalTrucks": "Total Trucks",
+    "requestId": "Request ID",
+    "driverName": "Driver Name",
+    "licenceNumber": "Licence Number",
+    "status": "Status",
+    "date": "Date",
+    "myDashBoard": "My Dashboard",
+    "newTruckPassRequest": "+ New Truck Pass Request"
+  },
+  "newTruckPassRequest": {
+    "newTruckPassRequest": "New Truck Pass Request",
+    "headerDesc": "Complete all steps to submit your request"
+  },
+  "driverProfilePage": {
+    "header": "Driver Profile Summary",
+    "driverFound": "Driver Found",
+    "driverProfileSuccessMsg": "Driver profile has been successfully retrieved and verified from the system.",
+    "fullName": "Full Name",
+    "gender": "Gender",
+    "uin": "UIN",
+    "phoneNumber": "Phone Number",
+    "emailID": "Email ID",
+    "city": "City",
+    "driverLicenseNum": "Driver’s License Number",
+    "passportNum": "Passport Number"
+  },
+  "consignmentDetails": {
+    "header": "Consignment Details",
+    "inVoiceNumber": "Invoice Number",
+    "inVoiceNumPlaceHolder": "e.g., INV-2024-001",
+    "waybillNumber": "Waybill Number",
+    "waybillNumPlaceHolder": "e.g., WB-2024-001",
+    "weightCertificate": "Weight Certificate",
+    "uploadweightcertificate": "Upload weight certificate",
+    "customsDocuments": "Customs Documents",
+    "uploadCustomDocument": "Upload custom document",
+    "invoiceNumErrorMsg": "Invoice Number must include a '-' (e.g., INV-2024-001).",
+    "waybillNumErrorMsg": "Waybill Number must include a '-' (e.g., WB-2024-001)."
+  },
+  "vehicleDetails": {
+    "header": "Vehicle Details"
+  },
+  "registrationSuccessPage": {
+    "header": "Registration Completed",
+    "desc1": "Truck Pass VC issued and ready for download",
+    "desc2": "Please request your driver to download the pass in his/her Inji Wallet using his/her UIN.",
+    "submitAnotherApplication": "Submit Another Application"
+  },
+  "errorPopUp": {
+    "header": "Registration Failed!",
+    "desc": "Driver registration failed. Please check all the provided fields & Try again."
+  },
+  "commans": {
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "continue": "Continue",
+    "goBack": "Go Back",
+    "submit": "Submit",
+    "tryAgain": "Try Again",
+    "confirmAndSubmit": "Confirm & Submit"
+  },
+  "upload": {
+    "error": {
+      "unsupportedFileType": "Unsupported file type. Please upload only PDF or PNG files.",
+      "fileSizeExceeded": "File size exceeds 5MB limit."
+    }
+  },
+  "form": {
+    "error": {
+      "requiredFields": "Please fill all required fields correctly before submitting."
+    }
+  },
+  "errors": {
+    "uploadingCertificateErr": "Unsupported file type. Please upload valid PDF or image documents.",
+    "licenseNumberErr": "Driver's License Number should include hyphen '-'.",
+    "passportNumberErr": "Please fill all required fields correctly before submitting."
+  }
+}
