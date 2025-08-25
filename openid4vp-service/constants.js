@@ -3,8 +3,9 @@ const crypto = require('crypto');
 const ed25519PublicKey = "IKXhA7W1HD1sAl+OfG59VKAqciWrrOL1Rw5F+PGLhi4="
 const ed25519PrivateKey = "7JGq310it2uq1_KZ3kARpoUB36KaVO2Ki5VeqQ_856A"
 //update this baseurl with the localtunnel url
-const baseUrl = "<local-tunnel url>"
+const baseUrl = "<your-localtunnel-url>"
 const requestUri = `${baseUrl}/verifier/get-auth-request-obj`
+const requestUriDraft21 = `${baseUrl}/verifier/get-auth-request-obj-draft21`; //draft-21
 const responseUri = `${baseUrl}/verifier/vp-response`
 const presentationDefinitionUri  = `${baseUrl}/verifier/presentation_definition_uri`
 const didDocumentUrl = "did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs"
@@ -20,6 +21,7 @@ module.exports = {
     ed25519PublicKey,
     ed25519PrivateKey,
     requestUri,
+    requestUriDraft21,
     responseUri,
     didDocumentUrl,
     publicKeyId,

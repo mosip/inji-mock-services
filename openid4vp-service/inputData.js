@@ -1,6 +1,5 @@
-const {nonce, state, responseUri, baseUrl, didDocumentUrl, requestUri, clientId, presentationDefinitionUri} = require("./constants");
+const {nonce, state, responseUri, baseUrl, didDocumentUrl, requestUri, requestUriDraft21, clientId, presentationDefinitionUri} = require("./constants");
 const clientMetadata = require('./clientMetadataMock.json');
-
 const client_metadata = JSON.stringify(clientMetadata);
 
 const preRegisteredAuthorizationRequestDraft23 = {
@@ -37,7 +36,7 @@ const redirectAuthorizationRequestDraft23 = {
     "client_metadata": client_metadata,
 }
 
-const redirectAuthorizationRequestDrat21 = {
+const redirectAuthorizationRequestDraft21 = {
     "client_id": responseUri,
     "client_id_scheme": "redirect_uri",
     "presentation_definition_uri": presentationDefinitionUri,
@@ -81,7 +80,7 @@ const authorizationRequestParamsDraft23 = {
 const authorizationRequestParamsDraft21 = {
     "client_id":didDocumentUrl,
     "client_id_scheme": "did",
-    "request_uri": requestUri,
+    "request_uri": requestUriDraft21,
     "request_uri_method": "post"
 }
 
@@ -93,7 +92,7 @@ module.exports = {
     authorizationRequestParams: authorizationRequestParamsDraft23,
     preRegisteredAuthorizationRequestDraft21: preRegisteredAuthorizationRequestDraft21,
     didAuthorizationRequestDraft21: didAuthorizationRequestDraft21,
-    redirectAuthorizationRequestDraft21: redirectAuthorizationRequestDrat21,
+    redirectAuthorizationRequestDraft21: redirectAuthorizationRequestDraft21,
     authorizationRequestParamsDraft21: authorizationRequestParamsDraft21
 }
 

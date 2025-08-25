@@ -1,52 +1,104 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
 
 const Home = () => {
     const navigate = useNavigate();
+    const [selectedEndpoint, setSelectedEndpoint] = useState(null);
 
     useEffect(() => {
         document.title = 'Home';
     }, []);
 
     const endpoints = [
-        { name: "By value - Redirect", path: "/verifier/generate-auth-request-by-value-redirect-qr" },
-        { name: "By value - Pre-Registered", path: "/verifier/generate-auth-request-by-value-pre-registered-qr" },
-        { name: "By Reference", path: "/verifier/generate-auth-request-by-reference-qr" },
+        { 
+            name: "By value - Redirect", 
+            draft23Path: "/verifier/generate-auth-request-by-value-redirect-qr",
+            draft21Path: "/verifier/generate-auth-request-by-value-redirect-qr-draft21"
+        },
+        { 
+            name: "By value - Pre-Registered", 
+            draft23Path: "/verifier/generate-auth-request-by-value-pre-registered-qr",
+            draft21Path: "/verifier/generate-auth-request-by-value-pre-registered-qr-draft21"
+        },
+        { 
+            name: "By Reference", 
+            draft23Path: "/verifier/generate-auth-request-by-reference-qr",
+            draft21Path: "/verifier/generate-auth-request-by-reference-qr-draft21"
+        },
     ];
 
     const handleClick = (endpointObj) => {
-        navigate('/qr', { state: { endpoint: endpointObj.path, name: endpointObj.name } });
+        setSelectedEndpoint(endpointObj);
+    };
+
+    const handleDraftClick = (draft, path) => {
+        navigate('/qr', { 
+            state: { 
+                endpoint: path, 
+                name: `${selectedEndpoint.name} - ${draft}`,
+                draft: draft
+            } 
+        });
+    };
+
+    const handleBack = () => {
+        setSelectedEndpoint(null);
     };
 
     return (
-        <div style={{paddingLeft: '40px', paddingTop: '20px'}}>
-            <h1 style={{marginBottom: '20px'}}>Home screen</h1>
-            <h2>Select Auth Request Type</h2>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '10px'}}>
-                {endpoints.map(e => (
+        <div className="homepage-container">
+            {!selectedEndpoint ? (
+                <>
+                    <h1 style={{marginBottom: '20px'}}>Home screen</h1>
+                    <h2>Select Auth Request Type</h2>
+                    <div className="auth-button-list">
+                        {endpoints.map(e => (
+                            <button
+                                key={e.name}
+                                onClick={() => handleClick(e)}
+                                className="auth-request-button"
+                            >
+                                {e.name}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <>
                     <button
-                        key={e.name}
-                        onClick={() => handleClick(e)}
+                        onClick={handleBack}
                         style={{
-                            width: '250px',
-                            textAlign: 'left',
-                            padding: '10px 20px',
-                            fontSize: '16px',
-                            borderRadius: '8px',
+                            marginBottom: '20px',
+                            padding: '8px 16px',
+                            fontSize: '14px',
+                            borderRadius: '4px',
                             border: '1px solid #ccc',
-                            backgroundColor: '#f0f0f0',
+                            background: '#f8f8f8',
                             cursor: 'pointer',
-                            transition: 'background-color 0.3s',
                         }}
-                        onMouseEnter={e => e.target.style.backgroundColor = '#e0e0e0'}
-                        onMouseLeave={e => e.target.style.backgroundColor = '#f0f0f0'}
                     >
-                        {e.name}
+                        ← Back
                     </button>
-                ))}
-            </div>
+                    <h1 style={{ marginBottom: '20px' }}>Select OpenID4VP Draft Version</h1>
+                    <h2 style={{ marginBottom: '20px', color: '#666' }}>{selectedEndpoint.name}</h2>
+                    
+                    <div className="auth-button-list">
+                        <button
+                            onClick={() => handleDraftClick('Draft 23', selectedEndpoint.draft23Path)}
+                            className="auth-request-button"
+                        >
+                            Draft 23
+                        </button>
+
+                        <button
+                            onClick={() => handleDraftClick('Draft 21', selectedEndpoint.draft21Path)}
+                            className="auth-request-button"
+                        >
+                            Draft 21
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
