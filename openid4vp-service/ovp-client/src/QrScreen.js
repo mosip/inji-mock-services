@@ -30,6 +30,9 @@ const QrScreen = () => {
                 if (state.endpoint === "/verifier/generate-auth-request-by-reference-qr") {
                     const response = await axios.get(`${BACKEND_URL}/verifier/get-auth-request-obj`);
                     setActualAuthorizationRequestObject(response.data);
+                } else if (state.endpoint === "/verifier/generate-auth-request-by-reference-qr-draft21") {
+                    const response = await axios.get(`${BACKEND_URL}/verifier/get-auth-request-obj-draft21`);
+                    setActualAuthorizationRequestObject(response.data);
                 }
             } catch (err) {
                 console.error('Failed to fetch QR code:', err);

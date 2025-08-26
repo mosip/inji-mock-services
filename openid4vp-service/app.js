@@ -81,6 +81,72 @@ app.get('/verifier/generate-auth-request-by-reference-qr', async (req, res) => {
     }
 });
 
+// Draft 21 endpoints
+app.get('/verifier/generate-auth-request-by-value-redirect-qr-draft21', async (req, res) => {
+    try {
+        const qrData = createUrlWithParams(redirectAuthorizationRequestDraft21);
+        const qrCodeData = await QRCode.toDataURL(qrData);
+        const inputData = redirectAuthorizationRequestDraft21
+        res.json({ qrCodeData, qrData, inputData });
+    } catch (error) {
+        console.error('Error generating QR code:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/verifier/generate-auth-request-by-value-pre-registered-qr-draft21', async (req, res) => {
+    try {
+        const qrData = createUrlWithParams(preRegisteredAuthorizationRequestDraft21);
+        const qrCodeData = await QRCode.toDataURL(qrData);
+        const inputData = preRegisteredAuthorizationRequestDraft21
+        res.json({ qrCodeData, qrData, inputData });
+    } catch (error) {
+        console.error('Error generating QR code:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/verifier/generate-auth-request-by-reference-qr-draft21', async (req, res) => {
+    try {
+        const qrData = createUrlWithParams(authorizationRequestParamsDraft21);
+        const qrCodeData = await QRCode.toDataURL(qrData);
+        const inputData = authorizationRequestParamsDraft21
+        res.json({ qrCodeData, qrData, inputData });
+    } catch (error) {
+        console.error('Error generating QR code:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/verifier/get-auth-request-obj-draft21', async (req, res) => {
+    try {
+        const jwt = await createJWT(didAuthorizationRequestDraft21)
+        res.contentType("application/oauth-authz-req+jwt")
+        res.send(jwt)
+
+    } catch (error) {
+        console.error('Error generating JWT :', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/verifier/get-auth-request-obj-draft21', async (req, res) => {
+    try {
+        console.info("Received request with request body:", req.body);
+        const walletNonce = req.body?.wallet_nonce;
+        const jwt = walletNonce
+            ? await createJWT({ ...didAuthorizationRequestDraft21, wallet_nonce: walletNonce })
+            : await createJWT(didAuthorizationRequestDraft21);
+        res.contentType("application/oauth-authz-req+jwt");
+        res.send(jwt);
+        //res.send(btoa(JSON.stringify(didAuthorizationRequestDraft21)))
+
+    }  catch (error) {
+        console.error('Error generating JWT :', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.get('/verifier/get-auth-request-obj', async (req, res) => {
     try {
         const jwt = await createJWT(didAuthorizationRequest)
