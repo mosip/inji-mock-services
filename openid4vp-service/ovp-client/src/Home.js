@@ -21,25 +21,15 @@ const Home = () => {
     };
 
     return (
-        <div style={{paddingLeft: '40px', paddingTop: '20px'}}>
-            <h1 style={{marginBottom: '20px'}}>Home screen</h1>
+        <div className="homepage-container">
+            <h1 className="page-title">Home screen</h1>
             <h2>Select Auth Request Type</h2>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '10px'}}>
+            <div className="auth-button-list">
                 {endpoints.map(e => (
                     <button
                         key={e.name}
                         onClick={() => handleClick(e)}
-                        style={{
-                            width: '250px',
-                            textAlign: 'left',
-                            padding: '10px 20px',
-                            fontSize: '16px',
-                            borderRadius: '8px',
-                            border: '1px solid #ccc',
-                            backgroundColor: '#f0f0f0',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                        }}
+                        className="auth-request-button"
                         onMouseEnter={e => e.target.style.backgroundColor = '#e0e0e0'}
                         onMouseLeave={e => e.target.style.backgroundColor = '#f0f0f0'}
                     >
