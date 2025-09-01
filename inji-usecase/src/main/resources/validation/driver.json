@@ -1,0 +1,68 @@
+{
+  "required": [
+    "fullName",
+    "uin",
+    "driversLicenseNumber",
+    "passportNumber",
+    "cpcCertificate",
+    "companyId"
+  ],
+  "fields": {
+    "fullName": {
+      "type": "string",
+      "minlength": 2,
+      "maxlength": 255,
+      "regex": "^[a-zA-Z\\s.'\\-]+$"
+    },
+    "uin": {
+      "type": "string",
+      "minlength": 12,
+      "maxlength": 50,
+      "regex": "^[0-9]+$"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "minlength": 10,
+      "maxlength": 15,
+      "regex": "^[+]?[0-9\\s\\-()]+$"
+    },
+    "gender": {
+      "type": "string",
+      "regex": "^(Male|Female|Other)$"
+    },
+    "emailId": {
+      "type": "string",
+      "maxlength": 255,
+      "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    },
+    "city": {
+      "type": "string",
+      "minlength": 2,
+      "maxlength": 100,
+      "regex": "^[a-zA-Z\\s.'\\-]+$"
+    },
+    "faceImage": {
+      "type": "string",
+      "minlength": 10
+    },
+    "driversLicenseNumber": {
+      "type": "string",
+      "minlength": 5,
+      "maxlength": 50,
+      "regex": "^[a-zA-Z0-9\\-]+$"
+    },
+    "passportNumber": {
+      "type": "string",
+      "minlength": 6,
+      "maxlength": 50,
+      "regex": "^[a-zA-Z0-9]+$"
+    },
+    "cpcCertificate": {
+      "type": "string",
+      "minlength": 10
+    },
+    "companyId": {
+      "type": "integer"
+    }
+  }
+}

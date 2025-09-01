@@ -1,3 +1,4 @@
+
 package com.mosip.inji_usecase.service.repository;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public abstract class AbstractRepositoryService <T, D, ID, R extends JpaRepository<T, ID> & JpaSpecificationExecutor<T>, M extends com.mosip.inji_usecase.mapper.Mapper<T, D>> implements RepositoryService<T, ID>{
+public abstract class AbstractRepositoryService<T, ID, D, R extends JpaRepository<T, ID> & JpaSpecificationExecutor<T>, M extends com.mosip.inji_usecase.mapper.Mapper<T, D>> implements RepositoryService<ID> {
 
     protected final R repository;
     protected final M mapper;
@@ -29,19 +30,19 @@ public abstract class AbstractRepositoryService <T, D, ID, R extends JpaReposito
 
     @Override
     public Optional<Map<String, Object>> getById(ID id) {
-
         Optional<T> obj = repository.findById(id);
         return obj
                 .map(entity -> {
-                    D Dto = mapper.toDto(entity);
-                    return mapper.toMap(Dto);
+                    D dto = mapper.toDto(entity);
+                    return mapper.toMap(dto);
                 });
     }
 
     @Override
-    public List<Map<String, Object>> getBySearchCriteria(Specification<T> spec) {
+    @SuppressWarnings("unchecked")
+    public <E> List<Map<String, Object>> getBySearchCriteria(Specification<E> spec) {
         List<Map<String, Object>> result = new ArrayList<>();
-        repository.findAll(spec).forEach((element) -> {
+        repository.findAll((Specification<T>) spec).forEach((element) -> {
             D dto = mapper.toDto(element);
             Map<String, Object> obj = mapper.toMap(dto);
             result.add(obj);
@@ -49,4 +50,14 @@ public abstract class AbstractRepositoryService <T, D, ID, R extends JpaReposito
         return result;
     }
 
+    @Override
+    public List<Map<String, Object>> getAll() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        repository.findAll().forEach((element) -> {
+            D dto = mapper.toDto(element);
+            Map<String, Object> obj = mapper.toMap(dto);
+            result.add(obj);
+        });
+        return result;
+    }
 }

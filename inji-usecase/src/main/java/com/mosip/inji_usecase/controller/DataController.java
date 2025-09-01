@@ -32,23 +32,51 @@ public class DataController {
 
     @GetMapping("/api/data/{id}")
     public ResponseEntity<?> retrieveDataById(@PathVariable("id") Long id) {
-
         List<Map<String, Object>> result = new ArrayList<>();
         for(Map.Entry<String, RepositoryService> repository : repositoryServices.entrySet()){
-
             Optional<Map<String, Object>> entity = repository.getValue().getById(id);
             entity.ifPresent(object -> result.addLast(object));
         }
 
-        if(result.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found for ID: " + id);
-        else return ResponseEntity.ok(result);
+        if(result.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found for ID: " + id);
+        } else {
+            return ResponseEntity.ok(result);
+        }
     }
 
     @GetMapping("/api/data")
-    public ResponseEntity<?> retrieveDataByQuery(@RequestParam List filterKey,
-                                                @RequestParam List operation,
-                                                @RequestParam List value,
-                                                @RequestParam(required = false) String dataOption){
+    public ResponseEntity<?> retrieveDataByQuery(
+            @RequestParam(required = false) List<String> filterKey,
+            @RequestParam(required = false) List<String> operation,
+            @RequestParam(required = false) List<String> value,
+            @RequestParam(required = false) String dataOption) {
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        // If no search parameters provided, return all data from all repositories
+        if (filterKey == null || filterKey.isEmpty()) {
+            for(Map.Entry<String, RepositoryService> repo : repositoryServices.entrySet()){
+                try{
+                    result.addAll(repo.getValue().getAll());
+                } catch (Exception e){
+                    System.err.println("Get all failed for repository " + repo.getKey() + ": " + e.getMessage());
+                }
+            }
+
+            if(result.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found");
+            } else {
+                return ResponseEntity.ok(result);
+            }
+        }
+
+        // Validate that all required search parameters are provided if any are provided
+        if (operation == null || value == null ||
+                filterKey.size() != operation.size() || filterKey.size() != value.size()) {
+            return ResponseEntity.badRequest()
+                    .body("If search parameters are provided, filterKey, operation, and value must all be provided with the same number of elements");
+        }
 
         List<SearchCriteria> criterias = new ArrayList<>();
         for(int i = 0; i < filterKey.size(); i++){
@@ -59,56 +87,55 @@ public class DataController {
             criteria.setDataOption(dataOption);
             criterias.add(criteria);
         }
+
         SearchDto params = new SearchDto(criterias, dataOption);
-        List<Map<String, Object>> result = new ArrayList<>();
-            SpecificationBuilder<?> builder = new SpecificationBuilder<>();
-            List<SearchCriteria> criteriaList = params.getSearchCriteria();
-            if (criteriaList != null) {
-                criteriaList.forEach(x -> {
-                    x.setDataOption(params
-                            .getDataOption());
-                    builder.with(x);
-                });
-            }
+        SpecificationBuilder builder = new SpecificationBuilder<>();
+        List<SearchCriteria> criteriaList = params.getSearchCriteria();
+        if (criteriaList != null) {
+            criteriaList.forEach(x -> {
+                x.setDataOption(params.getDataOption());
+                builder.with(x);
+            });
+        }
 
-            for(Map.Entry<String, RepositoryService> repo : repositoryServices.entrySet()){
-                try{
-                    result.addAll(repo.getValue().getBySearchCriteria(builder.build()));
-                } catch (Exception e){
-                    System.err.println("Search failed for repository "+repo.getKey() +": " + e.getMessage());
-                }
+        for(Map.Entry<String, RepositoryService> repo : repositoryServices.entrySet()){
+            try{
+                result.addAll(repo.getValue().getBySearchCriteria(builder.build()));
+            } catch (Exception e){
+                System.err.println("Search failed for repository "+repo.getKey() +": " + e.getMessage());
             }
+        }
 
-        if(result.isEmpty()) 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found for the given query criteria");
-        else
+        if(result.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No data found for the given query criteria");
+        } else {
             return ResponseEntity.ok(result);
-
+        }
     }
 
     @PostMapping("/api/data")
     public ResponseEntity<?> ingestData(
-        @RequestHeader(name = "x-source") String dataSource,
-        @RequestBody Map<String, Object> data) 
-    {
+            @RequestHeader(name = "x-source") String dataSource,
+            @RequestBody Map<String, Object> data) {
+
         ValidationService validationService = validationServices.get(dataSource + "ValidationService");
         RepositoryService repositoryService = repositoryServices.get(dataSource + "RepositoryService");
-        
+
         if(validationService == null){
             return ResponseEntity.badRequest().body("Unknown data source: " + dataSource);
         }
 
         try{
-
             validationService.validate(data);
             repositoryService.save(data);
             return ResponseEntity.ok().build();
-
-        }catch (IllegalArgumentException e) {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("VALIDATION ERROR:: '" + e.getMessage() + "'");
-
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("VALIDATION ERROR:: '" + e.getMessage() + "'");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("SERVER ERROR:: '" + e.getMessage() + "'");
         }
     }
-
 }

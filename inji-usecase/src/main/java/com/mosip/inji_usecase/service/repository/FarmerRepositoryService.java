@@ -9,10 +9,9 @@ import com.mosip.inji_usecase.repository.farmer.FarmerRepository;
 
 @Service("farmerRepositoryService")
 public class FarmerRepositoryService
-        extends AbstractRepositoryService<Farmer, FarmerDto, Long, FarmerRepository, FarmerMapper> {
+        extends AbstractRepositoryService<Farmer, Long, FarmerDto, FarmerRepository, FarmerMapper> {
 
     public FarmerRepositoryService(FarmerRepository farmerRepository, FarmerMapper farmerMapper) {
         super(farmerRepository, farmerMapper);
     }
-
 }
