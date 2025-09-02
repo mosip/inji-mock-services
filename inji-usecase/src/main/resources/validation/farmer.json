@@ -65,6 +65,9 @@
         "land_certificate": {
             "type": "string"
         },
+        "land_id": {
+            "type": "integer"
+        },
         "primary_crop": {
             "type": "string"
         },
