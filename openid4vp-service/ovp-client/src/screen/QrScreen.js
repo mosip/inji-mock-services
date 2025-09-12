@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useCallback} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {BACKEND_URL} from "../constants/mockui-constants";
@@ -51,6 +51,8 @@ const QrScreen = () => {
     const [actualAuthorizationRequestObject, setActualAuthorizationRequestObject] = useState(null);
     const [isByValue, setIsByValue] = useState(true);
     const [isByReference, setIsByReference] = useState(false);
+    const [isDraft23, setIsDraft23] = useState(state?.draftVersion ? state.draftVersion === DRAFT_VERSIONS.DRAFT_23 : false);
+    const [isDraft21, setIsDraft21] = useState(state?.draftVersion ? state.draftVersion === DRAFT_VERSIONS.DRAFT_21 : true);
     const [errorMessage, setErrorMessage] = useState(null);
     const [decodedJwt, setDecodedJwt] = useState(null);
     const [isDecoded, setIsDecoded] = useState(false);
@@ -76,7 +78,7 @@ const QrScreen = () => {
         }
     }
 
-    const fetchQrCodeData = async (clientIdScheme: string, requestMode: string, draftVersion: string = DRAFT_VERSIONS.DRAFT_23) => {
+    const fetchQrCodeData = useCallback(async (clientIdScheme, requestMode, draftVersion) => {
         try {
             // /verifier/<client_id_scheme>/<request_mode>-qr?draft=<draft_version>
             const response = await axios.get(`${BACKEND_URL}/verifier/${clientIdScheme}/${requestMode}?draft=${draftVersion}`, {
@@ -117,15 +119,15 @@ const QrScreen = () => {
                 setErrorMessage(error?.message ?? "Error fetching QR code data");
             }
         }
-    }
+    }, []);
 
     useEffect(() => {
         const fetchQr = async () => {
-            await fetchQrCodeData(state.name, isByValue ? REQUEST_MODES.BY_VALUE : REQUEST_MODES.BY_REFERENCE);
+            await fetchQrCodeData(state.name, isByValue ? REQUEST_MODES.BY_VALUE : REQUEST_MODES.BY_REFERENCE, isDraft23 ? DRAFT_VERSIONS.DRAFT_23 : DRAFT_VERSIONS.DRAFT_21);
         };
 
         void fetchQr();
-    }, [state]);
+    }, [state, isByValue, isByReference, isDraft23, isDraft21, fetchQrCodeData]);
 
     useEffect(() => {
         document.title = 'Scan';
@@ -136,6 +138,8 @@ const QrScreen = () => {
         setQrData(null)
         setQrCodeData(null)
         setActualAuthorizationRequestObject(null)
+        setDecodedJwt(null)
+        setIsDecoded(false)
     }
     const handleByValueAuthRequest = async () => {
         if (isByValue)
@@ -146,7 +150,7 @@ const QrScreen = () => {
 
         resetValues();
 
-        await fetchQrCodeData(state.name, REQUEST_MODES.BY_VALUE)
+        await fetchQrCodeData(state.name, REQUEST_MODES.BY_VALUE, isDraft23 ? DRAFT_VERSIONS.DRAFT_23 : DRAFT_VERSIONS.DRAFT_21)
     }
 
     const handleByReferenceAuthRequest = async () => {
@@ -158,7 +162,31 @@ const QrScreen = () => {
 
         resetValues()
 
-        await fetchQrCodeData(state.name, REQUEST_MODES.BY_REFERENCE)
+        await fetchQrCodeData(state.name, REQUEST_MODES.BY_REFERENCE, isDraft23 ? DRAFT_VERSIONS.DRAFT_23 : DRAFT_VERSIONS.DRAFT_21)
+    }
+
+    const handleDraft23AuthRequest = async () => {
+        if (isDraft23)
+            return;
+
+        setIsDraft23((prev) => !prev);
+        setIsDraft21(false);
+
+        resetValues();
+
+        await fetchQrCodeData(state.name, isByValue ? REQUEST_MODES.BY_VALUE : REQUEST_MODES.BY_REFERENCE, DRAFT_VERSIONS.DRAFT_23)
+    }
+
+    const handleDraft21AuthRequest = async () => {
+        if (isDraft21)
+            return;
+
+        setIsDraft21((prev) => !prev);
+        setIsDraft23(false);
+
+        resetValues();
+
+        await fetchQrCodeData(state.name, isByValue ? REQUEST_MODES.BY_VALUE : REQUEST_MODES.BY_REFERENCE, DRAFT_VERSIONS.DRAFT_21)
     }
 
     const downloadQRCode = () => {
@@ -182,6 +210,9 @@ const QrScreen = () => {
     }
 
     const header = () => {
+        const currentDraft = isDraft23 ? 'draft-23' : 'draft-21';
+        const title = `${state?.name || 'QR Code Image'} - ${currentDraft}`;
+
         return <div style={{
             display: 'flex',
             flexDirection: 'row',
@@ -203,7 +234,7 @@ const QrScreen = () => {
                 ←
             </div>
             <h1>Scan screen</h1>
-            <h2> ({state?.name || 'QR Code Image'})</h2>
+            <h2> ({title})</h2>
         </div>;
     }
 
@@ -223,12 +254,29 @@ const QrScreen = () => {
         />;
     }
 
+    const draftToggle = () => {
+        return <Toggle
+            options={[
+                {
+                    name: "Draft 23",
+                    selected: isDraft23,
+                    onChange: handleDraft23AuthRequest
+                }, {
+                    name: "Draft 21",
+                    selected: isDraft21,
+                    onChange: handleDraft21AuthRequest
+                }
+            ]}
+        />;
+    }
+
     if (errorMessage) {
         return (
             <div style={{padding: '20px 30px'}}>
                 {header()}
                 <div style={{paddingLeft: 40}}>
                     {requestToggle()}
+                    {draftToggle()}
                     <Error message={errorMessage}/>
                 </div>
             </div>
@@ -250,6 +298,7 @@ const QrScreen = () => {
             <div style={styles.content}>
                 <div style={{flex: 1}}>
                     {requestToggle()}
+                    {draftToggle()}
                     <div style={{maxWidth: '100%'}}>
                         <div>
                             <a href={qrData} target="_blank" rel="noopener noreferrer">

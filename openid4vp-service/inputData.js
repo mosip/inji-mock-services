@@ -40,7 +40,7 @@ const redirectAuthorizationRequestDraft23 = {
     "client_metadata": client_metadata,
 }
 
-const redirectAuthorizationRequestDrat21 = {
+const redirectAuthorizationRequestDraft21 = {
     "client_id": responseUri,
     "client_id_scheme": "redirect_uri",
     "presentation_definition_uri": presentationDefinitionUri,
@@ -77,14 +77,14 @@ const didAuthorizationRequestDraft21 = {
 
 const authorizationRequestParamsDraft23 = {
     "client_id": didDocumentUrl,
-    "request_uri": requestUri,
+    "request_uri": `${baseUrl}/verifier/get-auth-request-obj/did?draft=draft-23`,
     "request_uri_method": "post"
 }
 
 const authorizationRequestParamsDraft21 = {
     "client_id": didDocumentUrl,
     "client_id_scheme": "did",
-    "request_uri": requestUri,
+    "request_uri": `${baseUrl}/verifier/get-auth-request-obj/did?draft=draft-21`,
     "request_uri_method": "post"
 }
 
@@ -96,8 +96,8 @@ const preRegisteredAuthorizationRequestParamsDraft23 = {
 
 const preRegisteredAuthorizationRequestParamsDraft21 = {
     "client_id": preRegisteredAuthorizationRequestDraft21.client_id,
-    "client_id_scheme": "did",
-    "request_uri": `${baseUrl}/verifier/get-auth-request-obj/pre-registered?draft=draft-23`,
+    "client_id_scheme": "pre-registered",
+    "request_uri": `${baseUrl}/verifier/get-auth-request-obj/pre-registered?draft=draft-21`,
     "request_uri_method": "post"
 }
 
@@ -108,8 +108,8 @@ const redirectUriAuthorizationRequestParamsDraft23 = {
 }
 
 const redirectUriAuthorizationRequestParamsDraft21 = {
-    "client_id": redirectAuthorizationRequestDrat21.client_id,
-    "client_id_scheme": "did",
+    "client_id": redirectAuthorizationRequestDraft21.client_id,
+    "client_id_scheme": "redirect_uri",
     "request_uri": `${baseUrl}/verifier/get-auth-request-obj/redirect_uri?draft=draft-21`,
     "request_uri_method": "post"
 }
@@ -150,7 +150,7 @@ const finalAuthRequestMap = {
         },
         [REQUEST_MODES.BY_VALUE]: {
             [DRAFT_VERSIONS.DRAFT_23]: redirectAuthorizationRequestDraft23,
-            [DRAFT_VERSIONS.DRAFT_21]: redirectAuthorizationRequestDrat21,
+            [DRAFT_VERSIONS.DRAFT_21]: redirectAuthorizationRequestDraft21,
         }
     },
     [CLIENT_ID_SCHEMES.DID]: {
@@ -174,7 +174,7 @@ module.exports = {
     authorizationRequestParams: authorizationRequestParamsDraft23,
     preRegisteredAuthorizationRequestDraft21: preRegisteredAuthorizationRequestDraft21,
     didAuthorizationRequestDraft21: didAuthorizationRequestDraft21,
-    redirectAuthorizationRequestDraft21: redirectAuthorizationRequestDrat21,
+    redirectAuthorizationRequestDraft21: redirectAuthorizationRequestDraft21,
     authorizationRequestParamsDraft21: authorizationRequestParamsDraft21,
 
     finalAuthRequestMap

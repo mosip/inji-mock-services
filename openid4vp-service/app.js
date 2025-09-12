@@ -12,7 +12,12 @@ const {
     preRegisteredAuthorizationRequest,
     didAuthorizationRequest,
     redirectAuthorizationRequest,
-    authorizationRequestParams,finalAuthRequestMap
+    authorizationRequestParams,
+    preRegisteredAuthorizationRequestDraft21,
+    didAuthorizationRequestDraft21,
+    redirectAuthorizationRequestDraft21,
+    authorizationRequestParamsDraft21,
+    finalAuthRequestMap
 } = require("./inputData");
 const PORT = 3000;
 
@@ -50,10 +55,35 @@ const providedCombinationIsNotSupported = 'Bad Request: Provided combination is 
 
 app.get('/verifier/get-auth-request-obj/:client_id_scheme', async (req, res) => {
     try {
-        let inputData = extractByReferenceInputData(req);
-        const jwt = await createJWT(inputData)
-        res.contentType(ContentTypes.JWT)
-        res.send(jwt)
+        const {client_id_scheme} = req.params;
+        const draftVersion = req.query.draft;
+        
+        if (!draftVersion) {
+            res.status(400).send('Bad Request: draft parameter is required');
+            return;
+        }
+        
+        let finalAuthRequestMapElement = finalAuthRequestMap[client_id_scheme];
+
+        if (!finalAuthRequestMapElement?.[SUPPORT_TYPES.SUPPORTS_BY_REFERENCE]) {
+            res.status(400).send(`Bad Request: ${client_id_scheme} does not support by_reference mode`);
+            return;
+        }
+
+        let inputData = finalAuthRequestMapElement?.[REQUEST_MODES.BY_VALUE]?.[draftVersion];
+
+        if (!inputData) {
+            console.error('Error generating JWT:', "Provided combination is not supported - ", {
+                client_id_scheme,
+                draftVersion
+            });
+            res.status(400).send(providedCombinationIsNotSupported);
+            return;
+        }
+        
+        const jwt = await createJWT(inputData);
+        res.contentType(ContentTypes.JWT);
+        res.send(jwt);
     } catch (error) {
         console.error('Error generating JWT :', error);
         if(error.message === providedCombinationIsNotSupported) {
@@ -65,15 +95,38 @@ app.get('/verifier/get-auth-request-obj/:client_id_scheme', async (req, res) => 
 });
 
 app.post('/verifier/get-auth-request-obj/:client_id_scheme', async (req, res) => {
-    console.log("Received request with request body:", req.body);
     try {
-        let inputData = extractByReferenceInputData(req);
-        // res.json(inputData)
-        // return
+        const {client_id_scheme} = req.params;
+        const draftVersion = req.query.draft;
+        
+        if (!draftVersion) {
+            res.status(400).send('Bad Request: draft parameter is required');
+            return;
+        }
+        
+        // Select the correct authorization request based on client_id_scheme and draft
+        let authorizationRequest;
+        if (client_id_scheme === 'pre-registered') {
+            authorizationRequest = draftVersion === 'draft-21' 
+                ? preRegisteredAuthorizationRequestDraft21 
+                : preRegisteredAuthorizationRequest;
+        } else if (client_id_scheme === 'redirect_uri') {
+            authorizationRequest = draftVersion === 'draft-21' 
+                ? redirectAuthorizationRequestDraft21 
+                : redirectAuthorizationRequest;
+        } else if (client_id_scheme === 'did') {
+            authorizationRequest = draftVersion === 'draft-21' 
+                ? didAuthorizationRequestDraft21 
+                : didAuthorizationRequest;
+        } else {
+            res.status(400).send('Bad Request: Unsupported client_id_scheme');
+            return;
+        }
+        
         const walletNonce = req.body?.wallet_nonce;
         const jwt = walletNonce
-            ? await createJWT({...inputData, wallet_nonce: walletNonce})
-            : await createJWT(didAuthorizationRequest);
+            ? await createJWT({...authorizationRequest, wallet_nonce: walletNonce})
+            : await createJWT(authorizationRequest);
         res.contentType(ContentTypes.JWT);
         res.send(jwt);
 
@@ -88,13 +141,18 @@ app.post('/verifier/get-auth-request-obj/:client_id_scheme', async (req, res) =>
 });
 
 // API to generate QR codes for different client_id schemes and request modes
-// API - /verifier/<client_id_scheme>/<request_mode>-qr?draft=<draft_version> (default draft-23)
+// API - /verifier/<client_id_scheme>/<request_mode>-qr?draft=<draft_version> 
 // client_id_scheme = pre-registered, redirect_uri, did
 // request_mode = by_value, by_reference
-// draft_version = draft-21, draft-23 (default draft-23)
+// draft_version = draft-21, draft-23 
 app.get('/verifier/:client_id_scheme/:request_mode', async (req, res) => {
     const {client_id_scheme, request_mode} = req.params;
-    const draftVersion = req.query.draft || 'draft-23';
+    const draftVersion = req.query.draft;
+
+    if (!draftVersion) {
+        res.status(400).send('Bad Request: draft parameter is required');
+        return;
+    }
 
     let finalAuthRequestMapElement = finalAuthRequestMap[client_id_scheme];
 
