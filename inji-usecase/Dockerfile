@@ -32,6 +32,7 @@ ENV work_dir=/home/${container_user}
 COPY ./target/inji_usecase-*.jar inji-usecase.jar
 
 # Fix permissions
+RUN chmod +x inji-usecase.jar
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
 
 # Set user for following commands
