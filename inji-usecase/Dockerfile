@@ -29,7 +29,7 @@ WORKDIR /home/${container_user}
 ENV work_dir=/home/${container_user}
 
 # Copy Spring Boot jar
-COPY ./target/inji-usecase-*.jar inji-usecase.jar
+COPY ./target/inji_usecase-*.jar inji-usecase.jar
 
 # Fix permissions
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
