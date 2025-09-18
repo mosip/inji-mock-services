@@ -51,8 +51,8 @@ const QrScreen = () => {
     const [actualAuthorizationRequestObject, setActualAuthorizationRequestObject] = useState(null);
     const [isByValue, setIsByValue] = useState(true);
     const [isByReference, setIsByReference] = useState(false);
-    const [isDraft23, setIsDraft23] = useState(state?.draftVersion ? state.draftVersion === DRAFT_VERSIONS.DRAFT_23 : false);
-    const [isDraft21, setIsDraft21] = useState(state?.draftVersion ? state.draftVersion === DRAFT_VERSIONS.DRAFT_21 : true);
+    const [isDraft23, setIsDraft23] = useState(true);
+    const [isDraft21, setIsDraft21] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [decodedJwt, setDecodedJwt] = useState(null);
     const [isDecoded, setIsDecoded] = useState(false);
@@ -72,7 +72,6 @@ const QrScreen = () => {
             setDecodedJwt({header,payload});
             setIsDecoded(true);
         } catch (error) {
-            console.error("Error decoding JWT:", error);
             setErrorMessage("Error decoding JWT: " + error.message);
             setIsDecoded(false)
         }
@@ -98,7 +97,6 @@ const QrScreen = () => {
 
             if (requestMode === REQUEST_MODES.BY_REFERENCE) {
                 const requestUri = inputDataValue["request_uri"];
-                console.log("Fetching actual authorization request object from ", requestUri)
                 const requestUriMethod = inputDataValue["request_uri_method"] ?? "get";
                 const response = await axios({
                     method: requestUriMethod,
@@ -112,7 +110,7 @@ const QrScreen = () => {
             }
         } catch (error) {
             resetValues()
-            console.error("Error fetching QR code data:", error);
+             console.error("Error fetching QR code data:", error);
             if (error?.response?.data) {
                 setErrorMessage(error.response.data);
             } else {

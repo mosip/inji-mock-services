@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {CLIENT_ID_SCHEMES, DRAFT_VERSIONS} from "../constants/constants";
 import Button from "../components/common/Button";
@@ -65,8 +65,6 @@ const getResponsiveStyles = () => {
 const Home = () => {
     const navigate = useNavigate();
     const styles = getResponsiveStyles();
-    const [selectedEndpoint, setSelectedEndpoint] = useState(null);
-
     useEffect(() => {
         document.title = 'Home';
     }, []);
@@ -78,117 +76,60 @@ const Home = () => {
     ];
 
     const handleClientIdSchemeClick = (endpointObj) => {
-        setSelectedEndpoint(endpointObj);
-    };
-
-    const handleDraftClick = (draftVersion) => {
+        // Default  Draft 23
         navigate('/qr', {
             state: {
-                name: selectedEndpoint.name,
-                draftVersion: draftVersion,
-                title: `${selectedEndpoint.name} - ${draftVersion}`
+                name: endpointObj.name,
+                draftVersion: DRAFT_VERSIONS.DRAFT_23,
+                title: `${endpointObj.name} - ${DRAFT_VERSIONS.DRAFT_23}`
             }
         });
     };
 
-    const handleBack = () => {
-        setSelectedEndpoint(null);
-    };
-
     return (
         <div style={styles.container}>
-            {!selectedEndpoint ? (
-                <>
-                    <h1 style={styles.title}>Inji Mock Services</h1>
-                    <h1 style={styles.subtitle}>Mock OpenID4VP Verifier</h1>
-                    <div style={styles.info}>
-                        <p style={styles.paragraph}>
-                            This is a mock verifier service for demonstration purposes.
-                        </p>
-                        <p style={{marginBottom: '15px'}}>
-                            <span
-                                style={{color: Palette.primaryText, fontWeight: 'bold', fontSize: 'large'}}>
-                                Supported Device flows:
+            <h1 style={styles.title}>Inji Mock Services</h1>
+            <h1 style={styles.subtitle}>Mock OpenID4VP Verifier</h1>
+            <div style={styles.info}>
+                <p style={styles.paragraph}>
+                    This is a mock verifier service for demonstration purposes.
+                </p>
+                <p style={{marginBottom: '15px'}}>
+                    <span style={{color: Palette.primaryText, fontWeight: 'bold', fontSize: 'large'}}>
+                        Supported Device flows:
+                    </span>
+                    <ol style={styles.ol}>
+                        <li style={{marginBottom: '8px'}}>
+                            <span style={{color: Palette.primaryText}}>Same device flow</span> - Click the QR code to
+                            simulate same device flow
+                        </li>
+                        <li>
+                            <span style={{color: Palette.primaryText}}>Cross device flow</span> - Scan the rendered QR
+                            code from your Wallet application
+                        </li>
+                    </ol>
+                </p>
+            </div>
+            <div>
+                <p>Please select a Client Id Scheme to generate an Authorization Request QR code:</p>
+                <div style={styles.buttonGrid}>
+                    {endpoints.map(e => (
+                        <div key={e.name} style={{ display: 'flex', alignItems: 'baseline'}}>
+                            <span role="img" aria-label="emoji" style={styles.emoji}>
+                                {e.name === CLIENT_ID_SCHEMES.PRE_REGISTERED ? '🔐' :
+                                    e.name === CLIENT_ID_SCHEMES.REDIRECT_URI ? '🔄' : '🆔'}
                             </span>
-                            <ol style={styles.ol}>
-                                <li style={{marginBottom: '8px'}}>
-                                    <span style={{color: Palette.primaryText}}>Same device flow</span> - Click the QR code to
-                                    simulate same device flow
-                                </li>
-                                <li>
-                                    <span style={{color: Palette.primaryText}}>Cross device flow</span> - Scan the rendered QR
-                                    code from your Wallet application
-                                </li>
-                            </ol>
-                        </p>
-                    </div>
-                    <div>
-                        <p>Please select a Client Id Scheme to generate an Authorization Request QR code:</p>
-                        <div style={styles.buttonGrid}>
-                            {endpoints.map(e => (
-                                <div key={e.name} style={{ display: 'flex', alignItems: 'baseline'}}>
-                                    <span role="img" aria-label="emoji" style={styles.emoji}>
-                                        {e.name === CLIENT_ID_SCHEMES.PRE_REGISTERED ? '🔐' :
-                                            e.name === CLIENT_ID_SCHEMES.REDIRECT_URI ? '🔄' : '🆔'}
-                                    </span>
-                                    <Button
-                                        onClick={() => handleClientIdSchemeClick(e)}
-                                        variant={"secondary"}
-                                        style={styles.button}
-                                    >
-                                        {e.name}
-                                    </Button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    <button
-                        onClick={handleBack}
-                        style={{
-                            marginBottom: '20px',
-                            padding: '8px 16px',
-                            fontSize: '14px',
-                            borderRadius: '4px',
-                            border: '1px solid #ccc',
-                            background: '#f8f8f8',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        ← Back
-                    </button>
-                    <h1 style={styles.title}>Select OpenID4VP Draft Version</h1>
-                    <h2 style={{...styles.subtitle, color: '#666', marginBottom: '20px'}}>
-                        {selectedEndpoint.name}
-                    </h2>
-
-                    <div style={styles.buttonGrid}>
-                        <div style={{ display: 'flex', alignItems: 'baseline'}}>
-                            <span role="img" aria-label="emoji" style={styles.emoji}>📋</span>
                             <Button
-                                onClick={() => handleDraftClick(DRAFT_VERSIONS.DRAFT_23)}
+                                onClick={() => handleClientIdSchemeClick(e)}
                                 variant={"secondary"}
                                 style={styles.button}
                             >
-                                Draft 23
+                                {e.name}
                             </Button>
                         </div>
-
-                        <div style={{ display: 'flex', alignItems: 'baseline'}}>
-                            <span role="img" aria-label="emoji" style={styles.emoji}>📄</span>
-                            <Button
-                                onClick={() => handleDraftClick(DRAFT_VERSIONS.DRAFT_21)}
-                                variant={"secondary"}
-                                style={styles.button}
-                            >
-                                Draft 21
-                            </Button>
-                        </div>
-                    </div>
-                </>
-            )}
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
