@@ -29,10 +29,9 @@ WORKDIR /home/${container_user}
 ENV work_dir=/home/${container_user}
 
 # Copy Spring Boot jar
-COPY ./target/inji_usecase-*.jar inji-usecase.jar
+COPY ./target/inji_usecase-*.jar inji_usecase.jar
 
 # Fix permissions
-RUN chmod +x inji-usecase.jar
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
 
 # Set user for following commands
@@ -43,4 +42,4 @@ EXPOSE 8091
 EXPOSE 9010
 
 # Run the app
-CMD ["java", "-jar", "inji-usecase.jar"]
+CMD ["java", "-jar", "inji_usecase.jar"]
