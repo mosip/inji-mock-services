@@ -1,4 +1,5 @@
 import React from 'react';
+import stepsConnectingLine from '../../assets/connecting_line.png';
 import tickIcon from '../../assets/tick_icon.png';
 import { useTranslation } from 'react-i18next';
 
@@ -17,29 +18,30 @@ export const TruckpassRequestStepper: React.FC<TruckpassRequestStepperProps> = (
   ];
 
   return (
-    <div className='bg-[#FFFFFF] flex items-center justify-between px-8 h-[120px] w-[1250px]'>
-      {stepperItems.map((item, id) => {
-        return (
-          <div key={id} className='flex items-center'>
-            <div key={id} className='flex flex-col gap-y-2'>
-              <div className='flex items-center'>
-                {item.completed
-                  ? <img src={tickIcon} alt='tick-icon' className='h-7 w-7' />
-                  : (<p className={`${item.inProgress ? 'bg-[#006DE7] text-[#FFFFFF] ' : 'bg-[#FFFFFF] text-[#414651] border border-[#E9EAEB]'} text-center h-[30px] w-[30px] rounded-2xl`}>
-                    {item.number}
-                  </p>)
-                }
-                {/* <img src={stepsConnectingLine} alt='steps-connecting-line' className={`w-[180px] ${item.itemId === 5 && "hidden"}`} /> */}
-              </div>
-              <p className={`${item.completed ? "text-[#079455]" : (item.inProgress ? "text-[#006DE7]" : "text-[#414651]")}`}>{item.itemName}</p>
+    <div className="relative bg-[#FFFFFF] flex items-center justify-between px-8 h-[120px] w-[1250px]">
+      <img src={stepsConnectingLine} className="absolute px-[50px] left-8 right-8 top-[40px] w-[1160px] h-[4px] z-0"/>
 
-            </div>
-          </div>
-        )
-      })
-      }
+      {stepperItems.map((item, id) => (
+        <div key={id} className="flex flex-col items-center gap-y-2 z-10">
+          {item.completed ? (
+            <img src={tickIcon} />
+          ) : (
+            <p className={`${
+                item.inProgress
+                  ? 'bg-[#006DE7] text-[#FFFFFF]'
+                  : 'bg-[#FFFFFF] text-[#414651] border border-[#E9EAEB]'} text-center h-[30px] w-[30px] rounded-2xl flex items-center justify-center`}
+            >
+              {item.number}
+            </p>
+          )
+          }
+          <p className={`${ item.completed ? 'text-[#079455]' : item.inProgress ? 'text-[#006DE7]' : 'text-[#414651] font-[600]' }`}>
+            {item.itemName}
+          </p>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
 
 
