@@ -8,7 +8,7 @@ const jwkSet = {
         {
             "kty": "OKP",
             "crv": "Ed25519",
-            "x": "IKXhA7W1HD1sAl-OfG59VKAqciWrrOL1Rw5F-PGLhi4",
+            "x": "-Fy3lMapzR3wpaYNCFq29GDEn_NoR3pBsc511q1Cxqw",
             "alg": "EdDSA",
             "kid": publicKeyId,
             "use": "sig"
