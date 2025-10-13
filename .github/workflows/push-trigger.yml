@@ -64,6 +64,7 @@ jobs:
     with:
       SERVICE_LOCATION: truck-pass
       BUILD_ARTIFACT: truckpass-ui
+      NPM_BUILD_TYPE: 'BOB'
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
