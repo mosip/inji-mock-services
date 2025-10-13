@@ -62,7 +62,7 @@ jobs:
   build-truckpass-ui:
     uses: mosip/kattu/.github/workflows/npm-build.yml@develop
     with:
-      SERVICE_LOCATION: ./truckpass-ui
+      SERVICE_LOCATION: truck-pass
       BUILD_ARTIFACT: truckpass-ui
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
@@ -72,7 +72,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - SERVICE_LOCATION: './truck-pass'
+          - SERVICE_LOCATION: 'truck-pass'
             SERVICE_NAME: 'truckpass-ui'
             NPM_BUILD: true
             BUILD_ARTIFACT: 'truckpass-ui'
