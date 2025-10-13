@@ -72,7 +72,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - SERVICE_LOCATION: './truckpass-ui'
+          - SERVICE_LOCATION: './truck-pass'
             SERVICE_NAME: 'truckpass-ui'
             NPM_BUILD: true
             BUILD_ARTIFACT: 'truckpass-ui'
