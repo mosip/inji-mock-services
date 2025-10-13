@@ -262,7 +262,7 @@ extraEnvVars:
         key: database-username
         name: db-config
   - name: DB_DBUSER_PASSWORD
-    value: iV6QXft3B3
+    value: <passwd>    # Provide DB_user password
   - name: KEYCLOAK_INTERNAL_URL
     valueFrom:
       configMapKeyRef:
@@ -445,7 +445,7 @@ metrics:
 istio:
   enabled: true
   gateways:
-    - istio-system/internal
+    - truckpass-gateway
   prefix: /v1/inji-usecase
   corsPolicy:
     allowOrigins:

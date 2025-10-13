@@ -431,7 +431,7 @@ truckpass:
 istio:
   enabled: true
   ingressController:
-    name: ingressgateway-internal
+    name: ingressgateway
   gateways:
     - truckpass-gateway
   hosts:

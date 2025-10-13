@@ -9,10 +9,11 @@ fi
 function deleting_inji-usecase() {
   NS=inji-usecase
   while true; do
-      read -p "Are you sure you want to delete Inji-usecase helm chart?(Y/n) " yn
+      read -p "Are you sure you want to delete Inji-usecase service and Truckpass UI?(Y/n) " yn
       if [ $yn = "Y" ]
         then
           helm -n $NS delete inji-usecase
+          helm -n $NS delete truckpass-ui
           break
         else
           break

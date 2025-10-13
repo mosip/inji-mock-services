@@ -1,0 +1,35 @@
+## Additional environment variables to set
+## Update the below env variables as per the requirement
+extraEnvVars:
+  - name: DATABASE_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: database-host
+        name: db-config
+  - name: DATABASE_PORT
+    valueFrom:
+      configMapKeyRef:
+        key: database-port
+        name: db-config
+  - name: DATABASE_NAME
+    valueFrom:
+      configMapKeyRef:
+        key: database-name
+        name: db-config
+  - name: DATABASE_USERNAME
+    valueFrom:
+      configMapKeyRef:
+        key: database-username
+        name: db-config
+  - name: DB_DBUSER_PASSWORD
+    value: <passwd>    # Provide DB_user password
+  - name: KEYCLOAK_INTERNAL_URL
+    valueFrom:
+      configMapKeyRef:
+        key: keycloak-internal-url
+        name: keycloak-host
+  - name: MOSIP_KEYCLOAK_REALM_ROLES
+    valueFrom:
+      configMapKeyRef:
+        key: mosip-keycloak-realm-roles
+        name: mosip-keycloak-realm-roles

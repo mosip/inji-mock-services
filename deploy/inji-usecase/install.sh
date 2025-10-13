@@ -22,17 +22,29 @@ function installing_inji-usecase() {
   echo Copy configmaps for Inji-usecase
   $COPY_UTIL configmap keycloak-host keycloak $NS
 
-  INJI_USECASE_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-inji-usecase-host})
+  read -p "Please enter the INJI_USECASE_HOST : " inji-usecase-host
+  if [ -z "$inji-usecase-host" ]; then
+     echo "ERROR: inji-usecase-host cannot be empty; EXITING;";
+     exit 1;
+
+  read -p "Please enter the TRUCKPASS_UI_HOST : " truckpass-ui-host
+  if [ -z "$truckpass-ui-host" ]; then
+     echo "ERROR: truckpass-ui-host cannot be empty; EXITING;";
+     exit 1;
+
   API_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-api-internal-host})
 
   echo Installing Inji-usecase. Will wait till service gets installed.
-  helm -n $NS install inji-usecase mosip/inji-usecase --set istio.corsPolicy.allowOrigins\[0\].prefix=https://$ADMIN_HOST --wait --version $CHART_VERSION
+  helm -n $NS install inji-usecase mosip/inji-usecase --set istio.corsPolicy.allowOrigins\[0\].prefix=https://$inji-usecase-host --wait --version $CHART_VERSION -f override-values.yaml
+
+  echo Installing Truckpass-UI. Will wait till the UI gets installed.
+  helm -n $NS install truckpass-ui mosip/truckpass-ui --set truckpass.apiUrl=https://$API_HOST/v1/ --set istio.hosts\[0\]=$truckpass-ui-host --version $CHART_VERSION -f override-ui-values.yaml
 
   kubectl -n $NS  get deploy -o name |  xargs -n1 -t  kubectl -n $NS rollout status
 
-  echo Installed inji-usecase
+  echo Installed inji-usecase and truckpass-ui.
 
-  echo "Truckpass portal URL: https://$ADMIN_HOST/admin-ui/"
+  echo "Truckpass portal URL: https://$truckpass-ui-host/admin-ui/"
   return 0
 }
 
