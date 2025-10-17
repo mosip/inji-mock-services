@@ -41,8 +41,8 @@ function installing_inji-usecase() {
 
   API_HOST=$(kubectl get cm global -o jsonpath={.data.mosip-api-internal-host})
 
-#  echo Installing Inji-usecase. Will wait till service gets installed.
-#  helm -n $NS install inji-usecase /home/techno-408/IdeaProjects/inji-mock-services/helm/inji-usecase --set image.repository=mohanraj209/inji-usecase --set image.tag=truckpass --set istio.corsPolicy.allowOrigins\[0\].prefix=https://$inji_usecase_host --wait --version $CHART_VERSION -f override-values.yaml
+  echo Installing Inji-usecase. Will wait till service gets installed.
+  helm -n $NS install inji-usecase /home/techno-408/IdeaProjects/inji-mock-services/helm/inji-usecase --set image.repository=mohanraj209/inji-usecase --set image.tag=truckpass --set istio.corsPolicy.allowOrigins\[0\].prefix=https://$inji_usecase_host --wait --version $CHART_VERSION -f override-values.yaml
 
   echo Installing Truckpass-UI. Will wait till the UI gets installed.
   helm -n $NS install truckpass-ui /home/techno-408/IdeaProjects/inji-mock-services/helm/truckpass-ui --set image.repository=mohanraj209/truckpass-ui --set image.tag=truckpass --set truckpass.apiUrl=https://$API_HOST/v1/ --set istio.hosts\[0\]=$truckpass_ui_host --version $CHART_VERSION -f override-ui-values.yaml
