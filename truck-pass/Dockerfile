@@ -27,7 +27,7 @@ ENV nginx_dir=/usr/share/nginx
 ENV work_dir=${nginx_dir}/html
 
 # Copy built Vite app (note: output is in "dist", not "build")
-COPY --from=build /build ${work_dir}
+COPY --from=build /app/build ${work_dir}
 
 # Add dynamic env config generation script
 ADD configure_start.sh /configure_start.sh
