@@ -13,8 +13,7 @@ dependencies:
 home: https://mosip.io
 keywords:
   - mosip
-  - admin
-  - kernel
+  - inji-usecase
 maintainers:
   - email: info@mosip.io
     name: MOSIP
