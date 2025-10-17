@@ -2,12 +2,12 @@
 ## Update the below env variables as per the requirement
 extraEnvVars:
   - name: KEYCLOAK_URL
-    value: https://iam.iom.mosip.net/auth/
+    value: https://iam.released.mosip.net/auth/
   - name: KEYCLOAK_REALM
     value: mosip
   - name: KEYCLOAK_CLIENT_ID
-    value: compass-public
+    value: truckpass-public
   - name: BASE_URL
-    value: https://compass.iom.mosip.net/v1/admin
+    value: https://truckpass.dev-int-inji.mosip.net/v1/admin
   - name: VALID_ADMIN_ROLE
-    value: COMPASS_ADMIN
+    value: TRUCKPASS_ADMIN

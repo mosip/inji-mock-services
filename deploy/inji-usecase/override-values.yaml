@@ -22,7 +22,7 @@ extraEnvVars:
         key: database-username
         name: db-config
   - name: DB_DBUSER_PASSWORD
-    value: <passwd>    # Provide DB_user password
+    value: "DjNyhW7CAW"    # Provide DB_user password
   - name: KEYCLOAK_INTERNAL_URL
     valueFrom:
       configMapKeyRef:
@@ -33,3 +33,11 @@ extraEnvVars:
       configMapKeyRef:
         key: mosip-keycloak-realm-roles
         name: mosip-keycloak-realm-roles
+
+inji_usecase:
+  configmaps:
+    db:
+      database_host: api-internal.dev-int-inji.mosip.net
+      database_name: mosip_certify   # provide db name
+      database_port: "5432"
+      database_username: certifyuser # provide username

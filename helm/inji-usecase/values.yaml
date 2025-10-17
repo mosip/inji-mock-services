@@ -441,6 +441,17 @@ metrics:
     #       severity: error
     rules: []
 
+inji_usecase:
+  configmaps:
+    db:
+      database_host: "api-internal.sandbox.xyz.net"
+      database_name: "<db_name>"   # provide db name
+      database_port: "5432"
+      database_username: "<username>" # provide username
+    mosip-keycloak-realm-roles:
+      mosip-keycloak-realm-roles: "COMPASS_ADMIN"
+
+
 ## Admin swagger should have only internal access. Hence linked to internal gateway
 istio:
   enabled: true
