@@ -15,3 +15,20 @@ data:
   database-name: {{ .Values.inji_usecase.configmaps.db.database_name | quote }}
   database-port: {{ .Values.inji_usecase.configmaps.db.database_port | quote }}
   database-username: {{ .Values.inji_usecase.configmaps.db.database_username | quote }}
+
+-----------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosip-keycloak-realm-roles
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+data:
+  mosip-keycloak-realm-roles: {{ .Values.inji_usecase.configmaps.mosip-keycloak-realm-roles.mosip-keycloak-realm-roles | quote }}
+  
