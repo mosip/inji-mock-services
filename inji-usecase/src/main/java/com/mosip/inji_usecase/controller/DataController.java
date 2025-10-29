@@ -92,6 +92,7 @@ public class DataController {
     @PostMapping("/api/data")
     public ResponseEntity<?> ingestData(
             @RequestHeader(name = "x-source") String dataSource,
+            @RequestParam(required = false) String notifyEmail,
             @RequestBody Map<String, Object> data) {
 
         System.out.println("x-source: " + dataSource);
@@ -106,51 +107,70 @@ public class DataController {
             validationService.validate(data);
             repositoryService.save(data);
 
+            // ---------- EMAIL TRIGGER: query-param support + recipient resolution
+            // ----------
             String recipient = null;
-            String ds = dataSource.trim().toLowerCase();
 
-            // Determine email recipient based on data source
-            if ("farmer".equals(ds)) {
-                if (data.get("email") != null) {
-                    recipient = data.get("email").toString().trim();
-                }
-            } else if ("driver".equals(ds) || "truckpass".equals(ds)) {
-                if (data.get("driverEmailId") != null) {
-                    recipient = data.get("driverEmailId").toString().trim();
+            // 1) If notifyEmail query param provided, use it (highest priority)
+            if (notifyEmail != null && !notifyEmail.trim().isEmpty()) {
+                recipient = notifyEmail.trim();
+                System.out.println("Using notifyEmail query param: " + recipient);
+            } else {
+                // 2) Fallback: derive from x-source and request body
+                String ds = (dataSource == null) ? "" : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+                System.out.println("DEBUG → Parsed x-source as: '" + ds + "'");
+
+                if ("farmer".equals(ds)) {
+                    Object emailObj = data.get("email");
+                    if (emailObj != null) {
+                        String e = emailObj.toString().trim();
+                        if (!e.isEmpty())
+                            recipient = e;
+                    }
+                } else if ("driver".equals(ds) || "truckpass".equals(ds)) {
+                    Object emailObj = data.get("driverEmailId");
+                    if (emailObj != null) {
+                        String e = emailObj.toString().trim();
+                        if (!e.isEmpty())
+                            recipient = e;
+                    }
                 }
             }
 
             System.out.println("Recipient: " + recipient);
 
-            // Send different email templates for farmer vs driver/truckpass
             if (recipient != null && !recipient.isBlank()) {
                 final String to = recipient;
                 final String subject;
                 final StringBuilder body = new StringBuilder();
 
-                if ("farmer".equals(ds)) {
+                // choose template based on x-source (use cleaned ds for template selection)
+                String dsForTemplate = (dataSource == null) ? ""
+                        : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+                if ("farmer".equals(dsForTemplate)) {
                     subject = "Hello Farmer!";
-                    body.append("Dear Farmer,\n\n")
-                            .append("Thank you for registering with us. Your details have been successfully recorded.\n\n")
-                            .append("We appreciate your contribution to our agricultural community.\n\n")
-                            .append("Warm regards,\nThe Farmer Support Team");
-                } else if ("driver".equals(ds) || "truckpass".equals(ds)) {
+                    body.append("Dear Farmer,\r\n\r\n")
+                            .append("Thank you for registering with us. Your details have been successfully recorded.\r\n\r\n")
+                            .append("We appreciate your contribution to our agricultural community.\r\n\r\n")
+                            .append("Warm regards,\r\nThe Farmer Support Team");
+                } else if ("driver".equals(dsForTemplate) || "truckpass".equals(dsForTemplate)) {
                     subject = "Your Truckpass is Ready";
-                    body.append("Hello,\n\nYour truckpass has been created and is ready.\n\n");
+                    body.append("Hello,\r\n\r\nYour truckpass has been created and is ready.\r\n\r\n");
                     if (data.get("truckpassId") != null) {
-                        body.append("Truckpass ID: ").append(data.get("truckpassId").toString()).append("\n");
+                        body.append("Truckpass ID: ").append(data.get("truckpassId").toString()).append("\r\n");
                     }
                     if (data.get("vehicleNumber") != null) {
-                        body.append("Vehicle: ").append(data.get("vehicleNumber").toString()).append("\n");
+                        body.append("Vehicle: ").append(data.get("vehicleNumber").toString()).append("\r\n");
                     }
-                    body.append("\nRegards,\nTruckpass Team");
+                    body.append("\r\nRegards,\r\nTruckpass Team");
                 } else {
-                    // In case some unexpected x-source value appears
                     subject = "Data Received";
-                    body.append("Hello,\n\nYour data has been successfully recorded.\n\nRegards,\nTeam");
+                    body.append("Hello,\r\n\r\nYour data has been successfully recorded.\r\n\r\nRegards,\r\nTeam");
                 }
 
-                // Send async email
+                System.out.println("DEBUG → Selected email subject: " + subject);
+
+                // send async so request returns immediately
                 java.util.concurrent.CompletableFuture.runAsync(() -> {
                     try {
                         emailService.sendEmail(to, subject, body.toString());
@@ -159,10 +179,10 @@ public class DataController {
                         System.err.println("Failed to send notification email to " + to + ": " + e.getMessage());
                     }
                 });
-
             } else {
                 System.out.println("No valid recipient found; skipping email trigger.");
             }
+            // ---------- END EMAIL TRIGGER ----------
 
             return ResponseEntity.ok().build();
 
