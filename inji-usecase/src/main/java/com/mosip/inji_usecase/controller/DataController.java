@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +30,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 public class DataController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataController.class);
 
     private final Map<String, ValidationService> validationServices;
     private final Map<String, RepositoryService> repositoryServices;
@@ -78,7 +83,7 @@ public class DataController {
             try {
                 result.addAll(repo.getValue().getBySearchCriteria(builder.build()));
             } catch (Exception e) {
-                System.err.println("Search failed for repository " + repo.getKey() + ": " + e.getMessage());
+                LOGGER.error("Search failed for repository {}: {}", repo.getKey(), e.getMessage(), e);
             }
         }
 
@@ -134,12 +139,12 @@ public class DataController {
                 }
             }
 
-            // Only log when recipient not found — do NOT print email addresses or other
+            // Only log when recipient not found — do NOT log email addresses or other
             // secrets
             if (recipient == null || recipient.isBlank()) {
                 String dsForTemplate = (dataSource == null) ? ""
                         : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
-                System.out.println("No valid recipient found; skipping email trigger for x-source: " + dsForTemplate);
+                LOGGER.warn("No valid recipient found; skipping email trigger for x-source: {}", dsForTemplate);
                 return ResponseEntity.ok().build();
             }
 
@@ -177,8 +182,9 @@ public class DataController {
                     emailService.sendEmail(to, subject, body.toString());
                     // intentionally no logging of success/failure containing email addresses
                 } catch (Exception e) {
-                    // optionally log a generic error without exposing recipient
-                    System.err.println("Failed to send notification email (non-sensitive error).");
+                    // log generic error and include exception for troubleshooting (no sensitive
+                    // data)
+                    LOGGER.error("Failed to send notification email (non-sensitive error).", e);
                 }
             });
 
