@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mosip.inji_usecase.config.EmailTemplateProperties;
 import com.mosip.inji_usecase.service.query.SearchCriteria;
 import com.mosip.inji_usecase.service.query.SearchDto;
 import com.mosip.inji_usecase.service.query.SpecificationBuilder;
@@ -36,6 +37,7 @@ public class DataController {
     private final Map<String, ValidationService> validationServices;
     private final Map<String, RepositoryService> repositoryServices;
     private final EmailService emailService;
+    private final EmailTemplateProperties templateProperties;
 
     @GetMapping("/api/data/{id}")
     public ResponseEntity<?> retrieveDataById(@PathVariable("id") Long id) {
@@ -155,32 +157,40 @@ public class DataController {
             // choose template based on x-source (use cleaned ds for template selection)
             String dsForTemplate = (dataSource == null) ? ""
                     : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+
+            // Pull templates map from configuration
+            Map<String, String> templates = templateProperties.getEmail();
+
             if ("farmer".equals(dsForTemplate)) {
                 subject = "Hello Farmer!";
-                body.append("Dear Farmer,\r\n\r\n")
-                        .append("Thank you for registering with us. Your details have been successfully recorded.\r\n\r\n")
-                        .append("We appreciate your contribution to our agricultural community.\r\n\r\n")
-                        .append("Warm regards,\r\nThe Farmer Support Team");
+                // prefer config template; fallback to in-code default if missing
+                String tpl = templates.getOrDefault("farmer",
+                        "Dear Farmer,\n\nThank you for registering with us. Your details have been successfully recorded.\n\nWarm regards,\nThe Farmer Support Team");
+                body.append(tpl);
             } else if ("driver".equals(dsForTemplate) || "truckpass".equals(dsForTemplate)) {
                 subject = "Your Truckpass is Ready";
-                body.append("Hello,\r\n\r\nYour truckpass has been created and is ready.\r\n\r\n");
+                String tpl = templates.getOrDefault("truckpass",
+                        "Hello,\n\nYour truckpass has been created and is ready.\n\nRegards,\nTruckpass Team");
+                body.append(tpl);
+
+                // append dynamic details (if present) - kept separate from template text
                 if (data.get("truckpassId") != null) {
-                    body.append("Truckpass ID: ").append(data.get("truckpassId").toString()).append("\r\n");
+                    body.append("\n").append("Truckpass ID: ").append(data.get("truckpassId").toString());
                 }
                 if (data.get("vehicleNumber") != null) {
-                    body.append("Vehicle: ").append(data.get("vehicleNumber").toString()).append("\r\n");
+                    body.append("\n").append("Vehicle: ").append(data.get("vehicleNumber").toString());
                 }
-                body.append("\r\nRegards,\r\nTruckpass Team");
             } else {
                 subject = "Data Received";
-                body.append("Hello,\r\n\r\nYour data has been successfully recorded.\r\n\r\nRegards,\r\nTeam");
+                String tpl = templates.getOrDefault("generic",
+                        "Hello,\n\nYour data has been successfully recorded.\n\nRegards,\nTeam");
+                body.append(tpl);
             }
 
             // send async so request returns immediately; do not print sensitive info
             java.util.concurrent.CompletableFuture.runAsync(() -> {
                 try {
                     emailService.sendEmail(to, subject, body.toString());
-                    // intentionally no logging of success/failure containing email addresses
                 } catch (Exception e) {
                     // log generic error and include exception for troubleshooting (no sensitive
                     // data)
