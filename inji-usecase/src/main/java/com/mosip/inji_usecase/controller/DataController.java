@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,92 +115,75 @@ public class DataController {
             validationService.validate(data);
             repositoryService.save(data);
 
-            // ---------- EMAIL TRIGGER: query-param support + recipient resolution
+            // ---------- PRODUCT-DRIVEN RECIPIENT RESOLUTION (NO HARDCODED PRODUCT NAMES)
             // ----------
-            String recipient = null;
+            String productKey = normalizeKey(dataSource);
 
-            // 1) If notifyEmail query param provided, use it (highest priority)
-            if (notifyEmail != null && !notifyEmail.trim().isEmpty()) {
-                recipient = notifyEmail.trim();
-            } else {
-                // 2) Fallback: derive from x-source and request body
-                String ds = (dataSource == null) ? "" : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+            // 1) notifyEmail query param has highest priority
+            String recipient = (notifyEmail != null && !notifyEmail.trim().isEmpty()) ? notifyEmail.trim() : null;
 
-                if ("farmer".equals(ds)) {
-                    Object emailObj = data.get("email");
-                    if (emailObj != null) {
-                        String e = emailObj.toString().trim();
-                        if (!e.isEmpty())
-                            recipient = e;
-                    }
-                } else if ("driver".equals(ds) || "truckpass".equals(ds)) {
-                    Object emailObj = data.get("driverEmailId");
-                    if (emailObj != null) {
-                        String e = emailObj.toString().trim();
-                        if (!e.isEmpty())
-                            recipient = e;
-                    }
+            // 2) If notifyEmail not provided, try configured product emailField
+            if (recipient == null) {
+                String configuredEmailField = templateProperties.getProductConfigValue(productKey, "emailField");
+                if (configuredEmailField != null && !configuredEmailField.isBlank()) {
+                    Object emailObj = readFromPayload(configuredEmailField, data);
+                    if (emailObj != null)
+                        recipient = emailObj.toString().trim();
                 }
             }
 
-            // Only log when recipient not found — do NOT log email addresses or other
-            // secrets
+            // If no recipient found via config or query, skip sending (no hardcoded checks)
             if (recipient == null || recipient.isBlank()) {
-                String dsForTemplate = (dataSource == null) ? ""
-                        : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
-                LOGGER.warn("No valid recipient found; skipping email trigger for x-source: {}", dsForTemplate);
+                LOGGER.warn("No valid recipient found; skipping email trigger for product: {}", productKey);
                 return ResponseEntity.ok().build();
             }
 
-            final String to = recipient;
-            final String subject;
-            final StringBuilder body = new StringBuilder();
-
-            // choose template based on x-source (use cleaned ds for template selection)
-            String dsForTemplate = (dataSource == null) ? ""
-                    : dataSource.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
-
-            // Pull templates map from configuration
-            Map<String, String> templates = templateProperties.getEmail();
-
-            if ("farmer".equals(dsForTemplate)) {
-                subject = "Hello Farmer!";
-                // prefer config template; fallback to in-code default if missing
-                String tpl = templates.getOrDefault("farmer",
-                        "Dear Farmer,\n\nThank you for registering with us. Your details have been successfully recorded.\n\nWarm regards,\nThe Farmer Support Team");
-                body.append(tpl);
-            } else if ("driver".equals(dsForTemplate) || "truckpass".equals(dsForTemplate)) {
-                subject = "Your Truckpass is Ready";
-                String tpl = templates.getOrDefault("truckpass",
-                        "Hello,\n\nYour truckpass has been created and is ready.\n\nRegards,\nTruckpass Team");
-                body.append(tpl);
-
-                // append dynamic details (if present) - kept separate from template text
-                if (data.get("truckpassId") != null) {
-                    body.append("\n").append("Truckpass ID: ").append(data.get("truckpassId").toString());
-                }
-                if (data.get("vehicleNumber") != null) {
-                    body.append("\n").append("Vehicle: ").append(data.get("vehicleNumber").toString());
-                }
-            } else {
-                subject = "Data Received";
-                String tpl = templates.getOrDefault("generic",
-                        "Hello,\n\nYour data has been successfully recorded.\n\nRegards,\nTeam");
-                body.append(tpl);
+            // ---------- TEMPLATE SELECTION ----------
+            // product-level template mapping
+            String templateKey = templateProperties.getProductConfigValue(productKey, "template");
+            if (templateKey == null || templateKey.isBlank()) {
+                templateKey = productKey == null || productKey.isBlank() ? "generic" : productKey;
             }
 
-            // send async so request returns immediately; do not print sensitive info
+            // subject: product-level inline subject takes precedence
+            String inlineSubject = templateProperties.getProductConfigValue(productKey, "subject");
+            String subjectTemplate;
+            if (inlineSubject != null && !inlineSubject.isBlank()) {
+                subjectTemplate = inlineSubject;
+            } else {
+                subjectTemplate = templateProperties.getSubjects()
+                        .getOrDefault(templateKey,
+                                templateProperties.getSubjects().getOrDefault("generic", "Data Received"));
+            }
+
+            // body template lookup
+            String bodyTemplate = templateProperties.getTemplates()
+                    .getOrDefault(templateKey, templateProperties.getTemplates().getOrDefault("generic",
+                            "Hello,\n\nYour data has been recorded.\n\nRegards,\nTeam"));
+
+            // placeholder defaults for this product (optional)
+            Map<String, String> productDefaults = templateProperties.getPlaceholderDefaults().get(productKey);
+
+            // fill placeholders in subject and body using payload + defaults
+            String filledSubject = fillTemplate(subjectTemplate, data, productDefaults);
+            String filledBody = fillTemplate(bodyTemplate, data, productDefaults);
+
+            // Do NOT log recipient or filled templates (sensitive). Only generic info:
+            LOGGER.info("Email triggered for product '{}' (sending)", productKey);
+
+            // send async
+            final String toFinal = recipient;
+            final String subjectFinal = filledSubject;
+            final String bodyFinal = filledBody;
+
             java.util.concurrent.CompletableFuture.runAsync(() -> {
                 try {
-                    emailService.sendEmail(to, subject, body.toString());
+                    emailService.sendEmail(toFinal, subjectFinal, bodyFinal);
                 } catch (Exception e) {
-                    // log generic error and include exception for troubleshooting (no sensitive
-                    // data)
                     LOGGER.error("Failed to send notification email (non-sensitive error).", e);
                 }
             });
 
-            // return success immediately
             return ResponseEntity.ok().build();
 
         } catch (IllegalArgumentException e) {
@@ -207,4 +192,71 @@ public class DataController {
         }
     }
 
+    // ---------- Utilities ----------
+
+    /**
+     * Normalize header / product key: keep only letters/digits/underscore/hyphen,
+     * lower-case.
+     */
+    private String normalizeKey(String raw) {
+        if (raw == null)
+            return "";
+        return raw.trim().replaceAll("[^a-zA-Z0-9_\\-]", "").toLowerCase();
+    }
+
+    /**
+     * Read a (possibly nested) property from the payload map.
+     * Supports keys like "driver.email" to traverse nested maps.
+     */
+    @SuppressWarnings("unchecked")
+    private Object readFromPayload(String key, Map<String, Object> payload) {
+        if (key == null || key.isBlank() || payload == null)
+            return null;
+        if (!key.contains(".")) {
+            return payload.get(key);
+        }
+        String[] parts = key.split("\\.");
+        Object cur = payload;
+        for (String part : parts) {
+            if (!(cur instanceof Map))
+                return null;
+            Map<String, Object> curMap = (Map<String, Object>) cur;
+            cur = curMap.get(part);
+            if (cur == null)
+                return null;
+        }
+        return cur;
+    }
+
+    /**
+     * Fill template placeholders using payload and optional defaults map.
+     * Placeholders are {{key}} where key may be nested like driver.email
+     */
+    @SuppressWarnings("unchecked")
+    private String fillTemplate(String template, Map<String, Object> payload, Map<String, String> defaults) {
+        if (template == null)
+            return "";
+        Pattern p = Pattern.compile("\\{\\{\\s*([a-zA-Z0-9_\\.\\-]+)\\s*\\}\\}");
+        Matcher m = p.matcher(template);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            String key = m.group(1);
+            String replacement = "";
+
+            // product-level default map
+            if (defaults != null && defaults.containsKey(key)) {
+                replacement = defaults.get(key);
+            } else {
+                Object val = readFromPayload(key, payload);
+                if (val != null)
+                    replacement = val.toString();
+            }
+
+            // escape for regex replacement
+            replacement = replacement.replace("\\", "\\\\").replace("$", "\\$");
+            m.appendReplacement(sb, replacement);
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
 }
