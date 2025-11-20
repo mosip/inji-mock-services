@@ -1,18 +1,18 @@
 #!/bin/bash
-# Uninstalls all Inji-usecase helm chart
+# Uninstalls all Truckpass-usecase helm chart
 ## Usage: ./delete.sh [kubeconfig]
 
 if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-function deleting_inji-usecase() {
-  NS=inji-usecase
+function deleting_truckpass-usecase() {
+  NS=truckpass-usecase
   while true; do
-      read -p "Are you sure you want to delete Inji-usecase service and Truckpass UI?(Y/n) " yn
+      read -p "Are you sure you want to delete Truckpass-usecase service and Truckpass UI?(Y/n) " yn
       if [ $yn = "Y" ]
         then
-          helm -n $NS delete inji-usecase
+          helm -n $NS delete truckpass-usecase
           helm -n $NS delete truckpass-ui
           break
         else
@@ -28,4 +28,4 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
 set -o errtrace  # trace ERR through 'time command' and other functions
 set -o pipefail  # trace ERR through pipes
-deleting_inji-usecase   # calling function
+deleting_truckpass-usecase   # calling function

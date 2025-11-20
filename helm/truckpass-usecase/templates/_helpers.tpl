@@ -1,28 +1,28 @@
 {{/*
 Return the proper  image name
 */}}
-{{- define "inji-usecase.image" -}}
+{{- define "truckpass-usecase.image" -}}
 {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}
 
 {{/*
 Return the proper image name (for the init container volume-permissions image)
 */}}
-{{- define "inji-usecase.volumePermissions.image" -}}
+{{- define "truckpass-usecase.volumePermissions.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.volumePermissions.image "global" .Values.global ) -}}
 {{- end -}}
 
 {{/*
 Return the proper Docker Image Registry Secret Names
 */}}
-{{- define "inji-usecase.imagePullSecrets" -}}
+{{- define "truckpass-usecase.imagePullSecrets" -}}
 {{- include "common.images.pullSecrets" (dict "images" (list .Values.image .Values.volumePermissions.image) "global" .Values.global) -}}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "inji-usecase.serviceAccountName" -}}
+{{- define "truckpass-usecase.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
     {{ default (printf "%s-foo" (include "common.names.fullname" .)) .Values.serviceAccount.name }}
 {{- else -}}
@@ -33,10 +33,10 @@ Create the name of the service account to use
 {{/*
 Compile all warnings into a single message.
 */}}
-{{- define "inji-usecase.validateValues" -}}
+{{- define "truckpass-usecase.validateValues" -}}
 {{- $messages := list -}}
-{{- $messages := append $messages (include "inji-usecase.validateValues.foo" .) -}}
-{{- $messages := append $messages (include "inji-usecase.validateValues.bar" .) -}}
+{{- $messages := append $messages (include "truckpass-usecase.validateValues.foo" .) -}}
+{{- $messages := append $messages (include "truckpass-usecase.validateValues.bar" .) -}}
 {{- $messages := without $messages "" -}}
 {{- $message := join "\n" $messages -}}
 
@@ -48,7 +48,7 @@ Compile all warnings into a single message.
 {{/*
 Return podAnnotations
 */}}
-{{- define "inji-usecase.podAnnotations" -}}
+{{- define "truckpass-usecase.podAnnotations" -}}
 {{- if .Values.podAnnotations }}
 {{ include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) }}
 {{- end }}

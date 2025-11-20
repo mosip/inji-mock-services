@@ -1,4 +1,4 @@
-# Inji-Usecase
+# Truckpass-Usecase
 
 ## Install
 ```

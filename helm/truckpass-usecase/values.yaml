@@ -51,8 +51,8 @@ service:
 
 image:
   registry: docker.io
-  repository: mosipqa/inji-usecase
-  tag: develop
+  repository: mohanraj209/inji-usecase
+  tag: truckpass
 
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -75,7 +75,7 @@ springServicePort: 8098
 startupProbe:
   enabled: true
   httpGet:
-    path: /v1/inji-usecase/actuator/health
+    path: /v1/truckpass-usecase/actuator/health
     port: 8098
   initialDelaySeconds: 0
   periodSeconds: 10
@@ -86,7 +86,7 @@ startupProbe:
 livenessProbe:
   enabled: true
   httpGet:
-    path: /v1/inji-usecase/actuator/health
+    path: /v1/truckpass-usecase/actuator/health
     port: 8098
   initialDelaySeconds: 20
   periodSeconds: 10
@@ -97,7 +97,7 @@ livenessProbe:
 readinessProbe:
   enabled: true
   httpGet:
-    path: /v1/inji-usecase/actuator/health
+    path: /v1/truckpass-usecase/actuator/health
     port: 8098
   initialDelaySeconds: 0
   periodSeconds: 10
@@ -262,17 +262,10 @@ extraEnvVars:
         key: database-username
         name: db-config
   - name: DB_DBUSER_PASSWORD
-    value: <passwd>    # Provide DB_user password
-  - name: KEYCLOAK_INTERNAL_URL
     valueFrom:
-      configMapKeyRef:
-        key: keycloak-internal-url
-        name: keycloak-host
-  - name: MOSIP_KEYCLOAK_REALM_ROLES
-    valueFrom:
-      configMapKeyRef:
-        key: mosip-keycloak-realm-roles
-        name: mosip-keycloak-realm-roles
+      secretKeyRef:
+        key: db-dbuser-password
+        name: db-common-secrets
 
 ## ConfigMap with extra environment variables
 ##
@@ -394,7 +387,7 @@ metrics:
   podAnnotations:
     prometheus.io/scrape: "true"
 
-  endpointPath: /v1/inji-usecase/actuator/prometheus
+  endpointPath: /v1/truckpass-usecase/actuator/prometheus
 
   ## Prometheus Service Monitor
   ## ref: https://github.com/coreos/prometheus-operator
@@ -441,26 +434,23 @@ metrics:
     #       severity: error
     rules: []
 
-inji_usecase:
+truckpass_usecase:
   configmaps:
     db:
       database_host: "api-internal.sandbox.xyz.net"
       database_name: "<db_name>"   # provide db name
       database_port: "5432"
       database_username: "<username>" # provide username
-    mosip-keycloak-realm-roles:
-      mosip-keycloak-realm-roles: "COMPASS_ADMIN"
-
 
 ## Admin swagger should have only internal access. Hence linked to internal gateway
 istio:
   enabled: true
   gateways:
     - truckpass-gateway
-  prefix: /v1/inji-usecase
+  prefix: /v1/truckpass-usecase
   corsPolicy:
     allowOrigins:
-      - prefix: https://inji-usecase.sandbox.xyz.net
+      - prefix: https://truckpass-usecase.dev-int-inji.mosip.net
     allowCredentials: true
     allowHeaders:
       - Accept

@@ -1,4 +1,4 @@
-# Inji-usecase
+# Truckpass-usecase
 
 Helm chart for installing Inji use-case
 
@@ -6,5 +6,5 @@ Helm chart for installing Inji use-case
 
 ```console
 $ helm repo add mosip https://mosip.github.io
-$ helm install my-release mosip/inji-usecase
+$ helm install my-release mosip/truckpass-usecase
 ```

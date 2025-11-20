@@ -1,6 +1,6 @@
 apiVersion: v2
-name: inji-usecase
-description: A Helm chart for Inji use-case
+name: truckpass-usecase
+description: A Helm chart for Truckpass use-case
 type: application
 version: 0.0.1-develop
 appVersion: ""
@@ -13,7 +13,7 @@ dependencies:
 home: https://mosip.io
 keywords:
   - mosip
-  - inji-usecase
+  - truckpass-usecase
 maintainers:
   - email: info@mosip.io
     name: MOSIP

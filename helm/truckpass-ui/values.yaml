@@ -51,8 +51,8 @@ service:
 
 image:
   registry: docker.io
-  repository: mosipqa/truckpass-ui
-  tag: develop
+  repository: mohanraj209/truckpass-ui
+  tag: truckpass
 
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -241,17 +241,7 @@ updateStrategy:
 ##   - name: FOO
 ##     value: "bar"
 ##
-extraEnvVars:
-  - name: KEYCLOAK_URL
-    value: https://iam.iom.mosip.net/auth/
-  - name: KEYCLOAK_REALM
-    value: mosip
-  - name: KEYCLOAK_CLIENT_ID
-    value: compass-public
-  - name: BASE_URL
-    value: https://compass.iom.mosip.net/v1/admin
-  - name: VALID_ADMIN_ROLE
-    value: COMPASS_ADMIN
+extraEnvVars: []
 
 ## ConfigMap with extra environment variables
 ##
@@ -424,7 +414,7 @@ metrics:
 ## CAUTION: Domain name to acess Truckpass UI must be secure/internal/over vpn.
 ## Slash is important!
 truckpass:
-  apiUrl: https://api-internal.sandbox.mosip.net/v1/
+  apiUrl: https://api-internal.dev-int-inji.mosip.net/v1/
 
 ## Truckpass UI swagger should have only internal access. Hence linked to internal gateway
 ## We create a gateway for admin specific URL(s) listed under `hosts`
@@ -435,5 +425,5 @@ istio:
   gateways:
     - truckpass-gateway
   hosts:
-    - truckpass.sandbox.xyz.net
+    - truckpass-usecase.dev-int-inji.mosip.net
   prefix: /

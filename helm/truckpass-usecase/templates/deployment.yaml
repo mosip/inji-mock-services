@@ -21,15 +21,15 @@ spec:
     metadata:
       annotations:
         {{- if or .Values.podAnnotations .Values.metrics.enabled }}
-        {{- include "inji-usecase.podAnnotations" . | nindent 8 }}
+        {{- include "truckpass-usecase.podAnnotations" . | nindent 8 }}
         {{- end }}
       labels: {{- include "common.labels.standard" . | nindent 8 }}
         {{- if .Values.podLabels }}
         {{- include "common.tplvalues.render" (dict "value" .Values.podLabels "context" $) | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "inji-usecase.serviceAccountName" . }}
-      {{- include "inji-usecase.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ template "truckpass-usecase.serviceAccountName" . }}
+      {{- include "truckpass-usecase.imagePullSecrets" . | nindent 6 }}
       {{- if .Values.hostAliases }}
       hostAliases: {{- include "common.tplvalues.render" (dict "value" .Values.hostAliases "context" $) | nindent 8 }}
       {{- end }}
@@ -56,7 +56,7 @@ spec:
       initContainers:
         {{- if and .Values.volumePermissions.enabled .Values.persistence.enabled }}
         - name: volume-permissions
-          image: {{ include "inji-usecase.volumePermissions.image" . }}
+          image: {{ include "truckpass-usecase.volumePermissions.image" . }}
           imagePullPolicy: {{ .Values.volumePermissions.image.pullPolicy | quote }}
           command:
             - %%commands%%
@@ -73,8 +73,8 @@ spec:
           {{- include "common.tplvalues.render" (dict "value" .Values.initContainers "context" $) | nindent 8 }}
         {{- end }}
       containers:
-        - name: inji-usecase
-          image: {{ template "inji-usecase.image" . }}
+        - name: truckpass-usecase
+          image: {{ template "truckpass-usecase.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.lifecycleHooks }}
           lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.lifecycleHooks "context" $) | nindent 12 }}
