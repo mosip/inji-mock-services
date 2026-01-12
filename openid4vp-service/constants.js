@@ -2,7 +2,7 @@ const crypto = require('crypto');
 
 const ed25519PublicKey = "IKXhA7W1HD1sAl+OfG59VKAqciWrrOL1Rw5F+PGLhi4="
 const ed25519PrivateKey = "7JGq310it2uq1_KZ3kARpoUB36KaVO2Ki5VeqQ_856A"
-const publicKeyId = "did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs#key-0"
+const publicKeyId = "did:web:inji.github.io:inji-mock-services:openid4vp-service:docs#key-0"
 const jwkSet = {
     keys: [
         {
@@ -20,7 +20,7 @@ const baseUrl = "http://localhost:3000"
 const requestUri = `${baseUrl}/verifier/get-auth-request-obj`
 const responseUri = `${baseUrl}/verifier/vp-response`
 const presentationDefinitionUri  = `${baseUrl}/verifier/presentation_definition_uri`
-const didDocumentUrl = "did:web:mosip.github.io:inji-mock-services:openid4vp-service:docs"
+const didDocumentUrl = "did:web:inji.github.io:inji-mock-services:openid4vp-service:docs"
 const clientId  = "http://mock-verifier"
 const nonce = crypto.randomBytes(16).toString('base64');
 const state = crypto.randomBytes(16).toString('base64');
