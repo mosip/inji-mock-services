@@ -30,7 +30,7 @@ extraEnvVars:
 truckpass_usecase:
   configmaps:
     db:
-      database_host: api-internal.dev-int-inji.mosip.net
-      database_name: mosip_certify   # provide db name
+      database_host: postgres.dev-int-inji.mosip.net
+      database_name: inji_certify_truckpass   # provide db name
       database_port: "5432"
       database_username: certifyuser # provide username

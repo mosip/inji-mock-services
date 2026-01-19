@@ -12,5 +12,5 @@ databases:
         name: postgres-postgresql
         key: postgres-password
     dml: 0
-    repoUrl: https://github.com/mosip/inji-mock-services.git
+    repoUrl: https://github.com/Mohanraj209/inji-mock-services.git
     branch: truckpass
