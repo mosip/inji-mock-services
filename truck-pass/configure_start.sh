@@ -24,3 +24,5 @@ window._env_ = {
   FALLBACK_LANG: "%7B%22label%22%3A%22English%22%2C%22value%22%3A%22en%22%7D",
 };
 EOF
+
+exec "$@"
