@@ -241,7 +241,34 @@ updateStrategy:
 ##   - name: FOO
 ##     value: "bar"
 ##
-extraEnvVars: []
+extraEnvVars:
+  - name: ESIGNET_BASE_URL
+    value: https://esignet-mock.released.mosip.net
+  - name: MOCK_RELYING_PARTY_SERVER_URL
+    value: >-
+      https://healthservices-mock.released.mosip.net/mock-relying-party-service
+  - name: BACKEND_URL
+    value: https://truckpass-usecase.dev-int-inji.mosip.net
+  - name: CLIENT_ID
+    value: POW8H3wRZ_LD6Aw8KbKtfydr-RECYoElaMFQ5ubIeSo
+  - name: SIGN_IN_BUTTON_PLUGIN_URL
+    value: >-
+      https://esignet-mock.released.mosip.net/plugins/sign-in-button-plugin.js
+  - name: CLIENT_DISPLAY
+    value: page
+  - name: MAX_AGE
+    value: '21'
+  - name: FRONTEND_URL
+    value: https://truckpass-usecase.dev-int-inji.mosip.net
+  - name: REDIRECT_URI_USER_PROFILE
+    value: >-
+      https://truckpass-usecase.dev-int-inji.mosip.net/driverRegistrationProcessPage/verifyUINPage
+  - name: REDIRECT_URI_REGISTRATION
+    value: >-
+      https://truckpass-usecase.dev-int-inji.mosip.net/driverRegistrationProcessPage/verifyUINPage
+  - name: REDIRECT_URI
+    value: >-
+      https://truckpass-usecase.dev-int-inji.mosip.net/driverRegistrationProcessPage/verifyUINPage
 
 ## ConfigMap with extra environment variables
 ##
