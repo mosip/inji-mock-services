@@ -51,7 +51,7 @@ service:
 
 image:
   registry: docker.io
-  repository: mohanraj209/inji-usecase
+  repository: injistackdev/inji-usecase
   tag: truckpass
 
   ## Specify a imagePullPolicy
@@ -67,7 +67,7 @@ image:
   #   - myRegistryKeySecretName
 
 ## Port on which this particular spring service module is running.
-springServicePort: 8098
+springServicePort: 8092
 
 ## Configure extra options for liveness and readiness probes
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
@@ -75,8 +75,8 @@ springServicePort: 8098
 startupProbe:
   enabled: true
   httpGet:
-    path: /v1/truckpass-usecase/actuator/health
-    port: 8098
+    path: /v1/truckpass/actuator/health
+    port: 8092
   initialDelaySeconds: 0
   periodSeconds: 10
   timeoutSeconds: 5
@@ -86,8 +86,8 @@ startupProbe:
 livenessProbe:
   enabled: true
   httpGet:
-    path: /v1/truckpass-usecase/actuator/health
-    port: 8098
+    path: /v1/truckpass/actuator/health
+    port: 8092
   initialDelaySeconds: 20
   periodSeconds: 10
   timeoutSeconds: 5
@@ -97,8 +97,8 @@ livenessProbe:
 readinessProbe:
   enabled: true
   httpGet:
-    path: /v1/truckpass-usecase/actuator/health
-    port: 8098
+    path: /v1/truckpass/actuator/health
+    port: 8092
   initialDelaySeconds: 0
   periodSeconds: 10
   timeoutSeconds: 5
@@ -387,7 +387,7 @@ metrics:
   podAnnotations:
     prometheus.io/scrape: "true"
 
-  endpointPath: /v1/truckpass-usecase/actuator/prometheus
+  endpointPath: /v1/truckpass/actuator/prometheus
 
   ## Prometheus Service Monitor
   ## ref: https://github.com/coreos/prometheus-operator
@@ -447,10 +447,10 @@ istio:
   enabled: true
   gateways:
     - truckpass-gateway
-  prefix: /v1/truckpass-usecase
+  prefix: /v1/truckpass
   corsPolicy:
     allowOrigins:
-      - prefix: https://truckpass-usecase.dev-int-inji.mosip.net
+      - prefix: https://truckpass-usecase.sandbox.xyz.net
     allowCredentials: true
     allowHeaders:
       - Accept

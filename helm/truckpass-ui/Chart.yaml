@@ -10,10 +10,11 @@ dependencies:
     tags:
       - bitnami-common
     version: 1.x.x
-home: https://mosip.io
+home: https://inji.io
 keywords:
   - mosip
+  - inji
   - truckpass
 maintainers:
   - email: info@mosip.io
-    name: MOSIP
+    name: INJI

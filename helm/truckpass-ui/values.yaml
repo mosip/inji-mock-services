@@ -51,7 +51,7 @@ service:
 
 image:
   registry: docker.io
-  repository: mohanraj209/truckpass-ui
+  repository: injistackdev/truckpass-ui
   tag: truckpass
 
   ## Specify a imagePullPolicy
@@ -243,32 +243,32 @@ updateStrategy:
 ##
 extraEnvVars:
   - name: ESIGNET_BASE_URL
-    value: https://esignet-mock.released.mosip.net
+    value: https://esignet-mock.sandbox.xyz.net
   - name: MOCK_RELYING_PARTY_SERVER_URL
     value: >-
-      https://healthservices-mock.released.mosip.net/mock-relying-party-service
+      https://healthservices-mock.sandbox.xyz.net/mock-relying-party-service
   - name: BACKEND_URL
-    value: https://truckpass-usecase.dev-int-inji.mosip.net
+    value: https://truckpass-usecase.sandbox.xyz.net
   - name: CLIENT_ID
-    value: POW8H3wRZ_LD6Aw8KbKtfydr-RECYoElaMFQ5ubIeSo
+    value: <client_id> # update client id
   - name: SIGN_IN_BUTTON_PLUGIN_URL
     value: >-
-      https://esignet-mock.released.mosip.net/plugins/sign-in-button-plugin.js
+      https://esignet-mock.sandbox.xyz.net/plugins/sign-in-button-plugin.js
   - name: CLIENT_DISPLAY
     value: page
   - name: MAX_AGE
     value: '21'
   - name: FRONTEND_URL
-    value: https://truckpass-usecase.dev-int-inji.mosip.net
+    value: https://truckpass-usecase.sandbox.xyz.net
   - name: REDIRECT_URI_USER_PROFILE
     value: >-
-      https://truckpass-usecase.dev-int-inji.mosip.net/driverRegistrationProcessPage/verifyUINPage
+      https://truckpass-usecase.sandbox.xyz.net/driverRegistrationProcessPage/verifyUINPage
   - name: REDIRECT_URI_REGISTRATION
     value: >-
-      https://truckpass-usecase.dev-int-inji.mosip.net/driverRegistrationProcessPage/verifyUINPage
+      https://truckpass-usecase.sandbox.xyz.net/driverRegistrationProcessPage/verifyUINPage
   - name: REDIRECT_URI
     value: >-
-      https://truckpass-usecase.dev-int-inji.mosip.net/driverRegistrationProcessPage/verifyUINPage
+      https://truckpass-usecase.sandbox.xyz.net/driverRegistrationProcessPage/verifyUINPage
 
 ## ConfigMap with extra environment variables
 ##
@@ -441,7 +441,7 @@ metrics:
 ## CAUTION: Domain name to acess Truckpass UI must be secure/internal/over vpn.
 ## Slash is important!
 truckpass:
-  apiUrl: https://api-internal.dev-int-inji.mosip.net/v1/
+  apiUrl: https://api-internal.sandbox.xyz.net/v1/
 
 ## Truckpass UI swagger should have only internal access. Hence linked to internal gateway
 ## We create a gateway for admin specific URL(s) listed under `hosts`
@@ -452,5 +452,5 @@ istio:
   gateways:
     - truckpass-gateway
   hosts:
-    - truckpass-usecase.dev-int-inji.mosip.net
+    - truckpass-usecase.sandbox.xyz.net
   prefix: /
