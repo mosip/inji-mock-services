@@ -1,4 +1,4 @@
-import { STATIC_LDP_VC } from "./static-vc.js";
+import { STATIC_LDP_VC, STATIC_JWT_VC } from "./static-vc.js";
 // import { accessTokenStore } from "../as/authz-store.js";
 
 export default function credentialEndpoint(req, res) {
@@ -12,17 +12,29 @@ export default function credentialEndpoint(req, res) {
 //   }
 
   // ---- Validate format ----
-  if (format !== "ldp_vc") {
+  // I updated this single line to allow jwt_vc, otherwise the code rejects it immediately.
+  if (format !== "ldp_vc" && format !== "jwt_vc" && format !== "jwt_vc_json") {
     return res.status(400).json({
       error: "unsupported_credential_format"
     });
   }
 
   // ---- Validate proof (mock) ----
+  // MOVED UP: Check proof BEFORE returning JWT to satisfy CodeRabbit
   if (!proof || !proof.jwt) {
     return res.status(400).json({
       error: "invalid_proof",
       error_description: "proof.jwt missing"
+    });
+  }
+
+  // ---- JWT VC Logic (Added for INJIMOB-3752) ----
+  if (format === "jwt_vc" || format === "jwt_vc_json") {
+    return res.json({
+      format: "jwt_vc_json",
+      credential: STATIC_JWT_VC,
+      c_nonce: "mock_nonce_123",
+      c_nonce_expires_in: 86400
     });
   }
 
