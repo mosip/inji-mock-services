@@ -34,10 +34,11 @@ export default function issuerMetadata(req, res) {
         cryptographic_binding_methods_supported: ["did:jwk"],
         credential_signing_alg_values_supported: ["ES256"],
         credential_definition: {
-          type: ["VerifiableCredential", "JwtVerifiableCredential"],
+          type: ["VerifiableCredential", "EmployeeCredential"],
           credentialSubject: {
-             "name": {},
-             "birthDate": {}
+             "employeeId": {},
+              "name": {},
+              "role": {}
           }
         }
       }

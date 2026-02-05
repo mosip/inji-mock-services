@@ -1,6 +1,9 @@
 import { STATIC_LDP_VC, STATIC_JWT_VC } from "./static-vc.js";
 // import { accessTokenStore } from "../as/authz-store.js";
 
+// ADD THIS HELPER: Necessary because JWTs must be strings, while LDP is raw JSON
+const encode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+
 export default function credentialEndpoint(req, res) {
   const {format, proof } = req.body;
 
@@ -30,9 +33,14 @@ export default function credentialEndpoint(req, res) {
 
   // ---- JWT VC Logic (Added for INJIMOB-3752) ----
   if (format === "jwt_vc" || format === "jwt_vc_json") {
+    // We encode the JSON object from static-vc.js into the Header.Payload.Signature string
+    const header = encode({ alg: "ES256", typ: "JWT" });
+    const payload = encode(STATIC_JWT_VC); 
+    const signature = "mock_signature_for_download_test";
+
     return res.json({
       format: "jwt_vc_json",
-      credential: STATIC_JWT_VC,
+      credential: `${header}.${payload}.${signature}`, // Returns the required Header.Payload.Signature string
       c_nonce: "mock_nonce_123",
       c_nonce_expires_in: 86400
     });

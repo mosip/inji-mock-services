@@ -25,4 +25,19 @@ export const STATIC_LDP_VC = {
   },
 };
 
-export const STATIC_JWT_VC = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6ZXhhbXBsZTppc3N1ZXIiLCJzdWIiOiJkaWQ6ZXhhbXBsZTp1c2VyIiwidmMiOnsiQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiXSwidHlwZSI6WyJWZXJpZmlhYmxlQ3JlZGVudGlhbCIsIkp3dFZlcmlmaWFibGVDcmVkZW50aWFsIl0sImNyZWRlbnRpYWxTdWJqZWN0Ijp7Im5hbWUiOiJNb2NrIFVzZXIiLCJiaXJ0aERhdGUiOiIyMDAwLTAxLTAxIn19LCJqdGkiOiJtb2NrLWlkLTEyMyIsImlhdCI6MTYxNTg5MTQyMiwiZXhwIjoxOTE1ODkxNDIyfQ.mock_signature_for_download_test";
+export const STATIC_JWT_VC = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1"
+  ],
+  "type": ["VerifiableCredential", "EmployeeCredential"],
+  "issuer": "did:example:issuer123",
+  "credentialSubject": {
+    "id": "did:example:holder456",
+    "employeeId": "E12345",
+    "name": "Anup Kumar",
+    "role": "Software Engineer"
+  },
+  "iss": "did:example:issuer123",
+  "sub": "did:example:holder456",
+  "jti": "urn:uuid:3c67f42e-dd3c-4d9b-898a-debff416ccca"
+};
