@@ -29,9 +29,9 @@ export const STATIC_JWT_VC = {
   "iss": "did:example:issuer123",
   "sub": "did:example:holder456",
   "jti": "urn:uuid:3c67f42e-dd3c-4d9b-898a-debff416ccca",
-  "iat": 1704662400,
-  "nbf": 1704662400,
-  "exp": 1736284800,
+  "iat": 1767225600,
+  "nbf": 1767225600,
+  "exp": 1893456000,
   "vc": {
     "@context": [
       "https://www.w3.org/2018/credentials/v1"
