@@ -26,18 +26,22 @@ export const STATIC_LDP_VC = {
 };
 
 export const STATIC_JWT_VC = {
-  "@context": [
-    "https://www.w3.org/2018/credentials/v1"
-  ],
-  "type": ["VerifiableCredential", "EmployeeCredential"],
-  "issuer": "did:example:issuer123",
-  "credentialSubject": {
-    "id": "did:example:holder456",
-    "employeeId": "E12345",
-    "name": "Anup Kumar",
-    "role": "Software Engineer"
-  },
   "iss": "did:example:issuer123",
   "sub": "did:example:holder456",
-  "jti": "urn:uuid:3c67f42e-dd3c-4d9b-898a-debff416ccca"
+  "jti": "urn:uuid:3c67f42e-dd3c-4d9b-898a-debff416ccca",
+  "iat": 1704662400,
+  "nbf": 1704662400,
+  "exp": 1736284800,
+  "vc": {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1"
+    ],
+    "type": ["VerifiableCredential", "EmployeeCredential"],
+    "credentialSubject": {
+      "id": "did:example:holder456",
+      "employeeId": "E12345",
+      "name": "Anup Kumar",
+      "role": "Software Engineer"
+    }
+  }
 };
