@@ -33,12 +33,17 @@ export default function issuerMetadata(req, res) {
         scope: "jwt_vc.read",
         cryptographic_binding_methods_supported: ["did:jwk"],
         credential_signing_alg_values_supported: ["ES256"],
+        proof_types_supported: {
+          jwt: {
+            proof_signing_alg_values_supported: ["ES256"]
+          }
+        },
         credential_definition: {
           type: ["VerifiableCredential", "EmployeeCredential"],
           credentialSubject: {
-             "employeeId": {},
-              "name": {},
-              "role": {}
+            "employeeId": {},
+            "name": {},
+            "role": {}
           }
         }
       }

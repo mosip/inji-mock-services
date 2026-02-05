@@ -3,6 +3,7 @@ import { STATIC_LDP_VC, STATIC_JWT_VC } from "./static-vc.js";
 
 // ADD THIS HELPER: Necessary because JWTs must be strings, while LDP is raw JSON
 const encode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+const SUPPORTED_FORMATS = ["ldp_vc", "jwt_vc", "jwt_vc_json"];
 
 export default function credentialEndpoint(req, res) {
   const {format, proof } = req.body;
@@ -16,7 +17,7 @@ export default function credentialEndpoint(req, res) {
 
   // ---- Validate format ----
   // I updated this single line to allow jwt_vc, otherwise the code rejects it immediately.
-  if (format !== "ldp_vc" && format !== "jwt_vc" && format !== "jwt_vc_json") {
+  if (!SUPPORTED_FORMATS.includes(format)) {
     return res.status(400).json({
       error: "unsupported_credential_format"
     });
