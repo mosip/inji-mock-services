@@ -33,10 +33,10 @@ export default function credentialEndpoint(req, res) {
 
   // ---- JWT VC Logic (Added for INJIMOB-3752) ----
   if (format === "jwt_vc" || format === "jwt_vc_json") {
-    // We encode the JSON object from static-vc.js into the Header.Payload.Signature string
     const header = encode({ alg: "ES256", typ: "JWT" });
     const payload = encode(STATIC_JWT_VC); 
-    const signature = "mock_signature_for_download_test";
+    // FIX: Encode the signature string to Base64URL
+    const signature = Buffer.from("mock_signature_for_download_test").toString('base64url');
 
     return res.json({
       format: "jwt_vc_json",
