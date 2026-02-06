@@ -1,5 +1,6 @@
 import { STATIC_LDP_VC, STATIC_JWT_VC } from "./static-vc.js";
 import { SignJWT, generateKeyPair, exportJWK } from 'jose';
+import { randomUUID } from 'node:crypto'; // Added for dynamic JTI
 // import { accessTokenStore } from "../as/authz-store.js";
 
 const SUPPORTED_FORMATS = ["ldp_vc", "jwt_vc", "jwt_vc_json"];
@@ -41,13 +42,14 @@ export default async function credentialEndpoint(req, res) {
       const didJwk = `did:jwk:${Buffer.from(JSON.stringify(publicJwk)).toString('base64url')}`;
       
       // 3. Prepare the Payload 
-      // Fix: Remove static timestamps so we don't leak stale 'nbf' or 'iat' values
+      // Remove static timestamps so we don't leak stale 'nbf' or 'iat' values
       const { iat, nbf, exp, ...cleanStaticVc } = STATIC_JWT_VC;
 
       const vcPayload = { 
         ...cleanStaticVc, 
         iss: didJwk,  
         sub: didJwk,
+        jti: `urn:uuid:${randomUUID()}`, // Dynamic JTI to prevent replay issues
         // Fix: Ensure credentialSubject.id matches the subject (sub) per W3C spec
         vc: {
           ...STATIC_JWT_VC.vc,
@@ -68,7 +70,7 @@ export default async function credentialEndpoint(req, res) {
 
       // 5. Return the Valid JWT
       return res.json({
-        format: "jwt_vc_json",
+        format: format, // Echo the requested format (jwt_vc or jwt_vc_json)
         credential: jwt, 
         c_nonce: "mock_nonce_123",
         c_nonce_expires_in: 86400
@@ -83,6 +85,8 @@ export default async function credentialEndpoint(req, res) {
   // ---- Return STATIC VC ----
   return res.json({
     format: "ldp_vc",
-    credential: STATIC_LDP_VC
+    credential: STATIC_LDP_VC,
+    c_nonce: "mock_nonce_123", // Added consistency for LDP path to satify Coderabbit
+    c_nonce_expires_in: 86400
   });
 }
