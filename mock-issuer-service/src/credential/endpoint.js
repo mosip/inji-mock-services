@@ -1,11 +1,12 @@
 import { STATIC_LDP_VC, STATIC_JWT_VC } from "./static-vc.js";
+import { SignJWT, generateKeyPair, exportJWK, calculateJwkThumbprint } from 'jose';
 // import { accessTokenStore } from "../as/authz-store.js";
 
 // ADD THIS HELPER: Necessary because JWTs must be strings, while LDP is raw JSON
 const encode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
 const SUPPORTED_FORMATS = ["ldp_vc", "jwt_vc", "jwt_vc_json"];
 
-export default function credentialEndpoint(req, res) {
+export default async function credentialEndpoint(req, res) {
   const {format, proof } = req.body;
 
   
@@ -16,7 +17,6 @@ export default function credentialEndpoint(req, res) {
 //   }
 
   // ---- Validate format ----
-  // I updated this single line to allow jwt_vc, otherwise the code rejects it immediately.
   if (!SUPPORTED_FORMATS.includes(format)) {
     return res.status(400).json({
       error: "unsupported_credential_format"
@@ -34,17 +34,41 @@ export default function credentialEndpoint(req, res) {
 
   // ---- JWT VC Logic (Added for INJIMOB-3752) ----
   if (format === "jwt_vc" || format === "jwt_vc_json") {
-    const header = encode({ alg: "ES256", typ: "JWT" });
-    const payload = encode(STATIC_JWT_VC); 
-    // FIX: Encode the signature string to Base64URL
-    const signature = Buffer.from("mock_signature_for_download_test").toString('base64url');
+    try {
+      // 1. Generate a real Key Pair (ES256) on the fly
+      const { privateKey, publicKey } = await generateKeyPair('ES256');
+      
+      // 2. Create the DID:JWK from the public key
+      const publicJwk = await exportJWK(publicKey);
+      // Construct the standard did:jwk string (this allows the verifier to decode the key)
+      const didJwk = `did:jwk:${Buffer.from(JSON.stringify(publicJwk)).toString('base64url')}`;
+      
+      // 3. Prepare the Payload 
+      const vcPayload = { 
+        ...STATIC_JWT_VC, 
+        iss: didJwk,  
+        sub: didJwk   // Usually the holder, but for mock testing self-issued is safest
+      };
 
-    return res.json({
-      format: "jwt_vc_json",
-      credential: `${header}.${payload}.${signature}`, // Returns the required Header.Payload.Signature string
-      c_nonce: "mock_nonce_123",
-      c_nonce_expires_in: 86400
-    });
+      // 4. Sign it (Using Cryptography!)
+      const jwt = await new SignJWT(vcPayload)
+        .setProtectedHeader({ alg: 'ES256', typ: 'JWT', kid: didJwk })
+        .setIssuedAt()
+        .setExpirationTime('1y')
+        .sign(privateKey);
+
+      // 5. Return the Valid JWT
+      return res.json({
+        format: "jwt_vc_json",
+        credential: jwt, 
+        c_nonce: "mock_nonce_123",
+        c_nonce_expires_in: 86400
+      });
+
+    } catch (error) {
+      console.error("Signing failed:", error);
+      return res.status(500).json({ error: "signing_error" });
+    }
   }
 
   // ---- Return STATIC VC ----
