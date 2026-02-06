@@ -1,13 +1,11 @@
 import { STATIC_LDP_VC, STATIC_JWT_VC } from "./static-vc.js";
-import { SignJWT, generateKeyPair, exportJWK, calculateJwkThumbprint } from 'jose';
+import { SignJWT, generateKeyPair, exportJWK } from 'jose';
 // import { accessTokenStore } from "../as/authz-store.js";
 
-// ADD THIS HELPER: Necessary because JWTs must be strings, while LDP is raw JSON
-const encode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
 const SUPPORTED_FORMATS = ["ldp_vc", "jwt_vc", "jwt_vc_json"];
 
 export default async function credentialEndpoint(req, res) {
-  const {format, proof } = req.body;
+  const { format, proof } = req.body;
 
   
 
@@ -40,20 +38,31 @@ export default async function credentialEndpoint(req, res) {
       
       // 2. Create the DID:JWK from the public key
       const publicJwk = await exportJWK(publicKey);
-      // Construct the standard did:jwk string (this allows the verifier to decode the key)
       const didJwk = `did:jwk:${Buffer.from(JSON.stringify(publicJwk)).toString('base64url')}`;
       
       // 3. Prepare the Payload 
+      // Fix: Remove static timestamps so we don't leak stale 'nbf' or 'iat' values
+      const { iat, nbf, exp, ...cleanStaticVc } = STATIC_JWT_VC;
+
       const vcPayload = { 
-        ...STATIC_JWT_VC, 
+        ...cleanStaticVc, 
         iss: didJwk,  
-        sub: didJwk   // Usually the holder, but for mock testing self-issued is safest
+        sub: didJwk,
+        // Fix: Ensure credentialSubject.id matches the subject (sub) per W3C spec
+        vc: {
+          ...STATIC_JWT_VC.vc,
+          credentialSubject: {
+            ...STATIC_JWT_VC.vc.credentialSubject,
+            id: didJwk
+          }
+        }
       };
 
       // 4. Sign it (Using Cryptography!)
       const jwt = await new SignJWT(vcPayload)
         .setProtectedHeader({ alg: 'ES256', typ: 'JWT', kid: didJwk })
         .setIssuedAt()
+        .setNotBefore('0s') // FIX: Set fresh 'nbf' (valid from now)
         .setExpirationTime('1y')
         .sign(privateKey);
 
