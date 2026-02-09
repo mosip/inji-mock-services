@@ -66,7 +66,7 @@ jobs:
       BUILD_ARTIFACT: truckpass-ui
       NPM_BUILD_TYPE: 'BOB'
       NODE_VERSION: "18.x"
-      ZIP_DIR: "build"
+      ZIP_DIR: "dist"
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
