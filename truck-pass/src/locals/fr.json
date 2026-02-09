@@ -137,15 +137,16 @@
     "approvedPasses": "Passes approuvés",
     "pendingReview": "En attente de révision",
     "totalTrucks": "Total des camions",
-    "requestId": "ID de demande",
+    "uin": "UIN",
     "driverName": "Nom du conducteur",
     "requestTruckPass": "Demandes de laissez-passer camion",
     "licenceNumber": "Numéro de licence",
-    "status": "Statut",
-    "date": "Date",
+    "email": "Adresse e-mail",
+    "phoneNumber": "Numéro de téléphone",
     "myDashBoard": "Mon tableau de bord",
     "newTruckPassRequest": "+ Nouvelle demande de laissez-passer camion"
   },
+
   "newTruckPassRequest": {
     "newTruckPassRequest": "Nouvelle demande de laissez-passer camion",
     "headerDesc": "Complétez toutes les étapes pour soumettre votre demande"
@@ -184,7 +185,7 @@
     "searchByUinToolTip": "Obtenez ici les informations du conducteur en entrant son UIN à 12 chiffres déjà fourni",
     "searchByNameToolTip": "Obtenez ici les informations du conducteur via le nom utilisé lors de l’inscription",
     "enterDriverUin": "Entrez le numéro d’identification unique (UIN) du conducteur ",
-    "uinPlaceHolder": "Entrez un UIN à 12 chiffres",
+    "uinPlaceHolder": "Entrez un UIN à 10 chiffres",
     "uinErrorMsg1": "UIN invalide. Veuillez vérifier et réessayer.",
     "uinErrorMsg2": "Conducteur introuvable. Veuillez vérifier l’UIN ou le nom et réessayer."
   },
