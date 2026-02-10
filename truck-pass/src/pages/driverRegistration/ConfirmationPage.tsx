@@ -12,16 +12,25 @@ export const ConfirmationPage: React.FC = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [confirmationDetails, setConfirmationDetails] = useState<ConfirmationDetails | null>(null);
   const [additionalInfo, setAdditionalInfo] = useState<AdditionalInfo | null>(null);
+  const [company, setCompany] = useState<Company | null>(null);
 
   useEffect(() => {
     try {
       const details = localStorage.getItem('driverDetails');
       const additionalFiles = localStorage.getItem('driverAdditionalFiles');
+      const companySelected = localStorage.getItem('companySelected')
 
       if (details) {
         const driverDetails = JSON.parse(details);
+
         setConfirmationDetails(driverDetails);
+
       }
+      if(companySelected) {
+        const companyDetails = JSON.parse(companySelected);
+        setCompany(companyDetails);
+      }
+
 
       if (additionalFiles) {
         const additionalDetails = JSON.parse(additionalFiles);
@@ -91,12 +100,12 @@ export const ConfirmationPage: React.FC = () => {
                   ['fullName', confirmationDetails?.fullName],
                   ['uin', confirmationDetails?.uin],
                   ['gender', confirmationDetails?.gender],
-                  ['email', confirmationDetails?.emailId],
+                  ['email', confirmationDetails?.driverEmailId],
                   ['phoneNumber', confirmationDetails?.phoneNumber],
                   ['city', confirmationDetails?.city],
-                  ['transportCompany', confirmationDetails?.transportCompany],
-                  ['licenseNum', confirmationDetails?.driverLicenseNum],
-                  ['passportNumber', confirmationDetails?.passportNum],
+                  ['transportCompany', company?.company_name],
+                  ['licenseNum', confirmationDetails?.driverLicenseNumber],
+                  ['passportNumber', confirmationDetails?.passportNumber],
                   ['cpcCertificate', t('confirmationPage.fileUploaded')],
                 ].map(([labelKey, value], id) => (
                   <li key={id} className="flex justify-between py-2.5">
@@ -133,10 +142,19 @@ interface ConfirmationDetails {
   fullName?: string;
   uin?: string;
   gender?: string;
-  emailId?: string;
+  driverEmailId?: string;
   city?: string;
   phoneNumber?: string;
-  driverLicenseNum?: string;
-  passportNum?: string;
-  transportCompany?: string;
+  driverLicenseNumber?: string;
+  passportNumber?: string;
+}
+
+interface Company {
+  id: string;
+  company_name: string;
+  registration_type?: string;
+  registration_status?: string;
+  registered_email?: string;
+  name?: string;
+  license_status?: string;
 }
