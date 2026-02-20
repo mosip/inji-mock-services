@@ -30,12 +30,12 @@ export default function issuerMetadata(req, res) {
       },
       "JwtVerifiableCredential": {
         format: "jwt_vc_json",
-        scope: "jwt_vc.read",
+        scope: "jwt_vc_json.read",
         cryptographic_binding_methods_supported: ["did:jwk"],
         credential_signing_alg_values_supported: ["ES256"],
         proof_types_supported: {
           jwt: {
-            proof_signing_alg_values_supported: ["ES256"]
+            proof_signing_alg_values_supported: ["ES256", "RS256"]
           }
         },
         credential_definition: {

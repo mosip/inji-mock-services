@@ -26,7 +26,7 @@ export default function authServerMetadata(req, res) {
 
     interactive_authorization_endpoint: `${AS_ISSUER}/interactive-authorization`,
     // Nice to have: helps debuggers & wallet UIs
-    scopes_supported: ["degree.read", "openid"],
+    scopes_supported: ["degree.read", "jwt_vc_json.read", "openid"],
     token_endpoint_auth_methods_supported: ["none"],
 
     // For OpenID4VCI, authorization_details will be used
