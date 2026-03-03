@@ -55,13 +55,16 @@ export const SearchDriver = () => {
       setError("");
       const response = await get_driver_information("uin", uin);
       if (response.data && response.data.length > 0) {
-        setSelectedriver(response.data[0]);
+        const driver = response.data[0]
+        setSelectedriver(driver);
+        return driver;
       } else {
         setError("No driver found with this UIN.");
       }
     } catch (err) {
       setError("Error fetching driver by UIN.");
       console.error(err);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -100,13 +103,13 @@ export const SearchDriver = () => {
         setUinErrorMsg(t("searchDriver.uinErrorMsg1"));
         return;
       }
-      await fetchDriversByUin();
+      const driver = await fetchDriversByUin();
 
-      if (!selectedriver) return;
+      if (!driver) return;
+      localStorage.setItem('selectedDriver', JSON.stringify(driver));
     }
 
     setSearchDriverStatus(true);
-    localStorage.setItem('selectedDriver', JSON.stringify(selectedriver));
     navigate("/requestTruckpassProcess/driverProfile");
   };
 
