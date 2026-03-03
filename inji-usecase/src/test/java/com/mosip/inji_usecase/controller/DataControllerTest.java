@@ -1,8 +1,11 @@
 package com.mosip.inji_usecase.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mosip.inji_usecase.dto.truckpass.UserInfoRequestDto;
+import com.mosip.inji_usecase.dto.truckpass.TokenResponseDto;
 import com.mosip.inji_usecase.service.EmailService;
 import com.mosip.inji_usecase.config.EmailTemplateProperties;
+import com.mosip.inji_usecase.service.OAuthService;
 import com.mosip.inji_usecase.service.repository.RepositoryService;
 import com.mosip.inji_usecase.service.validation.ValidationService;
 
@@ -57,6 +60,9 @@ class DataControllerTest {
 
         @MockBean
         private Map<String, RepositoryService> repositoryServices;
+
+        @MockBean
+        private OAuthService oAuthService;
 
         // Local mocks for specific behaviors
         private ValidationService mockFarmerValidationService;
@@ -173,38 +179,165 @@ class DataControllerTest {
 
         @Test
         void retrieveDataByQuery_WhenDataFound() throws Exception {
+
                 Map<String, Object> searchResult = Map.of("name", "Jane Doe");
 
-                Map<String, RepositoryService> repoMap = Map.of("farmerRepo", mockFarmerRepositoryService);
-
-                when(repositoryServices.entrySet()).thenReturn(repoMap.entrySet());
+                when(repositoryServices.get("farmerRepositoryService"))
+                        .thenReturn(mockFarmerRepositoryService);
 
                 when(mockFarmerRepositoryService.getBySearchCriteria(any(Specification.class)))
-                                .thenReturn(List.of(searchResult));
+                        .thenReturn(List.of(searchResult));
 
                 mockMvc.perform(get("/api/data")
+                                .header("x-source", "farmer")
                                 .param("filterKey", "name")
                                 .param("operation", "eq")
                                 .param("value", "Jane Doe"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$", hasSize(1)))
-                                .andExpect(jsonPath("$[0].name", is("Jane Doe")));
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$", hasSize(1)))
+                        .andExpect(jsonPath("$[0].name").value("Jane Doe"));
         }
 
         @Test
         void retrieveDataByQuery_WhenDataNotFound() throws Exception {
-                Map<String, RepositoryService> repoMap = Map.of("farmerRepo", mockFarmerRepositoryService);
 
-                when(repositoryServices.entrySet()).thenReturn(repoMap.entrySet());
+                when(repositoryServices.get("farmerRepositoryService"))
+                        .thenReturn(mockFarmerRepositoryService);
 
                 when(mockFarmerRepositoryService.getBySearchCriteria(any(Specification.class)))
-                                .thenReturn(Collections.emptyList());
+                        .thenReturn(Collections.emptyList());
 
                 mockMvc.perform(get("/api/data")
+                                .header("x-source", "farmer")
                                 .param("filterKey", "name")
                                 .param("operation", "eq")
                                 .param("value", "NonExistent"))
-                                .andExpect(status().isNotFound())
-                                .andExpect(content().string("No data found for the given query criteria"));
+                        .andExpect(status().isNotFound())
+                        .andExpect(content().string("No data found for the given query criteria"));
+        }
+
+
+        @Test
+        void fetchUserInfo_success() throws Exception {
+
+                UserInfoRequestDto request = new UserInfoRequestDto();
+                request.setClientId("client-123");
+
+                TokenResponseDto tokenResponse = new TokenResponseDto();
+                tokenResponse.setAccessToken("access-token");
+
+                Map<String, Object> userInfo = Map.of(
+                        "name", "mock",
+                        "email", "mock@test.com"
+                );
+
+                when(oAuthService.getToken(any(UserInfoRequestDto.class)))
+                        .thenReturn(tokenResponse);
+
+                when(oAuthService.getUserInfo("access-token", "client-123"))
+                        .thenReturn(userInfo);
+
+                mockMvc.perform(post("/api/fetchUserInfo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.name").value("mock"))
+                        .andExpect(jsonPath("$.email").value("mock@test.com"));
+        }
+
+        @Test
+        void fetchUserInfo_tokenFailure() throws Exception {
+
+                UserInfoRequestDto request = new UserInfoRequestDto();
+                request.setClientId("client-123");
+
+                when(oAuthService.getToken(any(UserInfoRequestDto.class)))
+                        .thenReturn(null);
+
+                mockMvc.perform(post("/api/fetchUserInfo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                        .andExpect(status().isBadGateway())
+                        .andExpect(jsonPath("$.message")
+                                .value("Failed to fetch access token"));
+        }
+
+        @Test
+        void fetchUserInfo_badRequest() throws Exception {
+
+                UserInfoRequestDto request = new UserInfoRequestDto();
+
+                when(oAuthService.getToken(any(UserInfoRequestDto.class)))
+                        .thenThrow(new IllegalArgumentException("Invalid client"));
+
+                mockMvc.perform(post("/api/fetchUserInfo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                        .andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$.message")
+                                .value("Invalid client"));
+        }
+
+        @Test
+        void fetchUserInfo_internalServerError() throws Exception {
+
+                UserInfoRequestDto request = new UserInfoRequestDto();
+
+                when(oAuthService.getToken(any(UserInfoRequestDto.class)))
+                        .thenThrow(new RuntimeException("Service down"));
+
+                mockMvc.perform(post("/api/fetchUserInfo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                        .andExpect(status().isInternalServerError())
+                        .andExpect(jsonPath("$.message")
+                                .value("Failed to fetch user info"))
+                        .andExpect(jsonPath("$.error")
+                                .value("Service down"));
+        }
+
+        @Test
+        void fetchAllData_success() throws Exception {
+
+                Map<String, Object> data = Map.of("name", "Truck Driver");
+
+                when(repositoryServices.get("truckpassRepositoryService"))
+                        .thenReturn(mockFarmerRepositoryService);
+
+                when(mockFarmerRepositoryService.getBySearchCriteria(null))
+                        .thenReturn(List.of(data));
+
+                mockMvc.perform(get("/api/all")
+                                .header("x-source", "truckpass"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$", hasSize(1)))
+                        .andExpect(jsonPath("$[0].name").value("Truck Driver"));
+        }
+
+        @Test
+        void fetchAllData_notFound() throws Exception {
+
+                when(repositoryServices.get("truckpassRepositoryService"))
+                        .thenReturn(mockFarmerRepositoryService);
+
+                when(mockFarmerRepositoryService.getBySearchCriteria(null))
+                        .thenReturn(Collections.emptyList());
+
+                mockMvc.perform(get("/api/all")
+                                .header("x-source", "truckpass"))
+                        .andExpect(status().isNotFound())
+                        .andExpect(content().string("No data found"));
+        }
+
+        @Test
+        void fetchAllData_invalidSource() throws Exception {
+
+                when(repositoryServices.get("invalidRepositoryService"))
+                        .thenReturn(null);
+
+                mockMvc.perform(get("/api/all")
+                                .header("x-source", "invalid"))
+                        .andExpect(status().isBadRequest())
+                        .andExpect(content().string("Invalid data source"));
         }
 }

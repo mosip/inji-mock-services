@@ -26,7 +26,7 @@ LABEL build_time=${BUILD_TIME}
 ENV nginx_dir=/usr/share/nginx
 ENV work_dir=${nginx_dir}/html
 
-# Copy built Vite app (note: output is in "dist", not "build")
+# Copy built Vite app (note: output is in "dist")
 COPY --from=build /app/dist ${work_dir}
 
 # Add dynamic env config generation script
