@@ -31,6 +31,32 @@ export default function issuerMetadata(req, res) {
       "JwtVerifiableCredential": {
         format: "jwt_vc_json",
         scope: "jwt_vc_json.read",
+        "display": [
+          {
+            name: "Employee Credential",
+            locale: "en"
+          },
+          {
+            name: "Kard ng Pagkakakilanlan",
+            locale: "fil"
+          },
+          {
+            name: "पहचान पत्र",
+            locale: "hi"
+          },
+          {
+            name: "ಗುರುತಿನ ಚೀಟಿ",
+            locale: "kn"
+          },
+          {
+            name: "அடையாள அட்டை",
+            locale: "ta"
+          },
+          {
+            name: "بطاقة الهوية",
+            locale: "ar"
+          }
+      ],
         cryptographic_binding_methods_supported: ["did:jwk"],
         credential_signing_alg_values_supported: ["ES256"],
         proof_types_supported: {
