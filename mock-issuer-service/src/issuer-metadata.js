@@ -37,23 +37,23 @@ export default function issuerMetadata(req, res) {
             locale: "en"
           },
           {
-            name: "Kard ng Pagkakakilanlan",
+            name: "Kredensyal ng Empleyado",
             locale: "fil"
           },
           {
-            name: "पहचान पत्र",
+            name: "कर्मचारी क्रेडेंशियल",
             locale: "hi"
           },
           {
-            name: "ಗುರುತಿನ ಚೀಟಿ",
+            name: "ಉದ್ಯೋಗಿ ರುಜುವಾತು",
             locale: "kn"
           },
           {
-            name: "அடையாள அட்டை",
+            name: "பணியாளர் நற்சான்றிதழ்",
             locale: "ta"
           },
           {
-            name: "بطاقة الهوية",
+            name: "اعتماد الموظف",
             locale: "ar"
           }
       ],
