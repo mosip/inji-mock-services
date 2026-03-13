@@ -9,8 +9,10 @@ export default function credentialOfferHandler(req, res) {
 
   // The credential_configuration_id that your mock issuer supports
   const credentialConfigurations = [
+    // Uncomment the credential_configuration_id that you want to download.
+
     "UniversityDegreeCredential",
-    "JwtVerifiableCredential"
+    // "JwtVerifiableCredential"
   ];
 
   const response = {
