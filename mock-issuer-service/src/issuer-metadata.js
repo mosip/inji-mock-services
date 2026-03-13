@@ -69,32 +69,32 @@ export default function issuerMetadata(req, res) {
           credentialSubject: {
             "employeeId": {
               "display": [
-                { "name": "कर्मचारी पहचान", "locale": "hi" },
-                { "name": "Employee ID", "locale": "en" },
-                { "name": "KID ng Empleyado", "locale": "fil" },
-                { "name": "ಉದ್ಯೋಗಿ ಗುರುತು", "locale": "kn" },
-                { "name": "பணியாளர் அடையாளம்", "locale": "ta" },
-                { "name": "معرف الموظف", "locale": "ar" },
+                { name: "कर्मचारी पहचान", locale: "hi" },
+                { name: "Employee ID", locale: "en" },
+                { name: "ID ng Empleyado", locale: "fil" },
+                { name: "ಉದ್ಯೋಗಿ ಗುರುತು", locale: "kn" },
+                { name: "பணியாளர் அடையாளம்", locale: "ta" },
+                { name: "معرف الموظف", locale: "ar" },
               ]
             },
             "name": {
               "display": [
-                { "name": "पूरा नाम", "locale": "hi" },
-                { "name": "Name", "locale": "en" },
-                { "name": "Buong Pangalan", "locale": "fil" },
-                { "name": "ಪೂರ್ಣ ಹೆಸರು", "locale": "kn" },
-                { "name": "முழு பெயர்", "locale": "ta" },
-                { "name": "الاسم الكامل", "locale": "ar" },
+                { name: "पूरा नाम", locale: "hi" },
+                { name: "Name", locale: "en" },
+                { name: "Buong Pangalan", locale: "fil" },
+                { name: "ಪೂರ್ಣ ಹೆಸರು", locale: "kn" },
+                { name: "முழு பெயர்", locale: "ta" },
+                { name: "الاسم الكامل", locale: "ar" },
               ]
             },
             "role": {
               "display": [
-                { "name": "भूमिका", "locale": "hi" },
-                { "name": "Role", "locale": "en" },
-                { "name": "Tungkulin", "locale": "fil" },
-                { "name": "ಪಾತ್ರ", "locale": "kn" },
-                { "name": "பணிப்பொறுப்பு", "locale": "ta" },
-                { "name": "الدور الوظيفي", "locale": "ar" },
+                { name: "भूमिका", locale: "hi" },
+                { name: "Role", locale: "en" },
+                { name: "Tungkulin", locale: "fil" },
+                { name: "ಪಾತ್ರ", locale: "kn" },
+                { name: "பணிப்பொறுப்பு", locale: "ta" },
+                { name: "الدور الوظيفي", locale: "ar" },
               ]
             }
           }
