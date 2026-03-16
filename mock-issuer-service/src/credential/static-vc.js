@@ -40,8 +40,26 @@ export const STATIC_JWT_VC = {
     "credentialSubject": {
       "id": "did:example:holder456",
       "employeeId": "E12345",
-      "name": "Anup Kumar",
-      "role": "Software Engineer"
+      "name": {
+        "display": [
+          { "locale": "en", "name": "Anup Kumar" },
+          { "locale": "hi", "name": "अनूप कुमार" },
+          { "locale": "fil", "name": "Anup Kumar" },
+          { "locale": "kn", "name": "ಅನೂಪ್ ಕುಮಾರ್" },
+          { "locale": "ta", "name": "அனுப் குமார்" },
+          { "locale": "ar", "name": "أنوب كومار" }
+        ]
+      },
+      "role": {
+        "display": [
+          { "locale": "en", "name": "Software Engineer" },
+          { "locale": "hi", "name": "सॉफ्टवेयर इंजीनियर" },
+          { "locale": "fil", "name": "Inhinyero ng Software" },
+          { "locale": "kn", "name": "ಸಾಫ್ಟ್‌ವೇರ್ ಎಂಜಿನಿಯರ್" },
+          { "locale": "ta", "name": "மென்பொருள் பொறியாளர்" },
+          { "locale": "ar", "name": "مهندس برمجيات" }
+        ]
+      }
     }
   }
 };
