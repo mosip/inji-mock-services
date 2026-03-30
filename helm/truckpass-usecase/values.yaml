@@ -440,8 +440,7 @@ truckpass_usecase:
       database_host: "api-internal.sandbox.xyz.net"
       database_name: "<db_name>"   # provide db name
       database_port: "5432"
-      database_username: "<username>" # provide username
-
+      database_username: "<username>"   # provide username
 
 ## Admin swagger should have only internal access. Hence linked to internal gateway
 istio:
