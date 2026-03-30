@@ -22,6 +22,8 @@ on:
       - release*
       - INJICERT*
       - truckpass
+      - INJI*
+      - inji
 
 jobs:
   build-maven-inji-usecase:

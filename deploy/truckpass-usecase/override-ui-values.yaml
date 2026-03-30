@@ -10,9 +10,9 @@ extraEnvVars:
     value: https://esignet-mock.sandbox.xyz.net
   - name: MOCK_RELYING_PARTY_SERVER_URL
     value: >-
-      https://healthservices-mock.sandbox.xyz.net/mock-relying-party-service
+      https://truckpass-usecase.sandbox.xyz.net
   - name: BACKEND_URL
-    value: https://truckpass-usecase.sandbox.xyz.net
+    value: https://truckpass-usecase.sandbox.xyz.net/v1/truckpass/api
   - name: CLIENT_ID
     value: <client_id> # update client id
   - name: SIGN_IN_BUTTON_PLUGIN_URL
@@ -24,21 +24,12 @@ extraEnvVars:
     value: '21'
   - name: FRONTEND_URL
     value: https://truckpass-usecase.sandbox.xyz.net
-  - name: REDIRECT_URI_USER_PROFILE
-    value: >-
-      https://truckpass-usecase.sandbox.xyz.net/driverRegistrationProcessPage/verifyUINPage
-  - name: REDIRECT_URI_REGISTRATION
-    value: >-
-      https://truckpass-usecase.sandbox.xyz.net/driverRegistrationProcessPage/verifyUINPage
-  - name: REDIRECT_URI
-    value: >-
-      https://truckpass-usecase.sandbox.xyz.net/driverRegistrationProcessPage/verifyUINPage
 
 ## The url below is to access Truckpass API services.
 ## CAUTION: Domain name to acess Truckpass UI must be secure/internal/over vpn.
 ## Slash is important!
 truckpass:
-  apiUrl: https://api-internal.sandbox.xyz.net/v1/
+  apiUrl: https://api-internal.sandbox.xyz.net/v1/truckpass
 
 ## Truckpass UI swagger should have only internal access. Hence linked to internal gateway
 ## We create a gateway for admin specific URL(s) listed under `hosts`

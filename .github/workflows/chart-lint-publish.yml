@@ -39,6 +39,8 @@ on:
       - MOSIP*
       - release*
       - truckpass
+      - INJI*
+      - inji
     paths:
       - 'helm/**'
 

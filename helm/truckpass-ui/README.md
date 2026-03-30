@@ -1,4 +1,4 @@
 # Truckpass-ui
 
-Helm chart for installing Inji Truckpass UI
+Helm chart for installing Inji Truckpass UI.
 
