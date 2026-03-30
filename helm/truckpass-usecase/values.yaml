@@ -442,6 +442,7 @@ truckpass_usecase:
       database_port: "5432"
       database_username: "<username>" # provide username
 
+
 ## Admin swagger should have only internal access. Hence linked to internal gateway
 istio:
   enabled: true
