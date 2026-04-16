@@ -1,4 +1,5 @@
 # Truckpass-Usecase
+NOTE: Before installing the below Helm charts, make sure to update the required (mandatory) variables in the `truckpass-ui-values.yaml` and `truckpass-usecase-values.yaml` file.
 
 ## Install
 ```

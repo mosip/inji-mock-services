@@ -6,7 +6,7 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-function Restarting_truckpass() {
+function Restarting_truckpass_usecase() {
   NS=truckpass-usecase
   kubectl -n $NS rollout restart deploy
 
@@ -22,4 +22,4 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
 set -o errtrace  # trace ERR through 'time command' and other functions
 set -o pipefail  # trace ERR through pipes
-Restarting_truckpass  # calling function
+Restarting_truckpass_usecase  # calling function

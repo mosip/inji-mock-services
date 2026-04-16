@@ -13,7 +13,7 @@ CHART_VERSION=0.0.1-develop
 echo Create $NS namespace
 kubectl create ns $NS
 
-function installing_truckpass-usecase() {
+function installing_truckpass_usecase() {
   echo Istio label
   kubectl label ns $NS istio-injection=enabled --overwrite
   helm repo update
@@ -54,4 +54,4 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
 set -o errtrace  # trace ERR through 'time command' and other functions
 set -o pipefail  # trace ERR through pipes
-installing_truckpass-usecase   # calling function
+installing_truckpass_usecase   # calling function

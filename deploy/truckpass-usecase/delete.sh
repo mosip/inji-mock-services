@@ -6,7 +6,7 @@ if [ $# -ge 1 ] ; then
   export KUBECONFIG=$1
 fi
 
-function deleting_truckpass-usecase() {
+function deleting_truckpass_usecase() {
   NS=truckpass-usecase
   while true; do
       read -p "Are you sure you want to delete Truckpass-usecase service and Truckpass UI?(Y/n) " yn
