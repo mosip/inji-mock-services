@@ -112,6 +112,7 @@ export const SelectCompany: React.FC = () => {
                                 id="company-search"
                                 type="text"
                                 value={searchTerm}
+                                onFocus={() => setShowDropdown(true)}
                                 onChange={handleSearchChange}
                                 onBlur={handleSearchBlur}
                                 placeholder={t('selectCompany.searchCompanies')}
@@ -121,7 +122,7 @@ export const SelectCompany: React.FC = () => {
 
                         {/* Filtered Companies List Dropdown*/}
                         {loading && <p className="text-sm text-gray-500 mt-2">{t('selectCompany.loading')}</p>}
-                        {!loading && showDropdown && searchTerm && filteredCompanies.length > 0 && (
+                        {!loading && showDropdown && filteredCompanies.length > 0 && (
                             <div className="absolute z-10 w-full mt-3 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                                 {filteredCompanies.map((company) => (
                                     <button
