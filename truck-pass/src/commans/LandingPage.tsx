@@ -46,7 +46,7 @@ const LandingPage = () => {
         <div className="bg-[#ECF5FF] w-full h-[480px]">
           <div className="flex flex-col w-full items-center mt-14 pb-[38px] space-y-8 bg-[url('../assets/landingPage_bg.png')] h-[400px]">
             <p className="text-2xl text-[#181D27] font-[500]">{t('landingPage.getStartedToday')}</p>
-            <div className="flex place-self-center space-x-10">
+            <div className="flex justify-center space-x-10">
               <div className="flex flex-col bg-[#FFFFFF] w-[380px] h-auto border-0 rounded-xl items-center py-7 shadow-2xl space-y-5 text-center justify-between">
                 <img src={driver_user_icon} alt="Driver Registration Icon" className="h-10 border-0 p-2 rounded-md shadow-lg" />
                 <p className="font-[600]">{t('landingPage.driverRegistration')}</p>
@@ -89,7 +89,7 @@ const LandingPage = () => {
 
       {/* Footer */}
 
-      <footer className='text-sm text-[#717171] place-self-center pt-12 pb-6 bg-transparent font-inter'>
+      <footer className='w-full text-center text-sm text-[#717171] pt-12 pb-6 bg-transparent font-inter'>
         {t('footer.footerText')}
       </footer>
 

@@ -28,7 +28,7 @@ const DriverRegistrationProcess: React.FC<DriverRegistrationProcessProps> = ({ c
         />
 
         {/* Footer */}
-        <footer className='text-sm text-[#717171] place-self-center bg-transparent py-16 font-inter'>
+        <footer className='w-full text-center text-sm text-[#717171] bg-transparent py-16 font-inter'>
           {t('footer.footerText')}
         </footer>
         {/* Footer */}

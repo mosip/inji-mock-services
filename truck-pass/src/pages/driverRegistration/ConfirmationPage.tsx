@@ -46,7 +46,7 @@ export const ConfirmationPage: React.FC = () => {
   };
 
   return (
-    <div className="flex w-[63%] shadow-lg rounded-2xl place-self-center" data-testid="confirmation-page">
+    <div className="flex w-[63%] shadow-lg rounded-2xl mx-auto" data-testid="confirmation-page">
       {showSuccessPopup && (
         <SuccessPopup
           showSuccessPopup={showSuccessPopup}
