@@ -46,11 +46,6 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
             let authCode = searchParams.get("code");
             let errorCode = searchParams.get("error");
             // let error_desc = searchParams.get("error_description");
-            const savedLang = localStorage.getItem("appLanguage");
-
-            if (savedLang) {
-                i18n.changeLanguage(savedLang);
-            }
             
             if (errorCode) {
                 // navigateToLogin(errorCode || '', error_desc || '');
@@ -122,7 +117,7 @@ export const VerifyUIN: React.FC<VerifyUINProps> = ({ }) => {
             display: clientDetails.display,
             prompt: clientDetails.prompt,
             max_age: clientDetails.max_age,
-            ui_locales: 'en',
+            ui_locales: i18n.resolvedLanguage || 'en',
             claims: JSON.parse(decodeURIComponent(clientDetails.userProfileClaims)),
         };
 
