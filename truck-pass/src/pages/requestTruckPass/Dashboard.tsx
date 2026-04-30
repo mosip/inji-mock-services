@@ -144,7 +144,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <footer className='text-sm text-[#717171] place-self-center bg-transparent pt-10 pb-6 font-inter'>
+            <footer className='w-full text-center text-sm text-[#717171] bg-transparent pt-10 pb-6 font-inter'>
                 {t('footer.footerText')}
             </footer>
             {/* Footer */}

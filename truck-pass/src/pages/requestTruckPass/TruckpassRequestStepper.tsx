@@ -18,14 +18,14 @@ export const TruckpassRequestStepper: React.FC<TruckpassRequestStepperProps> = (
   ];
 
   return (
-    <div className='bg-[#FFFFFF] flex items-center justify-between px-8 h-[120px] w-[1250px]'>
-      <img src={stepsConnectingLine} className="absolute px-[50px] left-8 right-8 top-[210px] w-[1160px] h-[4px] z-0" />
+    <div className='relative bg-[#FFFFFF] flex items-center justify-between px-8 h-[120px] w-[1250px]'>
+      <img src={stepsConnectingLine} className="absolute px-[50px] left-8 right-8 top-[42px] w-[1160px] h-[4px] z-0" />
       {stepperItems.map((item, id) => {
         return (
           <div key={id} className='flex flex-col items-center gap-y-2 z-10'>
             {item.completed
               ? <img src={tickIcon} alt='tick-icon' className='h-7 w-7' />
-              : (<p className={`${item.inProgress ? 'bg-[#006DE7] text-[#FFFFFF] ' : 'bg-[#FFFFFF] text-[#414651] border border-[#E9EAEB]'} text-center h-[30px] w-[30px] rounded-2xl`}>
+              : (<p className={`${item.inProgress ? 'bg-[#006DE7] text-[#FFFFFF] ' : 'bg-[#FFFFFF] text-[#414651] border border-[#E9EAEB]'} flex items-center justify-center h-[30px] w-[30px] rounded-2xl`}>
                 {item.number}
               </p>)
             }

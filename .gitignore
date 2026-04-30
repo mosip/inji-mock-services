@@ -1,3 +1,8 @@
+.idea/
 truck-pass/.idea/
 truck-pass/dist/
 truck-pass/node_modules/
+truck-pass/src/**/*.js
+truck-pass/src/**/*.jsx
+truck-pass/src/*.js
+truck-pass/src/*.jsx
