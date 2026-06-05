@@ -98,12 +98,16 @@ app.post("/:flow(pdi)/nonce", nonceHandler);
 app.post("/:version(v1|draft13)/nonce", nonceHandler);
 app.post("/:version(v1|draft13)/:flow(pdi)/nonce", nonceHandler);
 
-// ---- HTTPS SERVER ---- //
-const options = {
-  key: fs.readFileSync("cert/server.key"),
-  cert: fs.readFileSync("cert/server.cert")
-};
+// // ---- HTTPS SERVER ---- //
+// const options = {
+//   key: fs.readFileSync("cert/server.key"),
+//   cert: fs.readFileSync("cert/server.cert")
+// };
 
-https.createServer(options, app).listen(4000, () => {
-  console.log("Mock Issuer running at https://mock-issuer.local:4000");
-});
+app.listen(4000,()=>{
+  
+  console.log("Mock Issuer running at http://mock-issuer.local:4000");
+})
+// https.createServer(options, app).listen(4000, () => {
+//   console.log("Mock Issuer running at https://mock-issuer.local:4000");
+// });
