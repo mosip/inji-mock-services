@@ -3,6 +3,7 @@ import crypto from "crypto";
 export const authCodeStore = new Map();
 export const accessTokenStore = new Map();
 export const preAuthCodeStore = new Map();
+export const parRequestStore = new Map();
 
 export function generateAuthCode() {
   return crypto.randomBytes(16).toString("hex");

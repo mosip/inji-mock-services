@@ -5,6 +5,17 @@ function base64url(str) {
   return str.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+// RFC 7636 — verify code_verifier against the code_challenge pushed at /par or /authorize
+function verifyPkce(codeVerifier, codeChallenge, codeChallengeMethod) {
+  if (!codeChallenge) return true; // PKCE was not used for this authorization
+  if (!codeVerifier) return false;
+  if ((codeChallengeMethod || "S256") === "S256") {
+    const hash = crypto.createHash("sha256").update(codeVerifier).digest("base64");
+    return base64url(hash) === codeChallenge;
+  }
+  return codeVerifier === codeChallenge; // "plain"
+}
+
 export default function tokenHandler(req, res) {
   const {
     grant_type,
@@ -12,7 +23,8 @@ export default function tokenHandler(req, res) {
     "pre-authorized_code": preAuthorizedCode,
     tx_code: txCodeInput,
     redirect_uri,
-    client_id
+    client_id,
+    code_verifier
   } = req.body;
   console.log("Token Request:", grant_type, code || preAuthorizedCode);
 
@@ -43,7 +55,15 @@ export default function tokenHandler(req, res) {
         error_description: "client_id mismatch"
       });
     }
-    
+
+    // 5. Validate PKCE (RFC 7636) against the code_challenge pushed at /par or /authorize
+    if (!verifyPkce(code_verifier, entry.code_challenge, entry.code_challenge_method)) {
+      return res.status(400).json({
+        error: "invalid_grant",
+        error_description: "code_verifier does not match the code_challenge"
+      });
+    }
+
     scope = entry.scope;
     authCodeStore.delete(code);
   } else if (grant_type === "urn:ietf:params:oauth:grant-type:pre-authorized_code") {

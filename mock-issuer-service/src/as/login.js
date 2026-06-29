@@ -1,7 +1,15 @@
 import { generateAuthCode, authCodeStore } from "./authz-store.js";
 
 export default function loginHandler(req, res) {
-  const { client_id, redirect_uri, state } = req.body;
+  const {
+    client_id,
+    redirect_uri,
+    state,
+    code_challenge,
+    code_challenge_method,
+    scope,
+    nonce,
+  } = req.body;
 
   const code = generateAuthCode();
 
@@ -9,6 +17,10 @@ export default function loginHandler(req, res) {
     client_id,
     redirect_uri,
     state,
+    code_challenge,
+    code_challenge_method,
+    scope,
+    nonce,
     created_at: Date.now()
   });
 

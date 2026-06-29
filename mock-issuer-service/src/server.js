@@ -7,6 +7,7 @@ import credentialOfferHandler from "./credential/offer.js";
 import issuerMetadata from "./issuer-metadata.js";
 import qrPageHandler, { qrImageHandler } from "./qr.js";
 import authorizeHandler from "./as/authorize.js";
+import parHandler from "./as/par.js";
 import interactiveAuthorizationHandler from "./as/interactive-authorization.js";
 import tokenHandler from "./as/token.js";
 import credentialHandler from "./credential/endpoint.js";
@@ -67,6 +68,26 @@ app.get("/credential-offer", credentialOfferHandler);
 
 // ---- AUTHORIZATION SERVER ---- //
 // app.get("/as/authorize", authorizeHandler);
+
+// ---- PUSHED AUTHORIZATION REQUEST (RFC 9126) ---- //
+app.post("/as/par", parHandler);
+app.post("/:flow(pdi)/as/par", parHandler);
+app.post("/:version(v1|draft13)/as/par", parHandler);
+app.post("/:version(v1|draft13)/:flow(pdi)/as/par", parHandler);
+
+// RFC 9126 §2.3 — non-POST requests to the PAR endpoint MUST get HTTP 405
+const parMethodNotAllowed = (req, res) => {
+  res.setHeader("Allow", "POST");
+  res.status(405).json({
+    error: "invalid_request",
+    error_description: "The pushed authorization request endpoint only supports POST"
+  });
+};
+app.all("/as/par", parMethodNotAllowed);
+app.all("/:flow(pdi)/as/par", parMethodNotAllowed);
+app.all("/:version(v1|draft13)/as/par", parMethodNotAllowed);
+app.all("/:version(v1|draft13)/:flow(pdi)/as/par", parMethodNotAllowed);
+
 app.post("/as/interactive-authorization", interactiveAuthorizationHandler);
 app.post("/:flow(pdi)/as/interactive-authorization", interactiveAuthorizationHandler);
 app.post("/:version(v1|draft13)/as/interactive-authorization", interactiveAuthorizationHandler);
