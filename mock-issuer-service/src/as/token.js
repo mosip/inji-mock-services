@@ -9,11 +9,10 @@ function base64url(str) {
 function verifyPkce(codeVerifier, codeChallenge, codeChallengeMethod) {
   if (!codeChallenge) return true; // PKCE was not used for this authorization
   if (!codeVerifier) return false;
-  if ((codeChallengeMethod || "S256") === "S256") {
-    const hash = crypto.createHash("sha256").update(codeVerifier).digest("base64");
-    return base64url(hash) === codeChallenge;
-  }
-  return codeVerifier === codeChallenge; // "plain"
+  // Only S256 is advertised in AS metadata (code_challenge_methods_supported); reject anything else.
+  if ((codeChallengeMethod || "S256") !== "S256") return false;
+  const hash = crypto.createHash("sha256").update(codeVerifier).digest("base64");
+  return base64url(hash) === codeChallenge;
 }
 
 export default function tokenHandler(req, res) {

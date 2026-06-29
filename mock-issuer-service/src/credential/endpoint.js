@@ -26,6 +26,7 @@ const CONFIG_TO_FORMAT = {
 
 export default async function credentialEndpoint(req, res) {
   const body = req.body || {};
+  console.log("Credential request body:", JSON.stringify(body, null, 2));
   const explicitVersion = hasExplicitVersion(req);
   const version = resolveRequestVersion(req);
   const isV1 = explicitVersion
@@ -145,16 +146,20 @@ export default async function credentialEndpoint(req, res) {
   }
 
   if (isV1) {
-    return res.json({
+    const resp = {
       credentials: [ { credential } ],
       credential_issuer: issuerUrl,
-    });
+    };
+    console.log("Credential response (v1):", JSON.stringify(resp, null, 2));
+    return res.json(resp);
   }
 
-  return res.json({
+  const resp = {
     format,
     credential,
     c_nonce: "mock_nonce_123",
     c_nonce_expires_in: 86400,
-  });
+  };
+  console.log("Credential response:", JSON.stringify(resp, null, 2));
+  return res.json(resp);
 }

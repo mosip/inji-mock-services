@@ -1,4 +1,4 @@
-export const ISSUER = "https://704b-117-98-182-203.ngrok-free.app";
+export const ISSUER = "https://itzel-nonjournalistic-nonvicariously.ngrok-free.dev";
 
 export function normalizeSpecVersion(version) {
   return version === "draft13" ? "draft13" : "v1";

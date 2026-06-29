@@ -305,13 +305,33 @@ async function signWithRsa(credential, issuerDid) {
   return signedVc;
 }
 
+class SafeEd25519Signature2018 extends Ed25519Signature2018 {
+  async canonize(input, { documentLoader, skipExpansion }) {
+    const { default: rdfCanonize } = await import('rdf-canonize');
+    const opts = {
+      algorithm: 'RDFC-1.0',
+      base: null,
+      documentLoader,
+      safe: false,
+      skipExpansion,
+      produceGeneralizedRdf: false,
+      rdfDirection: 'i18n-datatype',
+    };
+    const dataset = await jsonld.toRDF(input, opts);
+    return rdfCanonize.canonize(dataset, {
+      algorithm: 'RDFC-1.0',
+      format: 'application/n-quads',
+    });
+  }
+}
+
 async function signWithEd25519(credential, issuerDid) {
   const key = await Ed25519VerificationKey2018.generate({
     id: `${issuerDid}#key-0`,
     controller: issuerDid
   });
 
-  const suite = new Ed25519Signature2018({
+  const suite = new SafeEd25519Signature2018({
     key,
     date: new Date().toISOString()
   });

@@ -62,7 +62,11 @@ export default function parHandler(req, res) {
     expires_at: Date.now() + PAR_EXPIRES_IN * 1000
   });
 
-  console.log(`PAR issued request_uri: ${requestUri} (expires in ${PAR_EXPIRES_IN}s)`);
+  // request_uri is short-lived; evict it once it expires so the store does not grow unbounded.
+  setTimeout(() => parRequestStore.delete(requestUri), PAR_EXPIRES_IN * 1000).unref();
+
+  // Log only a short suffix — the full request_uri is a redeemable reference.
+  console.log(`PAR issued request_uri (…${requestUri.slice(-8)}, expires in ${PAR_EXPIRES_IN}s)`);
 
   // RFC 9126 §2.2 — success response is HTTP 201
   res.setHeader("Cache-Control", "no-store");
