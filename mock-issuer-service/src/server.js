@@ -1,8 +1,9 @@
+import "dotenv/config";
 import express from "express";
 import https from "https";
+import http from "http";
 import fs from "fs";
 import cors from "cors";
-import dotenv from "dotenv";
 import authServerMetadata from "./as/metadata.js";
 import credentialOfferHandler from "./credential/offer.js";
 import issuerMetadata from "./issuer-metadata.js";
@@ -14,8 +15,7 @@ import credentialHandler from "./credential/endpoint.js";
 import loginHandler from "./as/login.js";
 import nonceHandler from "./nonce.js";
 import { getDidDocument } from "./credential/ldp-vc.js";
-
-dotenv.config();
+import { ISSUER } from "./issuer-profile.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -101,27 +101,26 @@ app.post("/:flow(pdi)/nonce", nonceHandler);
 app.post("/:version(v1|draft13)/nonce", nonceHandler);
 app.post("/:version(v1|draft13)/:flow(pdi)/nonce", nonceHandler);
 
-// ---- SERVER (HTTP or HTTPS, configurable via .env) ---- //
-// Most wallets require HTTPS, so this defaults to HTTPS (self-signed cert) to match
-// existing local-dev setup. Set USE_HTTPS=false when fronting this service with a
-// proxy that already terminates TLS (e.g. ngrok, cloudflared) to avoid
-// double-TLS/protocol-mismatch issues.
-const PORT = Number(process.env.PORT) || 4000;
-const HOST = process.env.HOST || "0.0.0.0";
-const useHttps = process.env.USE_HTTPS !== "false";
+// ---- SERVER (HTTP or HTTPS) ---- //
+// USE_HTTPS=false serves plain HTTP (handy when fronted by a tunnel that
+// terminates TLS, e.g. ngrok http://localhost:4000). Defaults to HTTPS.
+const port = Number(process.env.PORT || 4000);
+const host = process.env.HOST || "0.0.0.0";
+const useHttps = String(process.env.USE_HTTPS ?? "true").toLowerCase() !== "false";
+const dpopNonceMode = String(process.env.USE_DPOP_NONCE ?? "false").toLowerCase() === "true";
 
 if (useHttps) {
   const options = {
     key: fs.readFileSync(process.env.TLS_KEY_PATH || "cert/server.key"),
-    cert: fs.readFileSync(process.env.TLS_CERT_PATH || "cert/server.cert"),
+    cert: fs.readFileSync(process.env.TLS_CERT_PATH || "cert/server.cert")
   };
-
-  https.createServer(options, app).listen(PORT, HOST, () => {
-    console.log(`Mock Issuer running at https://mock-issuer.local:${PORT}`);
+  https.createServer(options, app).listen(port, host, () => {
+    console.log(`Mock Issuer (https) running at ${ISSUER} (local :${port})`);
+    console.log(`DPoP nonce-challenge mode (USE_DPOP_NONCE): ${dpopNonceMode}`);
   });
 } else {
-  app.listen(PORT, HOST, () => {
-    console.log(`Mock Issuer running at http://${HOST}:${PORT}`);
+  http.createServer(app).listen(port, host, () => {
+    console.log(`Mock Issuer (http) running at ${ISSUER} (local :${port})`);
+    console.log(`DPoP nonce-challenge mode (USE_DPOP_NONCE): ${dpopNonceMode}`);
   });
 }
-// });
