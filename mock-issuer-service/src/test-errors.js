@@ -1,4 +1,4 @@
-export const TEST_ERROR_STAGES = new Set(["offer", "authorization", "token", "credential"]);
+export const TEST_ERROR_STAGES = new Set(["offer", "par", "authorization", "token", "credential"]);
 
 // Error codes are free-form: any code is accepted for a valid stage. The maps below
 // supply a sensible HTTP status (DEFAULT_STATUS) and error_description

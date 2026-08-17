@@ -110,7 +110,7 @@ class RsaSignature2018 extends LinkedDataSignature {
 
   async canonizeProof(proof, { document, documentLoader }) {
     proof = {
-      '@context': document['@context'] || 'https://w3id.org/security/v2',
+      '@context': 'https://w3id.org/security/v2',
       ...proof
     };
     delete proof.jws;

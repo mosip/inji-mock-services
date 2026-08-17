@@ -15,6 +15,18 @@ function base64url(str) {
   return str.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+// RFC 7636 — verify code_verifier against the code_challenge that was supplied at
+// /par or /authorize. PAR makes this meaningful: the challenge is pushed over a
+// back channel, so the browser never sees it.
+function verifyPkce(codeVerifier, codeChallenge, codeChallengeMethod) {
+  if (!codeChallenge) return true; // PKCE was not used for this authorization
+  if (!codeVerifier) return false;
+  // Only S256 is advertised in AS metadata (code_challenge_methods_supported).
+  if ((codeChallengeMethod || "S256") !== "S256") return false;
+  const hash = crypto.createHash("sha256").update(codeVerifier).digest("base64");
+  return base64url(hash) === codeChallenge;
+}
+
 // USE_DPOP_NONCE=true  → AS requires a server-issued nonce in the DPoP proof (tests retry flow)
 // USE_DPOP_NONCE=false → AS accepts proofs without a nonce (default, simpler happy-path test)
 const REQUIRE_DPOP_NONCE = String(process.env.USE_DPOP_NONCE ?? "false").toLowerCase() === "true";
@@ -26,7 +38,8 @@ export default async function tokenHandler(req, res) {
     "pre-authorized_code": preAuthorizedCode,
     tx_code: txCodeInput,
     redirect_uri,
-    client_id
+    client_id,
+    code_verifier
   } = req.body;
   console.log("Token Request:", grant_type, code || preAuthorizedCode);
 
@@ -56,6 +69,15 @@ export default async function tokenHandler(req, res) {
         error_description: "client_id mismatch"
       });
     }
+
+    // Validate PKCE (RFC 7636) against the challenge bound at /par or /authorize
+    if (!verifyPkce(code_verifier, entry.code_challenge, entry.code_challenge_method)) {
+      return res.status(400).json({
+        error: "invalid_grant",
+        error_description: "code_verifier does not match the code_challenge"
+      });
+    }
+
     scope = entry.scope;
     testError ||= entry.testError?.stage === "token" ? entry.testError : null;
     credentialTestError ||= entry.testError?.stage === "credential" ? entry.testError : null;

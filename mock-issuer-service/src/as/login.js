@@ -1,7 +1,17 @@
 import { generateAuthCode, authCodeStore, issuerStateStore } from "./authz-store.js";
 
 export default function loginHandler(req, res) {
-  const { client_id, redirect_uri, state, issuer_state: issuerState, dpop_jkt } = req.body;
+  const {
+    client_id,
+    redirect_uri,
+    state,
+    issuer_state: issuerState,
+    dpop_jkt,
+    code_challenge,
+    code_challenge_method,
+    scope,
+    nonce,
+  } = req.body;
 
   const code = generateAuthCode();
   const issuerStateEntry = issuerState ? issuerStateStore.get(issuerState) : null;
@@ -11,6 +21,11 @@ export default function loginHandler(req, res) {
     redirect_uri,
     state,
     dpop_jkt: dpop_jkt || null,   // RFC 9449 §10 — key binding
+    // Bound to the code so /token can verify the code_verifier (RFC 7636)
+    code_challenge: code_challenge || null,
+    code_challenge_method: code_challenge_method || null,
+    scope: scope || null,
+    nonce: nonce || null,
     created_at: Date.now(),
     testError: issuerStateEntry?.testError || null,
   });

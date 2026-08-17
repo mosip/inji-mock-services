@@ -6,6 +6,9 @@ export const preAuthCodeStore = new Map();
 export const issuerStateStore = new Map();
 export const stageTestErrorStore = new Map();
 
+// PAR (RFC 9126): request_uri -> pushed authorization-request params
+export const parRequestStore = new Map();
+
 // DPoP nonce store: nonce → expiry timestamp (ms)
 export const dpopNonceStore = new Map();
 

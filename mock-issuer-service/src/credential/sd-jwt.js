@@ -1,5 +1,9 @@
-import { SignJWT } from 'jose';
+import { SignJWT, exportPKCS8 } from 'jose';
 import { randomBytes, createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { writeFileSync, rmSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 function base64url(buffer) {
   return buffer.toString('base64url');
@@ -7,6 +11,25 @@ function base64url(buffer) {
 
 function sha256(data) {
   return createHash('sha256').update(data).digest();
+}
+
+async function selfSignedCertB64(privateKey) {
+  const pkcs8 = await exportPKCS8(privateKey);
+  const dir = mkdtempSync(join(tmpdir(), 'sdjwt-cert-'));
+  const keyPath = join(dir, 'key.pem');
+  try {
+    writeFileSync(keyPath, pkcs8, { mode: 0o600 });
+    const der = execFileSync(
+      'openssl',
+      ['req', '-x509', '-key', keyPath,
+       '-subj', '/CN=INJI Mock Issuer/O=INJI Mock Services',
+       '-days', '365', '-outform', 'DER'],
+      { maxBuffer: 1 << 20 },
+    );
+    return der.toString('base64');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 export async function createSdJwt(payload, privateKey, issuer, holderDid) {
@@ -34,8 +57,10 @@ export async function createSdJwt(payload, privateKey, issuer, holderDid) {
   newPayload.keyName = "Simon"
   newPayload.residence = "Bangalore";
 
+  const x5c = [await selfSignedCertB64(privateKey)];
+
   const jwt = await new SignJWT(newPayload)
-    .setProtectedHeader({ alg: 'ES256', typ: 'vc+sd-jwt', kid: issuer })
+    .setProtectedHeader({ alg: 'ES256', typ: 'vc+sd-jwt', kid: issuer, x5c })
     .setIssuedAt()
     .setIssuer(issuer)
     .setSubject(holderDid)
