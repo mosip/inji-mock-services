@@ -1,6 +1,24 @@
-import { generateAuthCode, authCodeStore, issuerStateStore } from "./authz-store.js";
+import {
+  generateAuthCode,
+  authCodeStore,
+  issuerStateStore,
+  loginTxnStore,
+} from "./authz-store.js";
 
 export default function loginHandler(req, res) {
+  // Every authorization-request parameter comes from the server-side transaction, never
+  // from the posted form, so nothing the browser sends can alter what the client asked for.
+  const { login_txn: loginTxn } = req.body;
+  const transaction = loginTxn ? loginTxnStore.get(loginTxn) : null;
+  if (!transaction) {
+    return res.status(400).send("invalid or unknown login transaction");
+  }
+  if (transaction.expires_at < Date.now()) {
+    loginTxnStore.delete(loginTxn);
+    return res.status(400).send("login transaction has expired");
+  }
+  loginTxnStore.delete(loginTxn); // single use
+
   const {
     client_id,
     redirect_uri,
@@ -11,7 +29,7 @@ export default function loginHandler(req, res) {
     code_challenge_method,
     scope,
     nonce,
-  } = req.body;
+  } = transaction;
 
   const code = generateAuthCode();
   const issuerStateEntry = issuerState ? issuerStateStore.get(issuerState) : null;

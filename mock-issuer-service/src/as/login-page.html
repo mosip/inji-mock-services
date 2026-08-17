@@ -28,15 +28,9 @@
       <p><strong>Password:</strong> any password (mock)</p>
 
       <form method="POST" action="{{form_action}}">
-        <input type="hidden" name="client_id" value="{{client_id}}" />
-        <input type="hidden" name="redirect_uri" value="{{redirect_uri}}" />
-        <input type="hidden" name="state" value="{{state}}" />
-        <input type="hidden" name="issuer_state" value="{{issuer_state}}" />
-        <input type="hidden" name="dpop_jkt" value="{{dpop_jkt}}" />
-        <input type="hidden" name="code_challenge" value="{{code_challenge}}" />
-        <input type="hidden" name="code_challenge_method" value="{{code_challenge_method}}" />
-        <input type="hidden" name="scope" value="{{scope}}" />
-        <input type="hidden" name="nonce" value="{{nonce}}" />
+        <!-- The authorization-request parameters stay server-side; this opaque id is the
+             only thing that travels through the browser. -->
+        <input type="hidden" name="login_txn" value="{{login_txn}}" />
 
         <button type="submit">Login & Continue</button>
       </form>

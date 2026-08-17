@@ -1,8 +1,22 @@
 import fs from "fs";
 import path from "path";
-import { issuerStateStore, stageTestErrorStore, parRequestStore } from "./authz-store.js";
+import {
+  issuerStateStore,
+  stageTestErrorStore,
+  parRequestStore,
+  loginTxnStore,
+  generateLoginTxn,
+} from "./authz-store.js";
 import { hasExplicitVersion, resolveRequestVersion } from "../issuer-profile.js";
 import { envTestError } from "../test-errors.js";
+
+const LOGIN_TXN_TTL_SECONDS = 300;
+
+const HTML_ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
+}
 
 export default function authorizeHandler(req, res) {
   let { client_id, redirect_uri, state, issuer_state, dpop_jkt } = req.query;
@@ -62,26 +76,36 @@ export default function authorizeHandler(req, res) {
   console.log("Serving login page for client_id:", client_id);
   console.log("Redirect URI:", redirect_uri);
 
+  // Hold the resolved parameters server-side and hand the browser only an opaque id.
+  // Under PAR these came from the pushed request, and round-tripping them through form
+  // fields would let the user edit what the client pushed over the back channel.
+  const loginTxn = generateLoginTxn();
+  loginTxnStore.set(loginTxn, {
+    client_id,
+    redirect_uri,
+    state,
+    issuer_state,
+    dpop_jkt,
+    // Carried so PKCE survives to the token endpoint (RFC 7636)
+    code_challenge,
+    code_challenge_method,
+    scope,
+    nonce,
+    expires_at: Date.now() + LOGIN_TXN_TTL_SECONDS * 1000,
+  });
+  setTimeout(() => loginTxnStore.delete(loginTxn), LOGIN_TXN_TTL_SECONDS * 1000).unref();
+
   // Load template
   const template = fs.readFileSync(
     path.resolve("src/as/login-page.html"),
     "utf8"
   );
 
-  // Replace placeholders
+  // Both values are server-generated, but escape anyway so the template can never be
+  // broken out of, and use a replacer function so "$" sequences are not interpreted.
   const html = template
-    .replace("{{client_id}}", client_id)
-    .replace("{{redirect_uri}}", redirect_uri)
-    .replace("{{form_action}}", loginAction)
-    .replace("{{state}}", state || "")
-    .replace("{{issuer_state}}", issuer_state || "")
-    .replace("{{dpop_jkt}}", dpop_jkt || "")
-    // Carried so PKCE survives to the token endpoint; under PAR these came from
-    // the pushed request rather than the query string.
-    .replace("{{code_challenge}}", code_challenge || "")
-    .replace("{{code_challenge_method}}", code_challenge_method || "")
-    .replace("{{scope}}", scope || "")
-    .replace("{{nonce}}", nonce || "");
+    .replace("{{form_action}}", () => escapeHtml(loginAction))
+    .replace("{{login_txn}}", () => escapeHtml(loginTxn));
 
   res.set("Content-Type", "text/html");
   res.send(html);

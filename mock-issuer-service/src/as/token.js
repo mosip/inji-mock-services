@@ -21,8 +21,9 @@ function base64url(str) {
 function verifyPkce(codeVerifier, codeChallenge, codeChallengeMethod) {
   if (!codeChallenge) return true; // PKCE was not used for this authorization
   if (!codeVerifier) return false;
-  // Only S256 is advertised in AS metadata (code_challenge_methods_supported).
-  if ((codeChallengeMethod || "S256") !== "S256") return false;
+  // Only S256 is advertised in AS metadata (code_challenge_methods_supported), and it must
+  // be stated explicitly: RFC 7636 §4.3 defaults an omitted method to "plain", not S256.
+  if (codeChallengeMethod !== "S256") return false;
   const hash = crypto.createHash("sha256").update(codeVerifier).digest("base64");
   return base64url(hash) === codeChallenge;
 }

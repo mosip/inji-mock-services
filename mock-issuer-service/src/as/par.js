@@ -30,8 +30,9 @@ export default function parHandler(req, res) {
 
   console.log("PAR request received for client_id:", client_id);
 
-  // A PAR request MUST NOT itself contain a request_uri (RFC 9126 §2.1)
-  if (request_uri) {
+  // A PAR request MUST NOT itself contain a request_uri (RFC 9126 §2.1). Checked by
+  // presence rather than value, so an explicitly supplied empty one is still rejected.
+  if (Object.prototype.hasOwnProperty.call(req.body, "request_uri")) {
     return res.status(400).json({
       error: "invalid_request",
       error_description: "request_uri is not allowed in a pushed authorization request"

@@ -1,9 +1,13 @@
 import { SignJWT, exportPKCS8 } from 'jose';
 import { randomBytes, createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
-import { writeFileSync, rmSync, mkdtempSync } from 'node:fs';
+import { execFile } from 'node:child_process';
+import { writeFile, rm, mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
+const CERT_GENERATION_TIMEOUT_MS = 10_000;
 
 function base64url(buffer) {
   return buffer.toString('base64url');
@@ -13,23 +17,40 @@ function sha256(data) {
   return createHash('sha256').update(data).digest();
 }
 
-async function selfSignedCertB64(privateKey) {
+// One certificate per signing key, so repeat issuance with the same key does not shell out
+// to OpenSSL again. Keyed by the key object, which is what createSdJwt is handed.
+const certificateCache = new WeakMap();
+
+async function generateSelfSignedCertB64(privateKey) {
   const pkcs8 = await exportPKCS8(privateKey);
-  const dir = mkdtempSync(join(tmpdir(), 'sdjwt-cert-'));
+  const dir = await mkdtemp(join(tmpdir(), 'sdjwt-cert-'));
   const keyPath = join(dir, 'key.pem');
   try {
-    writeFileSync(keyPath, pkcs8, { mode: 0o600 });
-    const der = execFileSync(
+    await writeFile(keyPath, pkcs8, { mode: 0o600 });
+    const { stdout } = await execFileAsync(
       'openssl',
       ['req', '-x509', '-key', keyPath,
        '-subj', '/CN=INJI Mock Issuer/O=INJI Mock Services',
        '-days', '365', '-outform', 'DER'],
-      { maxBuffer: 1 << 20 },
+      { maxBuffer: 1 << 20, timeout: CERT_GENERATION_TIMEOUT_MS, encoding: 'buffer' },
     );
-    return der.toString('base64');
+    return stdout.toString('base64');
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    await rm(dir, { recursive: true, force: true });
   }
+}
+
+function selfSignedCertB64(privateKey) {
+  let pending = certificateCache.get(privateKey);
+  if (!pending) {
+    // Cache the promise rather than the result so concurrent requests share one generation.
+    pending = generateSelfSignedCertB64(privateKey).catch((error) => {
+      certificateCache.delete(privateKey);
+      throw error;
+    });
+    certificateCache.set(privateKey, pending);
+  }
+  return pending;
 }
 
 export async function createSdJwt(payload, privateKey, issuer, holderDid) {
