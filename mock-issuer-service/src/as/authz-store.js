@@ -6,6 +6,18 @@ export const preAuthCodeStore = new Map();
 export const issuerStateStore = new Map();
 export const stageTestErrorStore = new Map();
 
+// PAR (RFC 9126): request_uri -> pushed authorization-request params
+export const parRequestStore = new Map();
+
+// Login transaction: opaque id -> resolved authorization-request params. Keeping these
+// server-side means the browser never carries values it could tamper with, which is the
+// guarantee PAR exists to provide.
+export const loginTxnStore = new Map();
+
+export function generateLoginTxn() {
+  return crypto.randomBytes(16).toString("hex");
+}
+
 // DPoP nonce store: nonce → expiry timestamp (ms)
 export const dpopNonceStore = new Map();
 

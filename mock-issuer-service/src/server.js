@@ -13,6 +13,7 @@ import interactiveAuthorizationHandler from "./as/interactive-authorization.js";
 import tokenHandler from "./as/token.js";
 import credentialHandler from "./credential/endpoint.js";
 import loginHandler from "./as/login.js";
+import parHandler from "./as/par.js";
 import nonceHandler from "./nonce.js";
 import { getDidDocument } from "./credential/ldp-vc.js";
 import { ISSUER } from "./issuer-profile.js";
@@ -78,6 +79,23 @@ app.post("/as/token", tokenHandler);
 app.post("/:flow(pdi)/as/token", tokenHandler);
 app.post("/:version(v1|draft13)/as/token", tokenHandler);
 app.post("/:version(v1|draft13)/:flow(pdi)/as/token", tokenHandler);
+// ---- PUSHED AUTHORIZATION REQUEST (RFC 9126) ---- //
+app.post("/as/par", parHandler);
+app.post("/:flow(pdi)/as/par", parHandler);
+app.post("/:version(v1|draft13)/as/par", parHandler);
+app.post("/:version(v1|draft13)/:flow(pdi)/as/par", parHandler);
+
+// RFC 9126 §2.3 — the PAR endpoint only accepts POST
+const parMethodNotAllowed = (req, res) =>
+  res.status(405).set("Allow", "POST").json({
+    error: "invalid_request",
+    error_description: "the pushed authorization request endpoint only accepts POST",
+  });
+app.all("/as/par", parMethodNotAllowed);
+app.all("/:flow(pdi)/as/par", parMethodNotAllowed);
+app.all("/:version(v1|draft13)/as/par", parMethodNotAllowed);
+app.all("/:version(v1|draft13)/:flow(pdi)/as/par", parMethodNotAllowed);
+
 app.get("/as/authorize", authorizeHandler);
 app.get("/:flow(pdi)/as/authorize", authorizeHandler);
 app.get("/:version(v1|draft13)/as/authorize", authorizeHandler);
