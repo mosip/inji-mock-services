@@ -43,7 +43,6 @@ export default async function credentialEndpoint(req, res) {
   if (isV1) {
     const configId = body.credential_configuration_id;
     format = CONFIG_TO_FORMAT[configId];
-    buildCredentialConfigurations(version);
 
     if (!format) {
       return res.status(400).json({
