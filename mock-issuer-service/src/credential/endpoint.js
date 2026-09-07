@@ -7,7 +7,10 @@ import {
 } from "./static-vc.js";
 import { SignJWT, generateKeyPair, exportJWK } from 'jose';
 import { randomUUID, createHash } from 'node:crypto';
-import { ISSUER } from "../issuer-metadata.js";
+import {
+  ISSUER,
+  buildCredentialConfigurations,
+} from "../issuer-metadata.js";
 import { hasExplicitVersion, issuerBaseUrl, resolveRequestVersion } from "../issuer-profile.js";
 import { createSdJwt } from "./sd-jwt.js";
 import { createMdoc } from "./mdoc.js";
@@ -31,7 +34,8 @@ export default async function credentialEndpoint(req, res) {
   const isV1 = explicitVersion
     ? version === "v1"
     : Boolean(body.credential_configuration_id || body.proofs);
-  const issuerUrl = explicitVersion ? issuerBaseUrl(version) : ISSUER;
+  const flow = req.body?.flow || req.query?.flow;
+  const issuerUrl = issuerBaseUrl(version, explicitVersion, flow);
 
   let format;
   let proofJwt;
@@ -39,6 +43,8 @@ export default async function credentialEndpoint(req, res) {
   if (isV1) {
     const configId = body.credential_configuration_id;
     format = CONFIG_TO_FORMAT[configId];
+    buildCredentialConfigurations(version);
+
     if (!format) {
       return res.status(400).json({
         error: "unsupported_credential_type",
@@ -46,30 +52,25 @@ export default async function credentialEndpoint(req, res) {
       });
     }
 
-    const jwtProofs = body.proofs && body.proofs.jwt;
-    const mdocProofs = body.proofs && body.proofs.mso_mdoc;
-    
+    const jwtProofs = body.proofs?.jwt;
+    const mdocProofs = body.proofs?.mso_mdoc;
+
     if (format === "mso_mdoc") {
-        if (!mdocProofs || !Array.isArray(mdocProofs) || mdocProofs.length === 0) {
-          // Fallback to jwt if mdoc proofs missing but jwt present (some wallets might still use jwt proof for mdoc)
-          if (!jwtProofs || !Array.isArray(jwtProofs) || jwtProofs.length === 0) {
-            return res.status(400).json({
-                error: "invalid_proof",
-                error_description: "proofs.mso_mdoc missing or empty",
-            });
-          }
-          proofJwt = jwtProofs[0];
-        } else {
-            proofJwt = mdocProofs[0];
-        }
-    } else {
-        if (!jwtProofs || !Array.isArray(jwtProofs) || jwtProofs.length === 0) {
-            return res.status(400).json({
-                error: "invalid_proof",
-                error_description: "proofs.jwt missing or empty",
-            });
-        }
+      if (mdocProofs && Array.isArray(mdocProofs) && mdocProofs.length > 0) {
+        proofJwt = mdocProofs[0];
+      } else if (
+        jwtProofs &&
+        Array.isArray(jwtProofs) &&
+        jwtProofs.length > 0
+      ) {
         proofJwt = jwtProofs[0];
+      }
+    } else if (
+      jwtProofs &&
+      Array.isArray(jwtProofs) &&
+      jwtProofs.length > 0
+    ) {
+      proofJwt = jwtProofs[0];
     }
   } else {
     format = body.format;
