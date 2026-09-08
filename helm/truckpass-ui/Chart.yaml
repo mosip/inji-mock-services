@@ -1,0 +1,20 @@
+apiVersion: v2
+name: truckpass-ui
+description: A Helm chart for Inji Truckpass UI
+type: application
+version: 0.0.1-develop
+appVersion: ""
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - bitnami-common
+    version: 1.x.x
+home: https://inji.io
+keywords:
+  - mosip
+  - inji
+  - truckpass
+maintainers:
+  - email: info@mosip.io
+    name: INJI

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+data:
+  config.json: |-
+    {"baseUrl":"{{ tpl .Values.truckpass.apiUrl . }}",  "adminUrl" : "/", "primaryLangCode": "eng", "secondaryLangCode": "fra", "validateToken": "authmanager/authorize/admin/validateToken", "login": "admin/login/",  "logout": "admin/logout/user", "templateRepoUrl": "/templates/" }
+
+  default.conf: |-
+    server {
+      listen       8080;
+      server_name  localhost;
+      root   /usr/share/nginx/html;
+
+      index  index.html index.htm;
+  
+      location /fetchUserInfo {
+          proxy_pass         https://healthservices-mock.released.mosip.net/mock-relying-party-service/fetchUserInfo;
+          proxy_redirect     off;
+          proxy_set_header   Host $host;
+          proxy_set_header   X-Real-IP $remote_addr;
+          proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header   X-Forwarded-Host $server_name;
+          try_files $uri $uri/ /index.html;
+      }
+  
+      location / {
+          try_files $uri $uri/ /index.html;
+      }
+    }

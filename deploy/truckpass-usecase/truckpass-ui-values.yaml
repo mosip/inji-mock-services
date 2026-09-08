@@ -1,0 +1,44 @@
+## Additional environment variables to set
+## Update the below env variables as per the requirement
+## Example:
+## extraEnvVars:
+##   - name: FOO
+##     value: "bar"
+##
+extraEnvVars:
+  - name: ESIGNET_BASE_URL
+    value: https://esignet-mock.sandbox.xyz.net
+  - name: MOCK_RELYING_PARTY_SERVER_URL
+    value: >-
+      https://truckpass-usecase.sandbox.xyz.net
+  - name: BACKEND_URL
+    value: https://truckpass-usecase.sandbox.xyz.net/v1/truckpass/api
+  - name: CLIENT_ID
+    value: <client_id> # update client id
+  - name: SIGN_IN_BUTTON_PLUGIN_URL
+    value: >-
+      https://esignet-mock.sandbox.xyz.net/plugins/sign-in-button-plugin.js
+  - name: CLIENT_DISPLAY
+    value: page
+  - name: MAX_AGE
+    value: '21'
+  - name: FRONTEND_URL
+    value: https://truckpass-usecase.sandbox.xyz.net
+
+## The url below is to access Truckpass API services.
+## CAUTION: Domain name to acess Truckpass UI must be secure/internal/over vpn.
+## Slash is important!
+truckpass:
+  apiUrl: https://api-internal.sandbox.xyz.net/v1/truckpass
+
+## Truckpass UI swagger should have only internal access. Hence linked to internal gateway
+## We create a gateway for admin specific URL(s) listed under `hosts`
+istio:
+  enabled: true
+  ingressController:
+    name: ingressgateway
+  gateways:
+    - truckpass-gateway
+  hosts:
+    - truckpass-usecase.sandbox.xyz.net
+  prefix: /

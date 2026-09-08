@@ -1,0 +1,74 @@
+## Additional environment variables to set
+## Update the below env variables as per the requirement
+extraEnvVars:
+  - name: DATABASE_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: database-host
+        name: db-config
+  - name: DATABASE_PORT
+    valueFrom:
+      configMapKeyRef:
+        key: database-port
+        name: db-config
+  - name: DATABASE_NAME
+    valueFrom:
+      configMapKeyRef:
+        key: database-name
+        name: db-config
+  - name: DATABASE_USERNAME
+    valueFrom:
+      configMapKeyRef:
+        key: database-username
+        name: db-config
+  - name: DB_DBUSER_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: db-dbuser-password
+        name: db-common-secrets
+
+truckpass_usecase:
+  configmaps:
+    db:
+      database_host: postgres.sandbox.xyz.net
+      database_name: inji_certify_truckpass   # provide db name
+      database_port: "5432"
+      database_username: certifyuser # provide username
+
+## Admin swagger should have only internal access. Hence linked to internal gateway
+istio:
+  enabled: true
+  gateways:
+    - truckpass-gateway
+  prefix: /v1/truckpass
+  corsPolicy:
+    allowOrigins:
+      - prefix: https://truckpass-usecase.sandbox.xyz.net
+    allowCredentials: true
+    allowHeaders:
+      - Accept
+      - Accept-Encoding
+      - Accept-Language
+      - Connection
+      - Content-Type
+      - Cookie
+      - Host
+      - Referer
+      - Sec-Fetch-Dest
+      - Sec-Fetch-Mode
+      - Sec-Fetch-Site
+      - Sec-Fetch-User
+      - Origin
+      - Upgrade-Insecure-Requests
+      - User-Agent
+      - sec-ch-ua
+      - sec-ch-ua-mobile
+      - sec-ch-ua-platform
+      - x-xsrf-token
+      - xsrf-token
+    allowMethods:
+      - GET
+      - POST
+      - PATCH
+      - PUT
+      - DELETE
