@@ -104,7 +104,7 @@ export const ReviewPage = () => {
 
   const RegistrationSuccessPage = () => {
     return (
-      <div className='flex flex-col gap-y-5 place-self-center items-center py-6 w-[40%]'>
+      <div className='flex flex-col gap-y-5 mx-auto items-center py-6 w-[40%]'>
         <img src={tickIcon} className='h-14 w-14' />
         <h1 className='text-xl font-semibold text-center'>{t('registrationSuccessPage.header')}</h1>
         <p className='text-sm font-[400] text-center'>{t('registrationSuccessPage.desc1')}</p>

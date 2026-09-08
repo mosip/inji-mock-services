@@ -160,7 +160,7 @@ export const Registration: React.FC<RegistrationProps> = ({ }) => {
         <>
             {showErrorPopup && <ErrorPopup showErrorPopup={showErrorPopup} setShowErrorPopup={setShowErrorPopup} />}
 
-            <div className="flex w-[63%] shadow-lg rounded-2xl place-self-center">
+            <div className="flex w-[63%] shadow-lg rounded-2xl mx-auto">
                 <DriverRegistrationStepper
                     consentStatus={true}
                     selectCompanyStatus={true}

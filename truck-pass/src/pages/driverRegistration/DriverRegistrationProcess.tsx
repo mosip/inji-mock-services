@@ -1,18 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { DriverRegistrationFlow } from "../../shared/DriverRegistrationFlow";
 import { useTranslation } from "react-i18next";
 
 const DriverRegistrationProcess: React.FC<DriverRegistrationProcessProps> = ({ children }) => {
 
-  const { t, i18n } = useTranslation();
-
-  useEffect(() => {
-    const savedLng = localStorage.getItem("appLanguage");
-
-    if (savedLng) {
-      i18n.changeLanguage(savedLng);
-    }
-  }, []);
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col bg-[#ECF5FF] w-full items-center pt-12 gap-y-10 font-inter h-auto">
@@ -28,7 +20,7 @@ const DriverRegistrationProcess: React.FC<DriverRegistrationProcessProps> = ({ c
         />
 
         {/* Footer */}
-        <footer className='text-sm text-[#717171] place-self-center bg-transparent py-16 font-inter'>
+        <footer className='w-full text-center text-sm text-[#717171] bg-transparent py-16 font-inter'>
           {t('footer.footerText')}
         </footer>
         {/* Footer */}
